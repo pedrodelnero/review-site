@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import {Grid, Button, Typography, CircularProgress } from '@material-ui/core/';
@@ -6,15 +6,16 @@ import {Grid, Button, Typography, CircularProgress } from '@material-ui/core/';
 import AuthApi from '../../api/AuthApi';
 import useStyles from './styles.js'; 
 import ReviewModal from './ReviewModal/ReviewModal';
+
 import Review from './Review/Review'
 
 const ProductDetails = () => {
-  const { auth } = useContext(AuthApi);
-  const { id } = useParams();
+  const {auth} =      useContext(AuthApi);
+  const { id } =    useParams();
   const [product, setProduct] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [message, setMessage ] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage ] = useState( [] );
+     const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
@@ -28,7 +29,7 @@ const ProductDetails = () => {
 
   const getProduct = async () => {
     try {
-      const { data } = await axios.get(`/products/${id}`);
+      const { data } = await axios.get(`/products/${id}`    );
       
       setProduct(data)
     } catch (error) {
@@ -51,7 +52,7 @@ const ProductDetails = () => {
   if (!product.name) return <CircularProgress />;
   
   return (
-    <Fragment >
+    <>
       <Grid container spacing={10} className={classes.container}>
         <Grid item xs={12}>
           <Typography gutterBottom variant="h4" color="textSecondary" >Name: {product.name}</Typography>
@@ -74,7 +75,7 @@ const ProductDetails = () => {
       ))}
       </Grid>
       {message}
-    </Fragment>
+    </>
   );
 }
 

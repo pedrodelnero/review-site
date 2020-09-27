@@ -3,17 +3,21 @@ import {Card, CardActionArea, CardActions, CardContent, CardMedia, Button, Typog
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import { useDispatch } from 'react-redux';
 
 import useStyles from './styles.js';
 import AuthApi from '../../../api/AuthApi';
+import { deleteProduct } from '../../../actions/products';
 
 
-const Product = ({ getProducts, product: { author, description, name, _id: id } }) => {
+const Product = ({ product: { author, description, name, _id: id } }) => {
   const { auth } = useContext(AuthApi);
   const [message,setMessage] = useState('');
   const [reviews, setReviews ] = useState([]);
   const [authorized, setAuthorized ] = useState(false);
   const cookies = new Cookies();
+  const dispatch = useDispatch();
+  const classes = useStyles();
 
   useEffect(() => {
     const getReview = async () => {
@@ -36,20 +40,10 @@ const Product = ({ getProducts, product: { author, description, name, _id: id } 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const deleteProduct = async (id) => {  
-    try {
-      await axios.delete(`/products/${id}`, {
-        headers: {
-          'Authorization': 'Bearer ' + cookies.get('token')
-        }
-      });
-        
-      getProducts();
-    } catch (error) {
-      setMessage(error.message);
-    }
+  const removeProduct = (id) => {
+    dispatch(deleteProduct(id));
   }
-  const classes = useStyles();
+  
 
   return (
     <Card key={id} className={classes.root}>
@@ -66,7 +60,7 @@ const Product = ({ getProducts, product: { author, description, name, _id: id } 
       {authorized &&
         <CardActions>
           <Button component={Link} to={`/form/${id}`}>Edit</Button>
-          <Button size="small" color="primary" onClick={() => deleteProduct(id)}>Delete</Button>
+          <Button size="small" color="primary" onClick={() => removeProduct(id)}>Delete</Button>
         </CardActions>
       }
     </Card>

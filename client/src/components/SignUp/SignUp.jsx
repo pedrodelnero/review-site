@@ -7,7 +7,7 @@ import Cookies from 'universal-cookie';
 import useStyles from './styles';
 import AuthApi from '../../api/AuthApi';;
 
-const SignUp = ({ history }) => {
+const SignUp = () => {
   const { setAuth } = useContext(AuthApi)
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,8 +27,7 @@ const SignUp = ({ history }) => {
       cookies.set('user', data.user, { path: '/' });
       setAuth(true)
   
-      history.push('/');
-      window.location.reload();
+      window.location.href = '/'
     } catch(error) {
         if(error.response.data.message === "User Already Exists") {
             alert("User Already Exists");

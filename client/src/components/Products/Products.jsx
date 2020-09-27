@@ -1,39 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Product from './Product/Product';
 import useStyles from './styles.js'; 
-import { fetchProducts } from '../../api';
+import { getProducts } from '../../actions/products';
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
-  const [message, setMessage ] = useState([]);
+    const products = useSelector((state) => state.products);
+    const dispatch = useDispatch();
+    const classes = useStyles();
   
-  useEffect(() => {
-    getProducts();
+    useEffect(() => {
+        dispatch(getProducts());
+    }, [dispatch]);
     
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  
-  const getProducts = async () => {
-    try {
-      setProducts(await fetchProducts());
-    } catch (error) {
-      setMessage(error.message)
-    }
-  }
-  
-  const classes = useStyles();
-  return (
-    <Grid container spacing={10} className={classes.container}>
-      {products.map((product, index) =>  (
-        <Grid item xs={4} key={index}>
-          <Product product={product} getProducts={getProducts} />
+    return (
+        <Grid container spacing={10} className={classes.container}>
+        {products.map((product, index) => (
+            <Grid item xs={4} key={index}>
+                <Product product={product} />
+            </Grid>
+        ))}
         </Grid>
-      ))}
-      {message}
-    </Grid>
-  );
+    );
 }
     
 export default Products

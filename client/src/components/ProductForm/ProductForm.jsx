@@ -1,54 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { TextField, Button, Typography} from '@material-ui/core/';
-import Cookies from 'universal-cookie';
+import { useDispatch, useSelector } from 'react-redux';
 
-import useStyles from './styles.js'; 
+import useStyles from './styles.js';
+import { addProduct, updateProduct } from '../../actions/products';
 
-
-const ProductForm = ({product}) => {
-  let [name, setName] = useState('');
-  let [description, setDescription] = useState('');
+const ProductForm = () => {
+    const { id } = useParams();
+  const product = useSelector((state) => state.products.find((product) => product._id === id));
+  const [name, setName] = useState(product?.name || '');
+  const [description, setDescription] = useState(product?.description || '');
   const classes = useStyles();
-  const { id } = useParams();
-  const history = useHistory();
-  const cookies = new Cookies();
-
-  useEffect(() => {
-    const getProduct = async () => {
-      const { data: { description, name } } = await axios.get(`/products/${id}`);
-      
-      setName(name);
-      setDescription(description);
-    }
-
-    if(id) {
-      getProduct();
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [product]);
+  const dispatch = useDispatch();
 
   
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     
     if (id) {
-      await axios.patch(`/products/${id}`, { name, description }, {
-        headers: {
-          'Authorization': 'Bearer ' + cookies.get('token')
-        }
-      });    
+      dispatch(updateProduct(id, { name, description }))
     } else {
-      await axios.post('/products', { name, description }, {
-        headers: {
-          'Authorization': 'Bearer ' + cookies.get('token')
-        }
-      });    
+      dispatch(addProduct({ name, description }))
     }
 
-    history.push('/');
+    window.location.href = '/'
   }
 
   return (

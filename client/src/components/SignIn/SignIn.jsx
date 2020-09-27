@@ -7,7 +7,7 @@ import axios from 'axios';
 import useStyles from './styles';
 import AuthApi from '../../api/AuthApi';
 
-const SignIn = ({ history }) => {
+const SignIn = () => {
   const { setAuth } = useContext(AuthApi);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,8 +24,7 @@ const SignIn = ({ history }) => {
       cookies.set('token', data.token, { path: '/' });
       cookies.set('user', data.user, { path: '/' });
       setAuth(true);
-      history.push('/');
-      window.location.reload()
+      window.location.href = '/'
     } catch (error) {
       setIsError(error.response.data.message); 
     }

@@ -3,23 +3,19 @@ import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router
 import { Container } from '@material-ui/core';
 import Cookies from 'universal-cookie';
 
-
 import { Products, ProductForm, Header, ProductDetails, SignUp, SignIn } from '../components';
 import AuthApi from '../api/AuthApi';
+
+const cookies = new Cookies();
 
 const AppRouter = () => {
   const history = useHistory();
   const [auth, setAuth] = useState(false)
-  const cookies = new Cookies();
 
   useEffect(() => {
-    const readCookies = () => {
-      const user = cookies.get("user");
+    const user = cookies.get("user");
 
-      if (user) setAuth(true)
-    };
-
-    readCookies();
+    if (user) setAuth(true)
   }, []);
 
   return (
