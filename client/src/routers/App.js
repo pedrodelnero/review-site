@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router
 import { Container } from '@material-ui/core';
 import Cookies from 'universal-cookie';
 
-import { Products, ProductForm, Header, ProductDetails, SignUp, SignIn } from '../components';
+import { Products, ProductForm, Header, ProductDetails, SignUp, SignIn , UserPage} from '../components';
 import AuthApi from '../api/AuthApi';
 
 const cookies = new Cookies();
@@ -35,6 +35,7 @@ const AppRouter = () => {
             <Route path="/:id?/details" component={ProductDetails}/>
             <Route path="/sign-up" component={SignUp}/>
             <Route path="/sign-in" component={SignIn}/>
+            <Route path="/user" component={UserPage}/>
           </Switch>
         </Container>
       </Router>

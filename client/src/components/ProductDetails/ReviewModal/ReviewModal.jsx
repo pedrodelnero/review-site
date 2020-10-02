@@ -1,32 +1,22 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Button, TextField, Typography, Modal, Box } from '@material-ui/core/';
 import Rating from '@material-ui/lab/Rating'
-import Cookies from 'universal-cookie';
+import { useDispatch } from 'react-redux';
 
-import  useStyles, { getModalStyle } from './styles.js'; 
+import  useStyles, { getModalStyle } from './styles.js';
+import { addReview } from '../../../actions/reviews';
 
-export default function ReviewModal({ id, isOpen, handleClose, getReviews }) {
+export default function ReviewModal({ id, isOpen, handleClose }) {
   const classes = useStyles();
   const [content, setContent ] = useState('');
   const [rating, setRating ] = useState('');
   const [modalStyle] = useState(getModalStyle);
-  const cookies = new Cookies();
+  const dispatch = useDispatch();
 
-  const addReview = async (e) => {
-    console.log(rating)
-    try {
-      await axios.post(`/products/${id}/reviews`, { rating, content }, {
-        headers: {
-          'Authorization': 'Bearer ' + cookies.get('token')
-        }
-      });
-      setContent('');
-      getReviews();
-        
-    } catch (error) {
-      console.log(error.response);
-    }
+  const addNewReview = (e) => {
+    e.preventDefault();
+    dispatch(addReview(id, { rating, content }))
+    setContent('');
 
     handleClose();
   }
@@ -48,7 +38,7 @@ export default function ReviewModal({ id, isOpen, handleClose, getReviews }) {
               variant="outlined"
             />
           <div className={classes.button}>
-            <Button type="submit" variant="contained" color="primary" onClick={addReview} >Add Review</Button>
+            <Button type="submit" variant="contained" color="primary" onClick={addNewReview} >Add Review</Button>
           </div>
         </div>
     </div>

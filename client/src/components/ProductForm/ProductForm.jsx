@@ -7,7 +7,7 @@ import useStyles from './styles.js';
 import { addProduct, updateProduct } from '../../actions/products';
 
 const ProductForm = () => {
-    const { id } = useParams();
+  const { id } = useParams();
   const product = useSelector((state) => state.products.find((product) => product._id === id));
   const [name, setName] = useState(product?.name || '');
   const [description, setDescription] = useState(product?.description || '');
@@ -18,11 +18,7 @@ const ProductForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    if (id) {
-      dispatch(updateProduct(id, { name, description }))
-    } else {
-      dispatch(addProduct({ name, description }))
-    }
+    (id) ? dispatch(updateProduct(id, { name, description })) : dispatch(addProduct({ name, description }))
 
     window.location.href = '/'
   }

@@ -21,7 +21,7 @@ const Header = () => {
     cookies.remove('token', { path: '/' });
     cookies.remove('user', { path: '/' });  
     setAuth(false)
-    window.location.reload()
+    window.location.href = '/'
   };
 
   // https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage
@@ -31,6 +31,7 @@ const Header = () => {
       <Typography variant="h4" align="center">Product Review</Typography>
       <div className={classes.container}>
         <ButtonGroup variant="contained" color="primary" className={classes.butons}>
+          { auth && <Button component={Link} to="/user">Account</Button>}
           <Button component={Link} to="/">Products</Button>
           { auth && <Button component={Link} to="/form">Add Product</Button>}
         </ButtonGroup>
