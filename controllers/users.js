@@ -13,6 +13,7 @@ export const createUser = async (req, res) => {
     user = new User({ name, email, password });
     
     await user.save();
+    
     const token = await user.generateAuthToken();
     // sendWelcomeEmail(user.email, user.name);
     res.status(201).send({ user, token });
@@ -23,10 +24,12 @@ export const createUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
-
+  
+  
   try {
     const user = await User.findByCredentials(email, password);
-
+    await user.populate('products').populate('reviews').execPopulate();
+    console.log(user)
     const token = await user.generateAuthToken();
     
     res.send({ user, token });
@@ -47,19 +50,6 @@ export const logoutUser = async (req, res) => {
   }
 }
 
-export const logoutAll = async (req, res) => {
-  try {
-    req.user.tokens = [];
-
-    await req.user.save();
-
-    res.json({ message: 'Logged out ALL'})
-
-  } catch (error) {
-    res.status(500).json({message: error.message});
-  }
-}
-
 export const updateUser = async (req, res) => {
   const { id } = req.params;
   const user = req.body;
@@ -73,8 +63,6 @@ export const updateUser = async (req, res) => {
   }
 }
 
-
-// Delete user
 export const deleteUser = async (req, res) => {
   try {
     await req.user.remove()
@@ -82,5 +70,18 @@ export const deleteUser = async (req, res) => {
     res.send(req.user)
   } catch (error) {
     res.status(500).json({message: error.message});
+  }
+}
+
+export const getUser = async (req, res) => {
+  const user = req.user;
+  console.log(1, user)
+
+  // await user.populate('products').populate('reviews').execPopulate();
+
+  try {
+    res.send(user)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
   }
 }

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+
 const productSchema = mongoose.Schema({
   name: {
     type: String,
@@ -15,6 +16,10 @@ const productSchema = mongoose.Schema({
   author: {
     type: String,
     required: true,
+  },
+  authorID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   rating: {
     type: Number,

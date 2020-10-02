@@ -8,15 +8,14 @@ const reviewSchema = mongoose.Schema({
   },
   rating: {
     type: Number,
-    required: true,
   },
   author: {
     type: String,
     required: true,
   },
-  authorEmail: {
-    type: String,
-    required: true,
+  authorID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   createdAt: {
     type: Date,

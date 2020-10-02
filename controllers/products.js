@@ -17,7 +17,7 @@ export const createProduct = async (req, res) => {
   const { name: author, _id: id } = req.user
   
   try {
-    const product = await new Product({ name, description, author }).save();
+    const product = await new Product({ name, description, author, authorID: id }).save();
 
     await User.findByIdAndUpdate(id, { $push: { products: product._id }}, { new: true });
 
@@ -28,7 +28,7 @@ export const createProduct = async (req, res) => {
 }
 
 export const getProductById = async (req,res) => {
-  const { id } = req.params;  
+  const { id } = req.params; 
   try {
     const product = await Product.findById(id);
 

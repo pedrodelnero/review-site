@@ -2,7 +2,7 @@ import express from 'express';
 
 import { createProduct, getProducts, getProductById, updateProductById, deleteProductById } from '../controllers/products.js';
 import { createReview, getReviews, getReviewById, updateReviewById, deleteReviewById } from '../controllers/reviews.js';
-import { createUser, loginUser, logoutUser, logoutAll, updateUser, deleteUser } from '../controllers/users.js';
+import { createUser, loginUser, logoutUser, updateUser, deleteUser, getUser } from '../controllers/users.js';
 import getProd from '../middleware/getProd.js';
 import auth from '../middleware/auth.js';
 
@@ -26,11 +26,8 @@ router.delete('/products/:pID/reviews/:rID', auth, getProd, deleteReviewById);
 router.post('/users', createUser);
 router.post('/users/login', loginUser);
 router.post('/users/logout', auth, logoutUser);
-// router.post('/users/logoutALL', logoutAll);
 router.patch('/users/me', auth, updateUser);
 router.delete('/users/me', auth, deleteUser);
-
-
-
+router.get('/user', auth, getUser)
 
 export default router;
