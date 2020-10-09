@@ -61,6 +61,7 @@ const userSchema = mongoose.Schema({
   }]
 });
 
+// Static - You can call created statics on the Model 
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
 
@@ -73,6 +74,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 }
 
+// Method - You can call created methods on instances of a schema 
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
@@ -85,12 +87,33 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 }
 
-// Hash the plain text password before vaing
-userSchema.pre('save', async function(next) {
+userSchema.methods.updatePassword = async function () {
+  const user = this;
+  const { currentPassword, newPassword, confirmNewPassword }  = req.body;
+
+  console.log(currentPassoword, 1);
+  
+  const hashedNewPassword = await bcrypt.hash(newPassword, 8);
+
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!isMatch) throw new Error("You entered the wrong password.");
+  
+  const isConfirmedSame = await bcrypt.compare(confirmNewPassword, hashedNewPassword);
+  if (!isConfirmedSame) throw new Error("The passwords do not match.");
+
+  const isOld = (await bcrypt.compare(newPassword, user.password));
+  if (!isOld) throw new Error("Must be a new password.");
+
+  return hashedNewPassword;
+}
+
+
+// A middleware function that happens before 'save'
+userSchema.pre('save', async function (next) {
   const user = this;
 
   if (user.isModified('password')) {
-      user.password = await bcrypt.hash(user.password, 8);
+    user.password = await bcrypt.hash(user.password, 8);
   }
 
   next();

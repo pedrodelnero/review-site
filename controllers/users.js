@@ -1,12 +1,13 @@
 // import Review from '../models/review.model.js';
 // import Product from '../models/product.model.js';
 import User from '../models/user.model.js';
+import bcrypt from 'bcryptjs';
 
 export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email })
     
     if (user) return res.status(400).send({ message: "User Already Exists" });
     
@@ -25,11 +26,8 @@ export const createUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   
-  
   try {
     const user = await User.findByCredentials(email, password);
-    await user.populate('products').populate('reviews').execPopulate();
-    console.log(user)
     const token = await user.generateAuthToken();
     
     res.send({ user, token });
@@ -51,11 +49,14 @@ export const logoutUser = async (req, res) => {
 }
 
 export const updateUser = async (req, res) => {
-  const { id } = req.params;
-  const user = req.body;
+  const { user }  = req;
 
+  console.log('[TEST]')
+
+  user.password = await user.updatePassword();
+  
   try {
-    const updatedUser = await User.findByIdAndUpdate(id, user, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(user._id, user, { new: true });
 
     !updatedUser ? res.status(404).json({ error: 'No user with ID provided' }) : res.status(200).json({ useer: updatedUser, message: 'Product successfully updated.' })
   } catch (error) {
@@ -75,12 +76,11 @@ export const deleteUser = async (req, res) => {
 
 export const getUser = async (req, res) => {
   const user = req.user;
-  console.log(1, user)
-
-  // await user.populate('products').populate('reviews').execPopulate();
+  
+  await user.populate('products').populate('reviews').execPopulate();
 
   try {
-    res.send(user)
+    res.send(user);
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
