@@ -1,34 +1,24 @@
-import React, { useState, useContext } from 'react';
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Avatar, Button, CssBaseline, TextField, Link, Box, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Cookies from 'universal-cookie';
-import axios from 'axios';
+import { useDispatch } from "react-redux";
 
 import useStyles from './styles';
+import { updateUserPassword } from "../../../actions/user";
 
 const ChangePassword = () => {
+  const dispatch = useDispatch();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [isError, setIsError] = useState(false);
 
-  const cookies = new Cookies();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const token = cookies.get("token");
-    try {
-      const { data } = await axios.patch('/users/me', { currentPassword, newPassword, confirmNewPassword }, {
-        headers: { Authorization: `Bearer ${token}` },
-      }); 
-
-      // setAuth(true);
-      window.location.href = '/user'
-    } catch (error) {
-      setIsError(error.response.data.message); 
-    }
-  }
+    dispatch(updateUserPassword(currentPassword, newPassword, confirmNewPassword ));
+    window.location.href = '/user'
+  };
   
   const classes = useStyles();
 

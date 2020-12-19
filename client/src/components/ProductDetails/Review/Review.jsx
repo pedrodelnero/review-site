@@ -1,24 +1,23 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 import { Link } from 'react-router-dom';
 import {Card, CardActionArea, CardActions, CardContent, Button, Typography } from '@material-ui/core/';
 import Cookies from 'universal-cookie';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import AuthApi from '../../../api/AuthApi';
 import useStyles from './styles.js'; 
 import { deleteReview } from '../../../actions/reviews';
 
 
 const Review = ({ prodId, review: { author, content, _id: id } }) => {
   const classes = useStyles();
-  const { auth } = useContext(AuthApi);
+  const { isLoggedIn } = useSelector(state => state).user;
   const [authorized, setAuthorized ] = useState(false);
   const cookies = new Cookies();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (auth) {
+    if (isLoggedIn) {
       (cookies.get('user').name === author) ? setAuthorized(true) : setAuthorized(false)
     } else {
       setAuthorized(false)

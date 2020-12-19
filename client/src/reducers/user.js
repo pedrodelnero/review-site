@@ -1,10 +1,17 @@
-import { GET_USER } from "../constants/actionTypes";
+import { GET_USER, UPDATE_USER, DELETE_USER, SIGN_UP, SIGN_IN, SIGN_OUT } from "../constants/actionTypes";
   
-  export default (user = {}, action) => {
+  export default (state = { user: { }, isLoggedIn: false }, action) => {
     switch (action.type) {
       case GET_USER:
-        return action.payload;
+      case UPDATE_USER:
+      case SIGN_UP:
+      case SIGN_IN: 
+        return { user: action.payload, isLoggedIn: !!action.payload.name }
+      case SIGN_OUT: 
+        return state;
+      case DELETE_USER:
+        return state;
       default:
-        return user;
+        return state;
     }
   };

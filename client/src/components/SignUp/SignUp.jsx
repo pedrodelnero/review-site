@@ -1,57 +1,54 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar, Button, CssBaseline, TextField, Link, Grid, Box, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import axios from 'axios';
-import Cookies from 'universal-cookie';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useStyles from './styles';
-import AuthApi from '../../api/AuthApi';;
+import { signUp } from "../../actions/user";
 
 const SignUp = () => {
-  const { setAuth } = useContext(AuthApi)
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.user);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const cookies = new Cookies();
+  // const cookies = new Cookies();
   
   const [errorMessages, setErrorMessages] = useState("");
+  const classes = useStyles();
 
-  // Need error handling for emails already in use
-//   How to find display error message from API in reactjs
+  useEffect(() => {
+    if(user.name) {
+      window.location.href = '/';
+    }
+  }, [user]);
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const { data } = await axios.post('/users', { name, email, password });
+
+    dispatch(signUp(name, email, password));
+    
+    // catch(error) {
+    //   if(error.response.data.message === "User Already Exists") {
+    //     alert("User Already Exists");
+    //     return;
+    //   }
+    //   const err = Object.values(error.response.data.errors);
       
-      cookies.set('token', data.token, { path: '/' });
-      cookies.set('user', data.user, { path: '/' });
-      setAuth(true)
-  
-      window.location.href = '/'
-    } catch(error) {
-        if(error.response.data.message === "User Already Exists") {
-            alert("User Already Exists");
-            return;
-        }
-        const err = Object.values(error.response.data.errors);
+    //   // after user creation the header is not showing
+    //   // validation for email already exists
+    //   // validation for sign up (name)
+    //   // validation for login (password, email...)
+      
+    //   const errors = err.reduce((acc, { properties: { path: name, message }}) => {
+    //     acc[name] = message;
         
-        // after user creation the header is not showing
-        // validation for email already exists
-        // validation for sign up (name)
-        // validation for login (password, email...)
-
-        const errors = err.reduce((acc, { properties: { path: name, message }}) => {
-            acc[name] = message;
-
-            return acc;
-        }, {});
-
-        setErrorMessages(errors);
-    }
+    //     return acc;
+    //   }, {});
+      
+    //   setErrorMessages(errors);
+    // }
   }
-
-  
-  const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">

@@ -1,33 +1,37 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Cookies from 'universal-cookie';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useStyles from './styles';
-import AuthApi from '../../api/AuthApi';
+import { signIn } from "../../actions/user";
 
 const SignIn = () => {
-  const { setAuth } = useContext(AuthApi);
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
 
-  const cookies = new Cookies();
 
+  useEffect(() => {
+    if(user.name) {
+      window.location.href = '/';
+    }
+  }, [user]);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const { data } = await axios.post('/users/login', { email, password }); 
-
-      cookies.set('token', data.token, { path: '/' });
-      cookies.set('user', data.user, { path: '/' });
-      setAuth(true);
-      window.location.href = '/'
-    } catch (error) {
-      setIsError(error.response.data.message); 
-    }
+    
+    dispatch(signIn(email, password))
+    // try {
+    //   // const { data } = await axios.post('/users/login', { email, password }); 
+      
+    //   // cookies.set('token', data.token, { path: '/' });
+    //   // cookies.set('user', data.user, { path: '/' });
+    // } catch (error) {
+    //   setIsError(error.response.data.message); 
+    // }
   }
   
   const classes = useStyles();

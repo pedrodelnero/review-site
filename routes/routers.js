@@ -23,11 +23,11 @@ router.patch('/products/reviews/:rID', auth, updateReviewById);
 router.delete('/products/:pID/reviews/:rID', auth, getProd, deleteReviewById);
 
 // Users
-router.post('/users', createUser);
-router.post('/users/login', loginUser);
-router.post('/users/logout', auth, logoutUser);
-router.patch('/users/me', auth, updateUser);
-router.delete('/users/me', auth, deleteUser);
+router.post('/user', createUser);
+router.post('/user/login', loginUser);
+router.post('/user/logout', auth, logoutUser);
+router.patch('/user/me', auth, updateUser);
+router.delete('/user/me', auth, deleteUser);
 router.get('/user', auth, getUser)
 
 export default router;

@@ -17,8 +17,8 @@ export default function ReviewModal({ id, isOpen, handleClose }) {
     e.preventDefault();
     dispatch(addReview(id, { rating, content }))
     setContent('');
-
     handleClose();
+    // window.location.reload();
   }
 
   return (

@@ -1,49 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
-import { Container } from '@material-ui/core';
+// import { Container } from '@material-ui/core';
 import Cookies from 'universal-cookie';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Products, ProductForm, Header, ProductDetails, SignUp, SignIn , UserPage, ChangePassword } from '../components';
-import AuthApi from '../api/AuthApi';
+import { Products, ProductForm, Header, ProductDetails, SignUp, SignIn , UserPage, ChangePassword, Why } from '../components';
+import { getUser } from "../actions/user";
 
 const cookies = new Cookies();
 
 const AppRouter = () => {
   const history = useHistory();
-  const [auth, setAuth] = useState(false)
+  const { user, isLoggedIn } = useSelector(state => state.user)
+  const dispatch = useDispatch();
+
+  const token = cookies.get('token')
 
   useEffect(() => {
-    const user = cookies.get("user");
+    if (isLoggedIn || token) {
+      dispatch(getUser());
+    }
 
-    if (user) setAuth(true)
-  }, []);
-
+  }, [dispatch, isLoggedIn, token]);
+  
   return (
-    <AuthApi.Provider value={{ auth, setAuth }}>
       <Router value={history} >
-        <Container maxWidth="lg">
-          { 
-        
-        (
-          window.location.pathname === '/sign-in' || 
-          window.location.pathname === '/sign-up'
-          ) ? null : <Header />
-        }
+        {(window.location.pathname === '/sign-in' || window.location.pathname === '/sign-up') ? null : <Header />}
           <Switch>
-            <Route exact path="/" component={Products}/>          
             <Route path="/form/:id?" component={ProductForm}/>
             <Route path="/:id?/details" component={ProductDetails}/>
             <Route path="/sign-up" component={SignUp}/>
             <Route path="/sign-in" component={SignIn}/>
-            <Route path="/user" component={UserPage}/>
+            <Route path= "/user" component={UserPage}/>
             <Route path="/password" component={ChangePassword}/>
+            <Route path="/why" component={Why}/>
+            <Route exact path="/" component={Products}/>          
           </Switch>
-        </Container>
       </Router>
-    </AuthApi.Provider>
   )
 }
         
 export default AppRouter;
-
-

@@ -1,9 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Grid, Button, Typography, CircularProgress } from "@material-ui/core/";
 import { useSelector, useDispatch } from "react-redux";
 
-import AuthApi from "../../api/AuthApi";
 import useStyles from "./styles.js";
 import ReviewModal from "./ReviewModal/ReviewModal";
 import Review from "./Review/Review";
@@ -13,7 +12,7 @@ const ProductDetails = () => {
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const product = useSelector((state) => state.product);
-  const { auth } = useContext(AuthApi);
+  const { isLoggedIn } = useSelector((state) => state.user);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -34,7 +33,7 @@ const ProductDetails = () => {
             Description: {product.description}
           </Typography>
         </Grid>
-        {auth ? (
+        {isLoggedIn ? (
           <Grid item xs={12} className={classes.formButton}>
             <Button
               size="large"

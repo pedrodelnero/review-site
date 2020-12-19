@@ -87,24 +87,26 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 }
 
-userSchema.methods.updatePassword = async function () {
+userSchema.methods.updatePassword = async function (currentPassword, newPassword, confirmNewPassword) {
   const user = this;
-  const { currentPassword, newPassword, confirmNewPassword }  = req.body;
 
-  console.log(currentPassoword, 1);
+  try {
+    const hashedNewPassword = await bcrypt.hash(newPassword, 8);
+    
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) throw new Error("You entered the wrong password.");
+    
+    const isConfirmedSame = await bcrypt.compare(confirmNewPassword, hashedNewPassword);
+    if (!isConfirmedSame) throw new Error("The passwords do not match.");
+    
+    const isOld = (await bcrypt.compare(newPassword, user.password));
+    if (isOld) throw new Error("Must be a new password.");
   
-  const hashedNewPassword = await bcrypt.hash(newPassword, 8);
+    return hashedNewPassword;
 
-  const isMatch = await bcrypt.compare(currentPassword, user.password);
-  if (!isMatch) throw new Error("You entered the wrong password.");
-  
-  const isConfirmedSame = await bcrypt.compare(confirmNewPassword, hashedNewPassword);
-  if (!isConfirmedSame) throw new Error("The passwords do not match.");
-
-  const isOld = (await bcrypt.compare(newPassword, user.password));
-  if (!isOld) throw new Error("Must be a new password.");
-
-  return hashedNewPassword;
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }  
 }
 
 

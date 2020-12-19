@@ -8,3 +8,4 @@ export { default as SignUp } from './SignUp/SignUp';
 export { default as SignIn } from './SignIn/SignIn';
 export { default as UserPage } from './UserPage/UserPage';
 export { default as ChangePassword } from './UserPage/ChangePassword/ChangePassword';
+export { default as Why } from './Why/Why';

@@ -11,3 +11,8 @@ export const UPDATE_REVIEW = 'UPDATE_REVIEW';
 export const GET_PRODUCT = 'GET_PRODUCT';
 
 export const GET_USER = 'GET_USER';
+export const UPDATE_USER = 'UPDATE_USER';
+export const DELETE_USER = 'DELETE_USER'
+export const SIGN_UP = 'SIGN_UP';
+export const SIGN_IN = 'SIGN_IN';
+export const SIGN_OUT = 'SIGN_OUT';

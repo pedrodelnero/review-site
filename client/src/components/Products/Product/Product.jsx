@@ -1,22 +1,21 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, Button, Typography, } from "@material-ui/core/";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cookies from "universal-cookie";
 
 import useStyles from "./styles.js";
-import AuthApi from "../../../api/AuthApi";
 import { deleteProduct } from "../../../actions/products";
 
 const Product = ({ product: { author, description, name, _id: id, reviews } }) => {
-  const { auth } = useContext(AuthApi);
+  const { isLoggedIn } = useSelector(state => state.user)
   const [authorized, setAuthorized] = useState(false);
   const cookies = new Cookies();
   const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
-    if (auth) {
+    if (isLoggedIn) {
       cookies.get("user").name === author
         ? setAuthorized(true)
         : setAuthorized(false);

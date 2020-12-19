@@ -52,10 +52,22 @@ export const updateProductById = async (req,res) => {
   }
 }
 
+const deleteProduct = async (req, res) => {
+    Product.findById(req.params.id, (err, product) => {
+        product.remove((err) => {
+            if(!err) Review.findByIdAndDelete({ $in: product.reviews });
+        });
+    })
+}
+    
 export const deleteProductById = async (req, res) => {
-  const { id } = req.params;
-  const { products } = req.user
+    const { id } = req.params;
+    const { products } = req.user
 
+    // const product = await Product.findById(id);
+    // await Review.deleteMany({ _id: { $in: product.reviews }});
+    // await product.remove();
+  
   try {
     const product = await Product.findById(id);
     
