@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+// import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Button, ButtonGroup, Typography } from '@material-ui/core/';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import { AppBar, Button, ButtonGroup, Menu, MenuItem, Typography } from '@material-ui/core/';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
 import useStyles from './styles.js';
 import { signOut } from "../../actions/user";
+import Mobile from '../../context/Mobile';
 import logo from '../../images/logo.png'; 
 
 const StyledMenu = withStyles({
@@ -52,23 +49,17 @@ const StyledMenuItem = withStyles((theme) => ({
 const Header = () => {
   const classes = useStyles();
   const { isLoggedIn } = useSelector(state => state.user);
+  const { isSidebarOpen, setIsSidebarOpen  } = useContext(Mobile);
   const dispatch = useDispatch();
-  const [mouseOverButton, setMouseOverButton] = useState(null);
-  const [mouseOverMenu, setMouseOverMenu] = useState(null);
   const [isAccMenuOpen, setIsAccMenuOpen] = useState(null);
-
-  console.log('open', isAccMenuOpen)
 
   // if (mouseOverButton || mouseOverMenu) setIsAccMenuOpen(true)
   const openAccMenu = (event) => {
+    console.log('mouse enter', event.currentTarget)
     setIsAccMenuOpen(event.currentTarget);
   };
-  const closeAccMenu = (e) => {
-    e.preventDefault()
-    setIsAccMenuOpen(null);
-  };
-
-  const handleClose = () => {
+  const closeAccMenu = () => {
+    console.log('mouse leave')
     setIsAccMenuOpen(null);
   };
   
@@ -78,86 +69,112 @@ const Header = () => {
     window.location.href = '/'
   };
 
-
-  const enterButton = () => {
-    setMouseOverButton(true);
-    openAccMenu()
-    
-  }
-
-  const leaveButton = () => {
-    setMouseOverButton(false);
-  }
-
-  const enterMenu = () => {
-    setMouseOverMenu(true);
-  }
-
-  const leaveMenu = () => {
-    setMouseOverMenu(false);
-  }
+  const handleSibeBarToggle = () => {
+    console.log('header', isSidebarOpen)
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
 
   return (
-    <div className={classes.root}>
-      <div className={classes.titleHeader}>
-        <img src={logo} alt="LOGO" width="50" height="50"></img>
-        <Typography variant="h4" align="center">Did we hear?</Typography>
-      </div>
-      <div className={classes.container}>
-        <ButtonGroup variant="contained" color="primary" className={classes.buttonsHeader}>
-          { isLoggedIn && <Button component={Link} to={`/user`}>Account</Button>}
-          <Button component={Link} to="/why">Why we do this</Button>
-          <Button component={Link} to="/">Products</Button>
-          { isLoggedIn && <Button component={Link} to="/form">Add Product</Button>}
-        </ButtonGroup>
-      </div>
-      {isLoggedIn ? ( 
-        <div className={classes.accountHeader}>
-            <Button
-              aria-controls="customized-menu"
-              aria-haspopup="true"
-              startIcon={<AccountCircleIcon />}
-              // onMouseEnter={openAccMenu}
-              // onMouseLeave={closeAccMenu}
-              // onMouseEnter={openButton}
-              // onMouseLeave={leaveButton}
-              onMouseOver={openAccMenu}
-              // onmouseout={handleClose}
-            >Your Account
-            </Button>
-            <StyledMenu
-              id="customized-menu"
-              anchorEl={isAccMenuOpen}
-              // keepMounted
-              open={!!isAccMenuOpen}
-              // MenuListProps={{
-              //   onMouseEnter: enterMenu,
-              //   onMouseLeave: leaveMenu,
-              // }}
-              onClose={handleClose}
-            >
-              <StyledMenuItem>
-                <ListItemIcon>
-                  <SendIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Sent mail" />
-              </StyledMenuItem>
-              <StyledMenuItem>
-                <ListItemIcon>
-                  <DraftsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Drafts" />
-              </StyledMenuItem>
-            </StyledMenu>
-          {/* <Button variant="contained" onClick={() => logOut()} >Sign Out</Button>   */}
+    <AppBar position="relative" className={classes.root}>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="start"
+          onClick={handleSibeBarToggle}
+          className={classes.menuButton}
+        >
+          <MenuIcon />
+        </IconButton>
+        <div className={classes.titleHeader}>
+          <img src={logo} alt="LOGO" width="50" height="50"></img>
+          <Typography variant="h4" align="center">Did we hear?</Typography>
         </div>
-      ) : (
-        <div>
-          <Button variant="contained" component={Link} to="/sign-in" >Sign In</Button>  
+        <div className={classes.container}>
+          <Button href="/why">Why we do this</Button>
+          <Button  href="/">Products</Button>
+          { isLoggedIn && <Button href="/form">Add Product</Button>}
         </div>
-      )} 
-    </div>
+        {isLoggedIn && <div className={classes.accountHeader}>
+          <AccountCircleIcon style={{ fontSize: 60 }} />
+          <Button
+            className={classes.button}
+            startIcon={<AccountCircleIcon />}
+          >Account
+          </Button>
+        </div>}
+    </AppBar>
+    // <div className={classes.root}>
+    //   <div className={classes.titleHeader}>
+    //     <img src={logo} alt="LOGO" width="50" height="50"></img>
+    //     <Typography variant="h4" align="center">Did we hear?</Typography>
+    //   </div>
+    //   <div className={classes.container}>
+    //     <ButtonGroup variant="contained" color="primary" className={classes.buttonsHeader}>
+    //       { isLoggedIn && <Button component={Link} to={`/user`}>Account</Button>}
+    //       <Button component={Link} to="/why">Why we do this</Button>
+    //       <Button component={Link} to="/">Products</Button>
+    //       { isLoggedIn && <Button component={Link} to="/form">Add Product</Button>}
+    //     </ButtonGroup>
+    //   </div>
+    //   {isLoggedIn ? ( 
+    //     <div className={classes.accountHeader}  >
+    //         <Button
+    //           aria-controls="simple-menu"
+    //           aria-haspopup="true"
+    //           startIcon={<AccountCircleIcon />}
+    //           onMouseOver={openAccMenu}
+    //           onMouseLeave={closeAccMenu}
+    //         >Account
+    //         </Button>
+    //         <Menu
+    //           id="simple-menu"
+    //           anchorEl={isAccMenuOpen}
+    //           getContentAnchorEl={null}
+    //           anchorOrigin={{
+    //             vertical: 'bottom',
+    //             horizontal: 'center',
+    //           }}
+    //           transformOrigin={{
+    //             vertical: 'top',
+    //             horizontal: 'center',
+    //           }}
+    //           // keepMounted
+    //           open={!!isAccMenuOpen}
+    //           // onClose={(setIsAccMenuOpen, 'onMouseLeave')}
+    //         >
+    //         <MenuItem >Profile</MenuItem>
+    //         <MenuItem >My account</MenuItem>
+    //         <MenuItem >Logout</MenuItem>
+    //       </Menu>
+    //         {/* <StyledMenu
+    //           id="customized-menu"
+    //           anchorEl={isAccMenuOpen}
+    //           // keepMounted
+    //           open={!!isAccMenuOpen}
+    //           onClose={closeAccMenu}
+    //         >
+    //           <StyledMenuItem>
+    //             <ListItemIcon>
+    //               <SendIcon fontSize="small" />
+    //             </ListItemIcon>
+    //             <ListItemText primary="Sent mail" />
+    //           </StyledMenuItem>
+    //           <StyledMenuItem>
+    //             <ListItemIcon>
+    //               <DraftsIcon fontSize="small" />
+    //             </ListItemIcon>
+    //             <ListItemText primary="Drafts" />
+    //           </StyledMenuItem>
+    //         </StyledMenu> */}
+    //       {/* <Button variant="contained" onClick={() => logOut()} >Sign Out</Button>   */}
+    //     </div>
+    //   ) : (
+    //     <div>
+    //       <Button variant="contained" component={Link} to="/sign-in" >Sign In</Button>  
+    //     </div>
+    //   )} 
+    // </div>
   )
 }
 

@@ -1,17 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 // import { Container } from '@material-ui/core';
 import Cookies from 'universal-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Products, ProductForm, Header, ProductDetails, SignUp, SignIn , UserPage, ChangePassword, Why } from '../components';
+import { Header, Footer, Products, ProductForm, ProductDetails, SignUp, SignIn , UserPage, ChangePassword, Sidebar, Why } from '../components';
 import { getUser } from "../actions/user";
+import Mobile from '../context/Mobile';
+import useStyles from './styles.js';
 
 const cookies = new Cookies();
 
 const AppRouter = () => {
+  const classes = useStyles();
   const history = useHistory();
   const { user, isLoggedIn } = useSelector(state => state.user)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
 
   const token = cookies.get('token')
@@ -24,9 +28,14 @@ const AppRouter = () => {
   }, [dispatch, isLoggedIn, token]);
   
   return (
-      <Router value={history} >
-        {(window.location.pathname === '/sign-in' || window.location.pathname === '/sign-up') ? null : <Header />}
-          <Switch>
+    <Mobile.Provider value={{ isSidebarOpen, setIsSidebarOpen }}>
+      <div className={classes.app}>
+        <Header />
+        { isSidebarOpen && <Sidebar  />}
+        <div className={classes.body}>
+        <Router value={history}>
+          {/* {(window.location.pathname === '/sign-in' || window.location.pathname === '/sign-up') ? null : <Header />} */}
+          <Switch >
             <Route path="/form/:id?" component={ProductForm}/>
             <Route path="/:id?/details" component={ProductDetails}/>
             <Route path="/sign-up" component={SignUp}/>
@@ -36,7 +45,12 @@ const AppRouter = () => {
             <Route path="/why" component={Why}/>
             <Route exact path="/" component={Products}/>          
           </Switch>
-      </Router>
+        </Router>
+        </div>
+          <Footer />
+      </div>
+    </Mobile.Provider>
+
   )
 }
         
