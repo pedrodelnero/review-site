@@ -8,6 +8,12 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    '& .MuiButton-root': {
+      height: '50px',
+      width: '100%',
+      // borderRadius: '30px',
+      boxShadow: '1px 1px #000000',
+    }
     // '& .MuiTypography-root': {
     //   border: '1px solid black',
     //   borderRadius: '30px',
@@ -18,16 +24,4 @@ export default makeStyles((theme) => ({
     //   marginBottom: theme.spacing(1)
     // }
   },
-  listItem: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'start',
-    // border: '1px solid black',
-    borderRadius: '30px',
-    boxShadow: '1px 1px #000000',
-    width: '85%',
-    padding: theme.spacing(1, 2),
-    marginBottom: theme.spacing(1)
-  }
-
 }));

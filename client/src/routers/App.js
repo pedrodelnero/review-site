@@ -30,24 +30,24 @@ const AppRouter = () => {
   return (
     <Mobile.Provider value={{ isSidebarOpen, setIsSidebarOpen }}>
       <div className={classes.app}>
-        <Header />
-        { isSidebarOpen && <Sidebar  />}
-        <div className={classes.body}>
         <Router value={history}>
-          {/* {(window.location.pathname === '/sign-in' || window.location.pathname === '/sign-up') ? null : <Header />} */}
-          <Switch >
-            <Route path="/form/:id?" component={ProductForm}/>
-            <Route path="/:id?/details" component={ProductDetails}/>
-            <Route path="/sign-up" component={SignUp}/>
-            <Route path="/sign-in" component={SignIn}/>
-            <Route path= "/user" component={UserPage}/>
-            <Route path="/password" component={ChangePassword}/>
-            <Route path="/why" component={Why}/>
-            <Route exact path="/" component={Products}/>          
-          </Switch>
-        </Router>
-        </div>
+          <Header />
+          { isSidebarOpen && <Sidebar  />}
+          <div className={classes.body}>
+            {/* {(window.location.pathname === '/sign-in' || window.location.pathname === '/sign-up') ? null : <Header />} */}
+            <Switch >
+              <Route path="/form/:id?" component={ProductForm}/>
+              <Route path="/:id?/details" component={ProductDetails}/>
+              <Route path="/sign-up" component={SignUp}/>
+              <Route path="/sign-in" component={SignIn}/>
+              <Route path= "/user" component={UserPage}/>
+              <Route path="/password" component={ChangePassword}/>
+              <Route path="/why" component={Why}/>
+              <Route exact path="/" component={Products}/>          
+            </Switch>
+          </div>
           <Footer />
+        </Router>
       </div>
     </Mobile.Provider>
 

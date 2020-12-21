@@ -14,13 +14,11 @@ export default makeStyles(() => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
-    gridTemplateRows: '164px',
+    // gridTemplateRows: '164px',
     // gridTemplateRows: 'auto',
     // gridRowStart: 1,
-    // paddingTop: 0,
     // gridAutoRows: 'minMax(100px, auto)',
-    alignItems: 'flex-start',
+    // alignItems: 'flex-start',
     // justifyContent: 'start',
-    flexDirection: 'row',
   }
 }));

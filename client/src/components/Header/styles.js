@@ -4,8 +4,7 @@ export default makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#203061',
-    // marginBottom: '50px',
+    backgroundColor: '#F79460',
     padding: theme.spacing(1, 0),
     marginBottom: theme.spacing(2),
     justifyContent: 'space-between'
@@ -19,7 +18,7 @@ export default makeStyles((theme) => ({
   },
   titleHeader: {
     display: 'flex',
-    border: '1px solid red',
+    // border: '1px solid red',
     alignItems: 'center',
     '& .MuiTypography-root': {
       padding: theme.spacing(0, 1),

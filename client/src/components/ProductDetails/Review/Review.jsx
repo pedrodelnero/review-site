@@ -31,20 +31,18 @@ const Review = ({ prodId, review: { author, content, _id: id } }) => {
   }
   
   return (
-    <Card key={id} className={classes.root}>
-      <CardActionArea component={Link} >
-        <CardContent>
-        <Typography gutterBottom variant="h5" >{content}</Typography>
-        <Typography gutterBottom variant="subtitle2" color="textSecondary" >By: {author}</Typography>
-        </CardContent>
-      </CardActionArea>
-      {authorized &&
+    <div key={id} className={classes.root}>
+      {/* <div component={Link} className={classes.content}> */}
+        <Typography variant="h6" >{content}</Typography>
+        <Typography variant="subtitle2" color="textSecondary" >By: {author}</Typography>
+      {/* </div> */}
+      {/* {authorized &&
         <CardActions>
           <Button component={Link} to={`/form/${id}`}>Edit</Button>
           <Button size="small" color="primary" onClick={() => removeReview(prodId, id)}>Delete</Button>
         </CardActions>
-      }
-    </Card>
+      } */}
+    </div>
   )
 }
 

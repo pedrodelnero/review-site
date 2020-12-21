@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import {  IconButton, Typography } from '@material-ui/core/';
+import { Button, IconButton, Typography } from '@material-ui/core/';
 import { useTheme } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -51,22 +51,23 @@ const SidebarMenu = () => {
             </IconButton>
         </div>
       <div className={classes.list}>
-        <div className={classes.listItem}>
+        {/* <Button component={Link} to="/" className={classes.listItem}> */}
+        <Button component={Link} to="/" >
           <HomeIcon />
-          <Typography variant='h4' >Home</Typography>
-        </div>
-        <div className={classes.listItem}>
+          <Typography variant='h5' >Home</Typography>
+        </Button>
+        <Button component={Link} to="/">
           <HomeIcon />
-          <Typography variant='h4' >All</Typography>
-        </div>
-        <div className={classes.listItem}>
+          <Typography variant='h5' >All</Typography>
+        </Button>
+        <Button component={Link} to="/">
           <HomeIcon />
-          <Typography variant='h4' >Categories</Typography>
-        </div>
-        <div className={classes.listItem}>
+          <Typography variant='h5' >Categories</Typography>
+        </Button>
+        <Button component={Link} to="/why">
           <HomeIcon />
-          <Typography variant='h4' >Why</Typography>
-        </div>
+          <Typography variant='h5' >Why</Typography>
+        </Button>
         </div>
       {/* <Divider /> */}
       </div>

@@ -37,12 +37,12 @@ const Product = ({ product: { author, description, name, _id: id, reviews } }) =
           height="100"
           src="https://via.placeholder.com/150"
           title="Contemplative Reptile"
-          style={{ borderRadius: '30px', margin: '10px 0' }}
+          style={{ borderRadius: '30px', margin: '10px 0 3px 0' }}
         />
         <div className={classes.content}>
           <Typography variant="subtitle2"  >Added by: {author}</Typography>
           <Typography variant="p" >{name}</Typography>
-          <Typography variant="body1" color="textSecondary" component="p" >{description}</Typography>
+          <Typography variant="body1" color="textSecondary" component="body1" >{description}</Typography>
           {/* {reviews.map(({ _id, content }) => (
             <Typography key={_id} variant="body2">
               {content}

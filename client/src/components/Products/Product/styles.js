@@ -7,8 +7,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '50px 25px 25px 25px',
     margin: theme.spacing(1, 0.5),
     padding: theme.spacing(1, 0.5),
-    // height: '100%'
-    // maxWidth: 345,
   },
   content: {
     display: 'flex',

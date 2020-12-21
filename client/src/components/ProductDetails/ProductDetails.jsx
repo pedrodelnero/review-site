@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Grid, Button, Typography, CircularProgress } from "@material-ui/core/";
+import { Grid, Button, Paper, Typography, CircularProgress } from "@material-ui/core/";
 import { useSelector, useDispatch } from "react-redux";
 
 import useStyles from "./styles.js";
@@ -23,46 +23,37 @@ const ProductDetails = () => {
   if (!product.name) return <CircularProgress />;
 
   return (
-    <>
-      <Grid container spacing={10} className={classes.container}>
-        <Grid item xs={12}>
-          <Typography gutterBottom variant="h4" color="textSecondary">
-            Name: {product.name}
-          </Typography>
-          <Typography gutterBottom variant="h4" color="textSecondary">
-            Description: {product.description}
-          </Typography>
-        </Grid>
+    <div className={classes.root}>
+      <div className={classes.content}>
+        <Typography variant="h3" color="initial">{product.name}</Typography>
+        <Typography variant="h5" color="initial">Description</Typography>
+        <Typography variant="body1" color="initial">{product.description}</Typography>
+      </div>
+      <div className={classes.formButton}>
         {isLoggedIn ? (
-          <Grid item xs={12} className={classes.formButton}>
-            <Button
-              size="large"
-              color="secondary"
-              variant="contained"
-              onClick={() => setIsOpen(true)}
-            >
-              Write Review
-            </Button>
-          </Grid>
+          <Button
+          wrap
+            size="large"
+            color="secondary"
+            variant="contained"
+            onClick={() => setIsOpen(true)}
+          >Write Review
+          </Button>
         ) : (
-          <Grid item xs={12} className={classes.formButton}>
-            <Button variant="contained" component={Link} to="/sign-in">
-              Sign in to write review
-            </Button>
-          </Grid>
+          <Button variant="contained" component={Link} to="/sign-in">Sign in to write review</Button>
         )}
-        <ReviewModal
-          id={id}
-          isOpen={isOpen}
-          handleClose={() => setIsOpen(false)}
-        />
-        {product.reviews.map((review, index) => (
-          <Grid item xs={4} key={index}>
-            <Review review={review} prodId={id} />
-          </Grid>
-        ))}
-      </Grid>
-    </>
+      </div>
+      <ReviewModal
+        id={id}
+        isOpen={isOpen}
+        handleClose={() => setIsOpen(false)}
+      />
+      {product.reviews.map((review, index) => (
+        <div className={classes.reviews} key={index}>
+          <Review review={review} prodId={id} />
+        </div>
+      ))}
+    </div>
   );
 };
 

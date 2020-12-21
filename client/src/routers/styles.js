@@ -9,7 +9,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     minHeight: '500px',
     // alignContent: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     paddingBottom: theme.spacing(5)
     // padding: theme.spacing(1)
     // position: 'relative'
