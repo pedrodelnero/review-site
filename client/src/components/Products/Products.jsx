@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import Product from "./Product/Product";
@@ -16,13 +17,14 @@ const Products = () => {
   }, [dispatch]);
 
   return (
-    <Grid container spacing={10} className={classes.container}>
-      {products.map((product, index) => (
-        <Grid item xs={4} key={index}>
-          <Product product={product} />
-        </Grid>
-      ))}
-    </Grid>
+    <div className={classes.root}>
+      <Button component={Link} to="/form" className={classes.button}>Add Product</Button>
+      <div className={classes.grid}>
+        {products.map((product, index) => (
+            <Product product={product} /> 
+        ))}
+      </div>
+    </div>
   );
 };
 

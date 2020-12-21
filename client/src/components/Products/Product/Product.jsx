@@ -30,38 +30,27 @@ const Product = ({ product: { author, description, name, _id: id, reviews } }) =
   };
 
   return (
-    <Card key={id} className={classes.root}>
-      <CardActionArea component={Link} to={`/${id}/details`}>
-        <CardMedia
-          component="img"
+    <div key={id} className={classes.root}>
+      <Link to={`/${id}/details`} style={{ textDecoration: 'none', color: 'black'}}>
+        <img
           alt="Contemplative Reptile"
-          height="140"
-          image="https://via.placeholder.com/150"
+          height="100"
+          src="https://via.placeholder.com/150"
           title="Contemplative Reptile"
+          style={{ borderRadius: '30px', margin: '10px 0' }}
         />
-        <CardContent>
-          <Typography gutterBottom variant="subtitle2" color="textSecondary">
-            Added by: {author}
-          </Typography>
-          <Typography gutterBottom variant="h5">
-            {name}
-          </Typography>
-          <Typography
-            gutterBottom
-            variant="body1"
-            color="textSecondary"
-            component="p"
-          >
-            {description}
-          </Typography>
-          {reviews.map(({ _id, content }) => (
+        <div className={classes.content}>
+          <Typography variant="subtitle2"  >Added by: {author}</Typography>
+          <Typography variant="p" >{name}</Typography>
+          <Typography variant="body1" color="textSecondary" component="p" >{description}</Typography>
+          {/* {reviews.map(({ _id, content }) => (
             <Typography key={_id} variant="body2">
               {content}
             </Typography>
-          ))}
-        </CardContent>
-      </CardActionArea>
-      {authorized && (
+          ))} */}
+        </div>
+      </Link>
+      {/* {authorized && (
         <CardActions>
           <Button component={Link} to={`/form/${id}`}>
             Edit
@@ -74,9 +63,48 @@ const Product = ({ product: { author, description, name, _id: id, reviews } }) =
             Delete
           </Button>
         </CardActions>
-      )}
-    </Card>
+      )} */}
+    </div>
   );
 };
 
 export default Product;
+
+/*
+    <Card key={id} className={classes.root}>
+      <CardActionArea component={Link} to={`/${id}/details`}>
+        <CardMedia
+          component="img"
+          alt="Contemplative Reptile"
+          height="100"
+          image="https://via.placeholder.com/150"
+          title="Contemplative Reptile"
+          style={{ borderRadius: '30px', marginBottom: 0 }}
+        />
+        <CardContent className={classes.content}>
+          <Typography variant="subtitle2"  >Added by: {author}</Typography>
+          <Typography variant="h5" >{name}</Typography>
+          <Typography variant="body1" color="textSecondary" component="p" >{description}</Typography>
+          {/{reviews.map(({ _id, content }) => (
+            <Typography key={_id} variant="body2">
+              {content}
+            </Typography>
+          ))} }
+          </CardContent>
+          </CardActionArea>
+          {/* {authorized && (
+            <CardActions>
+              <Button component={Link} to={`/form/${id}`}>
+                Edit
+              </Button>
+              <Button
+                size="small"
+                color="primary"
+                onClick={() => removeProduct(id)}
+              >
+                Delete
+              </Button>
+            </CardActions>
+          )} }
+        </Card>
+        */

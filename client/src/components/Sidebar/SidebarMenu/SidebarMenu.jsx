@@ -8,7 +8,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Cookies from 'universal-cookie';
 import Paper from '@material-ui/core/Paper';
+import HomeIcon from '@material-ui/icons/Home';
 
+import Mobile from '../../../context/Mobile'
 import useStyles from './styles.js';
 
 const cookies = new Cookies();
@@ -16,15 +18,13 @@ const cookies = new Cookies();
 const SidebarMenu = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const { mobileOpen, setMobileOpen } = useState(''); // authAPI
-//   const { mobileOpen, setMobileOpen } = useContext(AuthApi); // authAPI
-  const [anchorEl, setAnchorEl] = useState(null);
+  const { isSidebarOpen, setIsSidebarOpen } = useContext(Mobile); // authAPI
   const dispatch = useDispatch();
-  const [expanded, setExpanded] = useState(false);
+  // const [expanded, setExpanded] = useState(false);
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  // const handleChange = (panel) => (event, isExpanded) => {
+  //   setExpanded(isExpanded ? panel : false);
+  // };
 
   const userLogOut = async () => {
     dispatch(userLogOut());
@@ -32,35 +32,41 @@ const SidebarMenu = () => {
   };
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handlePopover = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   useEffect(() => {
     // setMobileOpen(false);
-  }, [setMobileOpen]);
+  }, []);
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  // const open = Boolean(anchorEl);
+  // const id = open ? 'simple-popover' : undefined;
 
   return (
       <div className={classes.root}>
-        <div className={classes.icon}onClick={handleDrawerToggle}>
+        <div className={classes.icon} onClick={handleDrawerToggle}>
             <IconButton size="medium">
-              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              <ChevronLeftIcon />
             </IconButton>
         </div>
-      <div item className={classes.list}>
-          <Typography variant='h3' className={classes.listItem}>HOME</Typography>
-          <Typography variant='h3' className={classes.listItem}>ABOUT</Typography>
-          <Typography variant='h3' className={classes.listItem}>WHY</Typography>
+      <div className={classes.list}>
+        <div className={classes.listItem}>
+          <HomeIcon />
+          <Typography variant='h4' >Home</Typography>
+        </div>
+        <div className={classes.listItem}>
+          <HomeIcon />
+          <Typography variant='h4' >All</Typography>
+        </div>
+        <div className={classes.listItem}>
+          <HomeIcon />
+          <Typography variant='h4' >Categories</Typography>
+        </div>
+        <div className={classes.listItem}>
+          <HomeIcon />
+          <Typography variant='h4' >Why</Typography>
+        </div>
         </div>
       {/* <Divider /> */}
       </div>

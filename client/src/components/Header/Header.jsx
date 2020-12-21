@@ -70,7 +70,6 @@ const Header = () => {
   };
 
   const handleSibeBarToggle = () => {
-    console.log('header', isSidebarOpen)
     setIsSidebarOpen(!isSidebarOpen);
   };
 
@@ -80,7 +79,6 @@ const Header = () => {
         <IconButton
           color="inherit"
           aria-label="open drawer"
-          edge="start"
           onClick={handleSibeBarToggle}
           className={classes.menuButton}
         >

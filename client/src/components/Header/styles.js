@@ -4,11 +4,14 @@ export default makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'row',
+    backgroundColor: '#203061',
     // marginBottom: '50px',
     padding: theme.spacing(1, 0),
+    marginBottom: theme.spacing(2),
     justifyContent: 'space-between'
   },
   menuButton: {
+    size: 'lg',
     display: 'none',
     [theme.breakpoints.down('sm')]: {
       display: 'inline',

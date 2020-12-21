@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-
 export default makeStyles((theme) => ({
   app: {
     // backgroundColor: 'red'
@@ -9,13 +8,17 @@ export default makeStyles((theme) => ({
   body: {
     display: 'flex',
     minHeight: '500px',
+    // alignContent: 'center',
+    justifyContent: 'center',
+    paddingBottom: theme.spacing(5)
+    // padding: theme.spacing(1)
     // position: 'relative'
   
   },
-      // sidebar: {
-      //   border: '1px solid red',
-      //   [theme.breakpoints.up('md')]: {
-      //     display: 'none',
-      //   },
-      // },
+  // sidebar: {
+  //   border: '1px solid red',
+  //   [theme.breakpoints.up('md')]: {
+  //     display: 'none',
+  //   },
+  // },
 }));
