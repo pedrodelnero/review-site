@@ -24,14 +24,6 @@ const SignIn = () => {
     e.preventDefault();
     
     dispatch(signIn(email, password))
-    // try {
-    //   // const { data } = await axios.post('/users/login', { email, password }); 
-      
-    //   // cookies.set('token', data.token, { path: '/' });
-    //   // cookies.set('user', data.user, { path: '/' });
-    // } catch (error) {
-    //   setIsError(error.response.data.message); 
-    // }
   }
   
   const classes = useStyles();
@@ -48,8 +40,6 @@ const SignIn = () => {
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <TextField
-            // error={isError}
-                    // helperText="Incorrect entry."
             variant="outlined"
             margin="normal"
             required
@@ -83,9 +73,7 @@ const SignIn = () => {
           <Button
             type="submit"
             fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+            className={classes.button}
           >
             Sign In
           </Button>

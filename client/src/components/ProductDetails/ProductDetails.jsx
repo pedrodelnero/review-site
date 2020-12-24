@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Grid, Button, Paper, Typography, CircularProgress } from "@material-ui/core/";
+import { Button, Typography, CircularProgress } from "@material-ui/core/";
 import { useSelector, useDispatch } from "react-redux";
 
 import useStyles from "./styles.js";
@@ -25,9 +25,19 @@ const ProductDetails = () => {
   return (
     <div className={classes.root}>
       <div className={classes.content}>
-        <Typography variant="h3" color="initial">{product.name}</Typography>
-        <Typography variant="h5" color="initial">Description</Typography>
-        <Typography variant="body1" color="initial">{product.description}</Typography>
+        <div>
+            <img
+              alt=""
+              src={product.image|| "https://via.placeholder.com/150"}
+              title="Photo"
+              className={classes.image}
+            />
+        </div>
+        <div className={classes.details}>
+          <Typography className='prodName' variant="body1" >{product.name}</Typography>
+          <Typography variant="subtitle1" color="grey" >Description</Typography>
+          <Typography variant="body1" color="initial" >{product.description}</Typography>
+        </div>
       </div>
       <div className={classes.formButton}>
         {isLoggedIn ? (

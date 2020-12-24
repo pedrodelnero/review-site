@@ -13,11 +13,11 @@ export const getProducts = async (req, res) => {
 }
 
 export const createProduct = async (req, res) => {
-  const { name, description } = req.body;
+  const { name, brand, model, description, image } = req.body;
   const { name: author, _id: id } = req.user
   
   try {
-    const product = await new Product({ name, description, author, authorID: id }).save();
+    const product = await new Product({ name, brand, model, description, image, author, authorID: id }).save();
 
     await User.findByIdAndUpdate(id, { $push: { products: product._id }}, { new: true });
 

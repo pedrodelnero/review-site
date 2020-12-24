@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import { AppBar, Button, ButtonGroup, Menu, MenuItem, Typography } from '@material-ui/core/';
+import { AppBar, Button, Typography } from '@material-ui/core/';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -12,40 +11,6 @@ import { signOut } from "../../actions/user";
 import Mobile from '../../context/Mobile';
 import logo from '../../images/logo.png'; 
 
-const StyledMenu = withStyles({
-  paper: {
-    color: 'white',
-    backgroundColor: '#4A4953',
-    border: '1px solid #d3d4d5',
-    borderRadius: '10px'
-  },
-})((props) => (
-  <Menu
-    elevation={0}
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
-    }}
-    {...props}
-  />
-));
-
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-}))(MenuItem);
-
 const Header = () => {
   const classes = useStyles();
   const { isLoggedIn } = useSelector(state => state.user);
@@ -53,15 +18,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const [isAccMenuOpen, setIsAccMenuOpen] = useState(null);
 
-  // if (mouseOverButton || mouseOverMenu) setIsAccMenuOpen(true)
-  const openAccMenu = (event) => {
-    console.log('mouse enter', event.currentTarget)
-    setIsAccMenuOpen(event.currentTarget);
-  };
-  const closeAccMenu = () => {
-    console.log('mouse leave')
-    setIsAccMenuOpen(null);
-  };
   
   const logOut = async () => {
     // SHOW ADRIAN HOW await IS USED HERE (window location after await done)
@@ -71,6 +27,11 @@ const Header = () => {
 
   const handleSibeBarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+  
+  const toggleAccountMenu = () => {
+    console.log(isAccMenuOpen)
+    setIsAccMenuOpen(!isSidebarOpen);
   };
 
 
@@ -83,9 +44,12 @@ const Header = () => {
           className={classes.menuButton}
         >
           <MenuIcon />
+          {/* <MenuIcon onClick={handleSibeBarToggle} className={classes.menuButton}/> */}
         </IconButton>
         <div className={classes.titleHeader}>
-          <img src={logo} alt="LOGO" width="50" height="50"></img>
+          <Link to="/">
+            <img src={logo} alt="LOGO" className="logo" ></img>
+          </Link>
           <Typography variant="h4" align="center">Did we hear?</Typography>
         </div>
         <div className={classes.container}>
@@ -93,14 +57,27 @@ const Header = () => {
           <Button  href="/">Products</Button>
           { isLoggedIn && <Button href="/form">Add Product</Button>}
         </div>
-        {isLoggedIn && <div className={classes.accountHeader}>
+        {/* <div className={classes.account}> */}
+          <div className={classes.accountHeader}>
+            <AccountCircleIcon style={{ fontSize: 60 }} />
+            <Button className={classes.button} startIcon={<AccountCircleIcon />} onClick={toggleAccountMenu} >Account</Button>
+          </div>
+            {/* {isAccMenuOpen && <div className={classes.accountMenu}>
+              <Button startIcon={<AccountCircleIcon />}>Account</Button>
+              {(isLoggedIn) ? 
+                (<Button  startIcon={<AccountCircleIcon />}>Log Out</Button>)
+              : 
+                (<Button  component={Link} to="/sign-in" startIcon={<AccountCircleIcon />}>Log In</Button>)}
+            </div>} */}
+        {/* </div> */}
+        {/* {isLoggedIn && <div className={classes.accountHeader}>
           <AccountCircleIcon style={{ fontSize: 60 }} />
           <Button
             className={classes.button}
             startIcon={<AccountCircleIcon />}
           >Account
           </Button>
-        </div>}
+        </div>} */}
     </AppBar>
     // <div className={classes.root}>
     //   <div className={classes.titleHeader}>

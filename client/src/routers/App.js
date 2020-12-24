@@ -36,7 +36,7 @@ const AppRouter = () => {
           <div className={classes.body}>
             {/* {(window.location.pathname === '/sign-in' || window.location.pathname === '/sign-up') ? null : <Header />} */}
             <Switch >
-              <Route path="/form/:id?" component={ProductForm}/>
+              <Route path="/add-product/:id?" component={ProductForm}/>
               <Route path="/:id?/details" component={ProductDetails}/>
               <Route path="/sign-up" component={SignUp}/>
               <Route path="/sign-in" component={SignIn}/>
@@ -46,7 +46,7 @@ const AppRouter = () => {
               <Route exact path="/" component={Products}/>          
             </Switch>
           </div>
-          <Footer />
+          <Footer className={classes.footer} />
         </Router>
       </div>
     </Mobile.Provider>

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Grid, Button, Popover, Typography } from "@material-ui/core";
+import React from "react";
+// import { useSelector, useDispatch } from "react-redux";
+import { Typography } from "@material-ui/core";
 
 import useStyles from "./styles.js";
 
 const UserPage = () => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = useState(null)
+    // const [anchorEl, setAnchorEl] = useState(null)
 
-    const { user } = useSelector((state) => state.user);
+    // const { user } = useSelector((state) => state.user);
 
 
     return (

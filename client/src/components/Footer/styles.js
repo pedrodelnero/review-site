@@ -3,16 +3,14 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   root: {
-    position: 'relative',
+    position: 'fixed',
     left: 0,
-    right: 0,
     bottom: 0,
+    width: '100%',
+    height: '100px',
     backgroundColor: 'black',
     color: 'white',
-    height: '100px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    textAlign: 'center',
   },
 
 }));

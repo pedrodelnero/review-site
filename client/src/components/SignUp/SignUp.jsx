@@ -25,29 +25,7 @@ const SignUp = () => {
  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     dispatch(signUp(name, email, password));
-    
-    // catch(error) {
-    //   if(error.response.data.message === "User Already Exists") {
-    //     alert("User Already Exists");
-    //     return;
-    //   }
-    //   const err = Object.values(error.response.data.errors);
-      
-    //   // after user creation the header is not showing
-    //   // validation for email already exists
-    //   // validation for sign up (name)
-    //   // validation for login (password, email...)
-      
-    //   const errors = err.reduce((acc, { properties: { path: name, message }}) => {
-    //     acc[name] = message;
-        
-    //     return acc;
-    //   }, {});
-      
-    //   setErrorMessages(errors);
-    // }
   }
 
   return (
@@ -110,11 +88,11 @@ const SignUp = () => {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            className={classes.button}
           >
             Sign Up
           </Button>
-          <Grid container justify="flex-end">
+          <Grid container justify="center">
             <Grid item>
               <Link href="/sign-in" variant="body2">
                 Already have an account? Sign in

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, Button, Typography, } from "@material-ui/core/";
+import { Typography } from "@material-ui/core/";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "universal-cookie";
@@ -7,7 +7,7 @@ import Cookies from "universal-cookie";
 import useStyles from "./styles.js";
 import { deleteProduct } from "../../../actions/products";
 
-const Product = ({ product: { author, description, name, _id: id, reviews } }) => {
+const Product = ({ product: { author, description, name, _id: id, image, reviews } }) => {
   const { isLoggedIn } = useSelector(state => state.user)
   const [authorized, setAuthorized] = useState(false);
   const cookies = new Cookies();
@@ -30,41 +30,43 @@ const Product = ({ product: { author, description, name, _id: id, reviews } }) =
   };
 
   return (
-    <div key={id} className={classes.root}>
-      <Link to={`/${id}/details`} style={{ textDecoration: 'none', color: 'black'}}>
-        <img
-          alt="Contemplative Reptile"
-          height="100"
-          src="https://via.placeholder.com/150"
-          title="Contemplative Reptile"
-          style={{ borderRadius: '30px', margin: '10px 0 3px 0' }}
-        />
+      <Link to={`/${id}/details`} className={classes.root}>
+        <div className={classes.header}>
+          <img
+            alt="photo "
+            // height="100"
+            src={image|| "https://via.placeholder.com/150"}
+            title="Phto"
+            className={classes.image}
+            // style={{ borderRadius: '30px' }}
+          />
+        </div>
         <div className={classes.content}>
-          <Typography variant="subtitle2"  >Added by: {author}</Typography>
-          <Typography variant="p" >{name}</Typography>
-          <Typography variant="body1" color="textSecondary" component="body1" >{description}</Typography>
+          <Typography className="prodTitle" variant="body1" >{name}</Typography>
+          <Typography className="prodAuthor" >Added by: {author}</Typography>
+          {/* <Typography className="prodAuthor" variant="subtitle2"  >Added by: {author}</Typography> */}
+          <Typography className="prodDescription" >{description}</Typography>
           {/* {reviews.map(({ _id, content }) => (
             <Typography key={_id} variant="body2">
               {content}
             </Typography>
           ))} */}
         </div>
-      </Link>
       {/* {authorized && (
         <CardActions>
-          <Button component={Link} to={`/form/${id}`}>
-            Edit
-          </Button>
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => removeProduct(id)}
-          >
-            Delete
-          </Button>
+        <Button component={Link} to={`/form/${id}`}>
+        Edit
+        </Button>
+        <Button
+        size="small"
+        color="primary"
+        onClick={() => removeProduct(id)}
+        >
+        Delete
+        </Button>
         </CardActions>
       )} */}
-    </div>
+      </Link>
   );
 };
 

@@ -8,10 +8,19 @@ const productSchema = mongoose.Schema({
     trim: true,
     minlength: 3,
   },
+  brand: {
+    type: String,
+  },
+  model: {
+    type: String,
+  },
   description: {
     type: String,
     required: true,
     trim: true,
+  },
+  image: {
+    type: String,
   },
   author: {
     type: String,

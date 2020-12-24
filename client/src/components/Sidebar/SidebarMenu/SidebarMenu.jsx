@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Button, IconButton, Typography } from '@material-ui/core/';
 import { useTheme } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import AddIcon from '@material-ui/icons/Add';
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Cookies from 'universal-cookie';
-import Paper from '@material-ui/core/Paper';
 import HomeIcon from '@material-ui/icons/Home';
 
 import Mobile from '../../../context/Mobile'
@@ -56,9 +56,9 @@ const SidebarMenu = () => {
           <HomeIcon />
           <Typography variant='h5' >Home</Typography>
         </Button>
-        <Button component={Link} to="/">
-          <HomeIcon />
-          <Typography variant='h5' >All</Typography>
+        <Button component={Link} to="/add-product">
+          <AddIcon />
+          <Typography variant='h5' >Add Product</Typography>
         </Button>
         <Button component={Link} to="/">
           <HomeIcon />

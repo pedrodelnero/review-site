@@ -30,10 +30,11 @@ export const getProducts = () => async (dispatch) => {
 
 export const addProduct = (product) => async (dispatch) => {
   try {
-    const { data } = await api.post('/', product);  
+    const { data } = await api.post('/', product); 
+    
+    window.location.href='/'
     
     dispatch({ type: ADD_PRODUCT, payload: data });
-  
   } catch (e) {
     console.log(e.message)
   }

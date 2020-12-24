@@ -1,24 +1,41 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
   root: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%'
   },
   button: {
     backgroundColor: '#203061',
-    borderRadius: '20px',
+    borderRadius: '25px',
     color: 'white',
-    width: '150px',
+    height: '50px',
+    width: '200px',
+    marginLeft: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    '& .MuiButton-label': {
+      // margin: theme.spacing(0, 1),
+      fontSize: '19px',
+      '& .MuiButton-startIcon': {
+        border: '1px solid white',
+        borderRadius: '30px'
+
+      }
+    }
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
-    // gridTemplateRows: '164px',
-    // gridTemplateRows: 'auto',
-    // gridRowStart: 1,
-    // gridAutoRows: 'minMax(100px, auto)',
-    // alignItems: 'flex-start',
-    // justifyContent: 'start',
+    width: '100%',
+    justifyItems: 'center',
+    // justifyItems: 'center',
+    // margin: theme.spacing(1, 0),
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: 'repeat(auto-fit, minmax(115px, 1fr))',
+    },
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+    },
   }
 }));
