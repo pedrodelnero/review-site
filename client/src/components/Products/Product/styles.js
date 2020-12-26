@@ -64,20 +64,21 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     [theme.breakpoints.down('xs')]: {
       alignItems: 'center',
-      '& .prodAuthor, .prodDescription': {
-        display: 'none',
-      },
       '& .prodTitle': {
         textAlign: "center"
+      },
+      '& .prodAuthor, .prodDescription': {
+        display: 'none',
       },
     },
     [theme.breakpoints.up('sm')]: {
       alignItems: 'flex-end',
       marginRight: theme.spacing(2),
       '& .prodTitle': {
+        textAlign: "end",
         fontSize: '110%',
         fontWeight: 600,
-        textAlign: "end"
+        width: '100%',
       },
     },
     // [theme.breakpoints.up('sm')]: {

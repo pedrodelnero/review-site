@@ -93,8 +93,9 @@ export const signOut = () => async (dispatch) => {
     cookies.remove('token', { path: '/' });
     cookies.remove('user', { path: '/' }); 
 
+    window.location.href = '/'
+
     dispatch({ type: SIGN_OUT, payload: data })
-    
   } catch (e) {
     console.log(e.message)
   }

@@ -16,6 +16,7 @@ const AppRouter = () => {
   const history = useHistory();
   const { user, isLoggedIn } = useSelector(state => state.user)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isAccMenuOpen, setIsAccMenuOpen] = useState(false);
   const dispatch = useDispatch();
 
   const token = cookies.get('token')
@@ -28,7 +29,7 @@ const AppRouter = () => {
   }, [dispatch, isLoggedIn, token]);
   
   return (
-    <Mobile.Provider value={{ isSidebarOpen, setIsSidebarOpen }}>
+    <Mobile.Provider value={{ isSidebarOpen, setIsSidebarOpen, isAccMenuOpen, setIsAccMenuOpen }}>
       <div className={classes.app}>
         <Router value={history}>
           <Header />

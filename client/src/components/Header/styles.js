@@ -2,17 +2,21 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    // flexDirection: 'row',
     backgroundColor: '#F79460',
     padding: theme.spacing(1, 0),
-    justifyContent: 'space-between'
+    // justifyContent: 'center'
   },
   menuButton: {
     display: 'none',
     size: 'small',
-    [theme.breakpoints.down('sm')]: {
-      display: 'block',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center'
     },
   },
   titleHeader: {
@@ -21,58 +25,62 @@ export default makeStyles((theme) => ({
     margin: theme.spacing(0, 1),
     '& .MuiTypography-root': {
       padding: theme.spacing(0, 1),
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('xs')]: {
         display: 'none',
       },
     },
     '& .logo': {
       height: '70px',
       width: '70px',
-      borderRadius: '25px'
+      borderRadius: '25px',
+      [theme.breakpoints.down('xs')]: {
+        alignItems: 'center',
+      },
     }
   },
   container: {
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'space-around',
     '& .MuiButtonBase-root': {
-      border: '1px solid white',
-      borderRadius: '10px',
+      textAlign: 'center',
+      // border: '1px solid white',
+      // borderRadius: '10px',
       color: 'white'
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       display: 'none',
     },
   },
   account: {
     display: 'flex',
-    flexDirection: 'column'
-  },
-  accountHeader: {
-    display: 'flex',
-    margin: theme.spacing(0, 1),
-    // border: '1px solid red',
-    borderRadius: '10px',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    // color: 'white',
-    // '&:hover': {
-    //   background: 'rgb(0, 0, 0)',
-      // background: '#66F2F2F2',
-    // },
-    '& .MuiSvgIcon-root': {
-      [theme.breakpoints.up('sm')]: {
-        display: 'none',
-      },
+    color: 'white',
+  },
+  accountTitle: {
+    height: '100%',
+    width: '150px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    [theme.breakpoints.down('xs')]: {
+      width: '120px',
     },
-    '& .MuiButtonBase-root': {
-      color: 'white',
+    '& .MuiTypography-root': {
+      marginLeft: theme.spacing(1),
       [theme.breakpoints.down('xs')]: {
         display: 'none',
+        
       },
     }
   },
   accountMenu: {
-    display: 'inline-block',
-    backgroundColor: 'yellow'
+    position: 'absolute',
+    backgroundColor: 'black',
+    borderRadius: '15px',
+    color: 'white',
+    padding: theme.spacing(1),
+    // display: 'inline-block',
+    // backgroundColor: 'yellow'
   }
 }));

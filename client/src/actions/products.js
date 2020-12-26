@@ -15,11 +15,11 @@ export const getProducts = () => async (dispatch) => {
   try {
     const { data: products } = await api.get('/');
     
-    for (const product of products) {
-      const { data: reviews } = await api.get(`/${product._id}/reviews`);
+    // for (const product of products) {
+    //   const { data: reviews } = await api.get(`/${product._id}/reviews`);
       
-      product.reviews = reviews;
-    }
+    //   product.reviews = reviews;
+    // }
     
     dispatch({ type: GET_PRODUCTS, payload: products });
 

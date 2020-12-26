@@ -2,15 +2,20 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button, Typography, CircularProgress } from "@material-ui/core/";
 import { useSelector, useDispatch } from "react-redux";
+import Cookies from "universal-cookie";
 
 import useStyles from "./styles.js";
 import ReviewModal from "./ReviewModal/ReviewModal";
 import Review from "./Review/Review";
 import { getProduct } from "../../actions/product";
+import { deleteProduct } from "../../actions/products";
+
+const cookies = new Cookies();
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState(false);
+  const [authorized, setAuthorized] = useState(false);
   const product = useSelector((state) => state.product);
   const { isLoggedIn } = useSelector((state) => state.user);
   const classes = useStyles();
@@ -18,7 +23,17 @@ const ProductDetails = () => {
 
   useEffect(() => {
     dispatch(getProduct(id));
-  }, [id, dispatch]);
+
+    if (isLoggedIn) {
+      cookies.get("user").name === product.author
+        ? setAuthorized(true)
+        : setAuthorized(false);
+    } else {
+      setAuthorized(false);
+    }
+  }, [id, dispatch, isLoggedIn, product.author]);
+
+  const removeProduct = (id) => dispatch(deleteProduct(id));
 
   if (!product.name) return <CircularProgress />;
 
@@ -35,20 +50,19 @@ const ProductDetails = () => {
         </div>
         <div className={classes.details}>
           <Typography className='prodName' variant="body1" >{product.name}</Typography>
-          <Typography variant="subtitle1" color="grey" >Description</Typography>
+          <Typography variant="subtitle1" >Description</Typography>
           <Typography variant="body1" color="initial" >{product.description}</Typography>
+          {authorized && (
+            <div className={classes.detailButtons}>
+              <Button className="editButton" component={Link} to={`/form/${id}`}>Edit</Button>
+              <Button className="deleteButton" onClick={() => removeProduct(id) }>Delete</Button>
+            </div>
+          )}
         </div>
       </div>
       <div className={classes.formButton}>
         {isLoggedIn ? (
-          <Button
-          wrap
-            size="large"
-            color="secondary"
-            variant="contained"
-            onClick={() => setIsOpen(true)}
-          >Write Review
-          </Button>
+          <Button size="large" color="secondary" variant="contained" onClick={() => setIsOpen(true) }>Write Review</Button>
         ) : (
           <Button variant="contained" component={Link} to="/sign-in">Sign in to write review</Button>
         )}
