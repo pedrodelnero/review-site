@@ -66,9 +66,16 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       width: '120px',
     },
-    '& .MuiTypography-root': {
+    '& .MuiButtonBase-root': {
       marginLeft: theme.spacing(1),
       [theme.breakpoints.down('xs')]: {
+        display: 'none',
+        
+      },
+    },
+    '& .accountIcon': {
+      marginLeft: theme.spacing(1),
+      [theme.breakpoints.up('sm')]: {
         display: 'none',
         
       },
@@ -76,11 +83,21 @@ export default makeStyles((theme) => ({
   },
   accountMenu: {
     position: 'absolute',
-    backgroundColor: 'black',
+    right: '1%',
+    top: '75%',
+    width: '120px',
+    border: '1px solid black',
+    backgroundColor: '#4A4953',
     borderRadius: '15px',
     color: 'white',
-    padding: theme.spacing(1),
+    // padding: theme.spacing(1),
     // display: 'inline-block',
-    // backgroundColor: 'yellow'
+    // backgroundColor: 'yellow
+    '& .MuiTypography-root': {
+      display: 'flex',
+      justifyContent: 'center',
+      padding: theme.spacing(1),
+    },
+
   }
 }));

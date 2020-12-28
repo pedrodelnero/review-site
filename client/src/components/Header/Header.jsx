@@ -43,14 +43,8 @@ const Header = () => {
     dispatch(signOut());
   };
 
-  const openAccMenu =(e) => {
-    console.log(e.currentTarget)
-    setIsAccMenuOpen(e.currentTarget)
-  }
-  const closeAccMenu =(e) => {
-    console.log(e.currentTarget)
-    setIsAccMenuOpen(e.currentTarget)
-  }
+  const openAccMenu =(e) => setIsAccMenuOpen(e.currentTarget);
+  // const closeAccMenu =(e) => {setIsAccMenuOpen(e.currentTarget);
 
   const handleSibeBarToggle = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -77,6 +71,29 @@ const Header = () => {
         </div>
         {/* <div ref={wrapperRef} className={classes.account}> */}
           {isLoggedIn ? (<div className={classes.account}>
+            <div ref={wrapperRef} onClick={openAccMenu} className={classes.accountTitle}>
+              <AccountCircleIcon style={{ fontSize: 40 }} className="accountIcon"/>
+              <Button startIcon={<AccountCircleIcon />}  size='large' >Account</Button>
+              {!!isAccMenuOpen && 
+                <div className={classes.accountMenu}>
+                  <Typography variant="h5" component={Link} to="/user" style={{ textDecoration: 'none', color: 'white' }}>Account</Typography>
+                  {/* <Button component={Link}  to="/user" onClick={() => console.log('press')}>Account</Button> */}
+                  <Typography variant="h5" component={Button} onClick={logOut} >Log out</Typography>
+                </div>
+              }
+            </div>
+          </div>) : (
+            <Button className={classes.button} component={Link} to="/sign-in" >Sign in</Button>
+          )}
+        {/* </div> */}
+    </AppBar>
+  )
+}
+
+export default Header;
+
+/*
+{isLoggedIn ? (<div className={classes.account}>
             <div onClick={openAccMenu} ref={wrapperRef} className={classes.accountTitle}>
               <AccountCircleIcon style={{ fontSize: 40 }} />
               <Typography>Account</Typography>
@@ -87,12 +104,4 @@ const Header = () => {
                 <Typography>Log out</Typography>
               </div>
             }
-          </div>) : (
-            <Button className={classes.button} component={Link} to="/sign-in" >Sign in</Button>
-          )}
-        {/* </div> */}
-    </AppBar>
-  )
-}
-
-export default Header;
+*/
