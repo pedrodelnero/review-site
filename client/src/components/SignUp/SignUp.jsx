@@ -14,7 +14,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   // const cookies = new Cookies();
   
-  const [errorMessages, setErrorMessages] = useState("");
+  const [errorMessages] = useState("");
   const classes = useStyles();
 
   useEffect(() => {

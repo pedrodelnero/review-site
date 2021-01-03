@@ -11,7 +11,7 @@ const SignIn = () => {
   const { user } = useSelector(state => state.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [isError] = useState(false);
 
 
   useEffect(() => {

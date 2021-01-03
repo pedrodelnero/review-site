@@ -11,7 +11,7 @@ const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [isError] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
