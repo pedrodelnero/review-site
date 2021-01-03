@@ -19,7 +19,7 @@ const Products = () => {
 
   return (
     <div className={classes.root}>
-      <Button component={Link} to="/add-product" startIcon={<AddIcon />} className={classes.button} >Add Product</Button>
+      <Button component={Link} to="/product" startIcon={<AddIcon />} className={classes.button} >Add Product</Button>
       <div className={classes.grid}>
         {products.map((product, index) => (
             <Product product={product} key={product._id} /> 

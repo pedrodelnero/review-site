@@ -67,7 +67,7 @@ export default makeStyles((theme) => ({
       width: '120px',
     },
     '& .MuiButtonBase-root': {
-      marginLeft: theme.spacing(1),
+      // marginLeft: thexme.spacing(1),
       [theme.breakpoints.down('xs')]: {
         display: 'none',
         
@@ -97,6 +97,10 @@ export default makeStyles((theme) => ({
       display: 'flex',
       justifyContent: 'center',
       padding: theme.spacing(1),
+    },
+    '& .logOutButton': {
+      fontSize: '18px',
+      color: 'white'
     },
 
   }

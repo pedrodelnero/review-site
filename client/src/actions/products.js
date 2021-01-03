@@ -44,9 +44,8 @@ export const deleteProduct = (id) => async (dispatch) => {
   try {
     await api.delete(`/${id}`);  
     
+    window.location.href="/"
     dispatch({ type: DELETE_PRODUCT, payload: id });
-    dispatch(getProducts());
-  
   } catch (e) {
     console.log(e.message)
   }

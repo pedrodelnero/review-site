@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppBar, Button, Popover, Typography } from '@material-ui/core/';
+import { AppBar, Button, Typography } from '@material-ui/core/';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import IconButton from '@material-ui/core/IconButton';
+// import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import useStyles from './styles.js';
@@ -38,15 +38,15 @@ const Header = () => {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
 
+  const handleSibeBarToggle = () => setIsSidebarOpen(!isSidebarOpen);
+  
+  const openAccMenu =(e) => setIsAccMenuOpen(e.currentTarget);
+  // const closeAccMenu =(e) => {setIsAccMenuOpen(e.currentTarget);
+  
   const logOut = () => {
     // SHOW ADRIAN HOW await IS USED HERE (window location after await done)
     dispatch(signOut());
   };
-
-  const openAccMenu =(e) => setIsAccMenuOpen(e.currentTarget);
-  // const closeAccMenu =(e) => {setIsAccMenuOpen(e.currentTarget);
-
-  const handleSibeBarToggle = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
     <AppBar position="relative" className={classes.root}>
@@ -67,7 +67,7 @@ const Header = () => {
         <div className={classes.container}>
           <Button href="/why">Why we do this</Button>
           <Button  href="/">Products</Button>
-          { isLoggedIn && <Button href="/add-product">Add Product</Button>}
+          { isLoggedIn && <Button href="/product">Add Product</Button>}
         </div>
         {/* <div ref={wrapperRef} className={classes.account}> */}
           {isLoggedIn ? (<div className={classes.account}>
@@ -76,9 +76,16 @@ const Header = () => {
               <Button startIcon={<AccountCircleIcon />}  size='large' >Account</Button>
               {!!isAccMenuOpen && 
                 <div className={classes.accountMenu}>
-                  <Typography variant="h5" component={Link} to="/user" style={{ textDecoration: 'none', color: 'white' }}>Account</Typography>
+                  <Typography
+                    variant="h5"
+                    component={Link}
+                    to="/user"
+                    style={{ textDecoration: 'none', color: 'white', borderBottom: '1px solid black' }}
+                  >
+                    Account
+                  </Typography>
                   {/* <Button component={Link}  to="/user" onClick={() => console.log('press')}>Account</Button> */}
-                  <Typography variant="h5" component={Button} onClick={logOut} >Log out</Typography>
+                  <Button className="logOutButton" component={Typography} onClick={logOut} size="large">Log out</Button>
                 </div>
               }
             </div>

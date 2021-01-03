@@ -14,8 +14,9 @@ const cookies = new Cookies();
 const AppRouter = () => {
   const classes = useStyles();
   const history = useHistory();
-  const { user, isLoggedIn } = useSelector(state => state.user)
+  const { isLoggedIn } = useSelector(state => state.user)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // Below is done for useContext; needed for Header component to work => function to click outside of account menu to close it.
   const [isAccMenuOpen, setIsAccMenuOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -37,7 +38,7 @@ const AppRouter = () => {
           <div className={classes.body}>
             {/* {(window.location.pathname === '/sign-in' || window.location.pathname === '/sign-up') ? null : <Header />} */}
             <Switch >
-              <Route path="/add-product/:id?" component={ProductForm}/>
+              <Route path="/product/:id?" component={ProductForm}/>
               <Route path="/:id?/details" component={ProductDetails}/>
               <Route path="/sign-up" component={SignUp}/>
               <Route path="/sign-in" component={SignIn}/>

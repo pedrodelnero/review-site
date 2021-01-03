@@ -54,7 +54,7 @@ const ProductDetails = () => {
           <Typography variant="body1" color="initial" >{product.description}</Typography>
           {authorized && (
             <div className={classes.detailButtons}>
-              <Button className="editButton" component={Link} to={`/form/${id}`}>Edit</Button>
+              <Button className="editButton" component={Link} to={`/product/${id}`}>Edit</Button>
               <Button className="deleteButton" onClick={() => removeProduct(id) }>Delete</Button>
             </div>
           )}
