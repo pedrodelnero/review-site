@@ -53,9 +53,7 @@ export const deleteUser = () => async (dispatch) => {
 
 export const signUp = ( name, email, password ) => async (dispatch) => {  
   try {
-    const { data: { token, user } } = await userAPI.post('/', { name, email, password }, {
-      headers: {}
-    });
+    const { data: { token, user } } = await userAPI.post('/', { name, email, password });
     
     cookies.set('token', token, { path: '/' });
     cookies.set('user', user, { path: '/' });
@@ -71,9 +69,7 @@ export const signUp = ( name, email, password ) => async (dispatch) => {
 
 export const signIn = ( email, password ) => async (dispatch) => {  
   try {
-    const { data: { token, user } } = await userAPI.post('/login', { email, password }, {
-      headers: {}
-    }); 
+    const { data: { token, user } } = await userAPI.post('/login', { email, password }); 
     
     cookies.set('token', token, { path: '/' });
     cookies.set('user', user, { path: '/' });
