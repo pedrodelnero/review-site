@@ -2,16 +2,20 @@ import axios from "axios";
 import Cookies from 'universal-cookie'
 
 
-import { GET_USER, UPDATE_USER, DELETE_USER, SIGN_UP, SIGN_IN, SIGN_OUT} from "../constants/actionTypes";
+import { GET_USER, UPDATE_USER, DELETE_USER, SIGN_UP, SIGN_IN, SIGN_OUT } from "../constants/actionTypes";
 
 
 const cookies = new Cookies();
 const token = cookies.get("token");
 
 const userAPI = axios.create({
-  baseURL: "https://delnero-review-app.herokuapp.com/user",
+  baseURL: "http://localhost:5000/user",
   headers: { Authorization: `Bearer ${token}` },
 });
+// const userAPI = axios.create({
+//   baseURL: "https://delnero-review-app.herokuapp.com/user",
+//   headers: { Authorization: `Bearer ${token}` },
+// });
 
 export const getUser = () => async (dispatch) => {
   try {
@@ -23,33 +27,6 @@ export const getUser = () => async (dispatch) => {
     console.log(e.message)
   }
 };
-
-export const updateUserPassword = ( currentPassword, newPassword, confirmNewPassword ) => async (dispatch) => {
-  try {
-    const { data: { user }} = await userAPI.patch('/me', { currentPassword, newPassword, confirmNewPassword });
-    dispatch({ type: UPDATE_USER, payload: user })
-
-  } catch(e) {
-    console.log(e.message)
-  }
-
-}
-
-export const deleteUser = () => async (dispatch) => {
-  try {
-    const { data: { user }} = await userAPI.delete('/me');
-    console.log(user)
-
-    cookies.remove('token', { path: '/' });
-    cookies.remove('user', { path: '/' }); 
-
-    dispatch({ type: DELETE_USER, payload: user })
-
-  } catch(e) {
-    console.log(e.message)
-  }
-
-}
 
 export const signUp = ( name, email, password ) => async (dispatch) => {  
   try {
@@ -93,6 +70,32 @@ export const signOut = () => async (dispatch) => {
 
     dispatch({ type: SIGN_OUT, payload: data })
   } catch (e) {
+    console.log(e.message)
+  }
+}
+
+export const updateUserPassword = ( currentPassword, newPassword, confirmNewPassword ) => async (dispatch) => {
+  try {
+    const { data: { user }} = await userAPI.patch('/me', { currentPassword, newPassword, confirmNewPassword });
+    dispatch({ type: UPDATE_USER, payload: user })
+
+  } catch(e) {
+    console.log(e.message)
+  }
+
+}
+
+export const deleteUser = () => async (dispatch) => {
+  try {
+    const { data: { user }} = await userAPI.delete('/me');
+    console.log(user)
+
+    cookies.remove('token', { path: '/' });
+    cookies.remove('user', { path: '/' }); 
+
+    dispatch({ type: DELETE_USER, payload: user })
+
+  } catch(e) {
     console.log(e.message)
   }
 }

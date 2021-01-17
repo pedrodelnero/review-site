@@ -7,11 +7,13 @@ const cookies = new Cookies();
 const token = cookies.get("token");
 
 const api = axios.create({
-  baseURL: "https://delnero-review-app.herokuapp.com/products",
+  baseURL: "http://localhost:5000/products",
   headers: { Authorization: `Bearer ${token}` },
 });
-
-// getReviews = (id) => REDUCER => REVIEWS......
+// const api = axios.create({
+//   baseURL: "https://delnero-review-app.herokuapp.com/products",
+//   headers: { Authorization: `Bearer ${token}` },
+// });
 
 export const getReviews = (id) => async (dispatch) => {
   try {

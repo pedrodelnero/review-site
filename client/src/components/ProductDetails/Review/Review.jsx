@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 // import axios from 'axios';
 // import { Link } from 'react-router-dom';
 import { Typography } from '@material-ui/core/';
+import Rating from '@material-ui/lab/Rating';
 // import Cookies from 'universal-cookie';
 // import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,7 +10,9 @@ import useStyles from './styles.js';
 // import { deleteReview } from '../../../actions/reviews';
 
 
-const Review = ({ prodId, review: { author, content, _id: id } }) => {
+// const Review = ({ prodId, review}) => {
+//   console.log(review)
+const Review = ({ prodId, review: { _id, author, rating, content }}) => {
   const classes = useStyles();
   // const { isLoggedIn } = useSelector(state => state).user;
   // const [authorized, setAuthorized ] = useState(false);
@@ -31,17 +34,11 @@ const Review = ({ prodId, review: { author, content, _id: id } }) => {
   // }
   
   return (
-    <div key={id} className={classes.root}>
-      {/* <div component={Link} className={classes.content}> */}
-        <Typography variant="h6" >{content}</Typography>
-        <Typography variant="subtitle2" color="textSecondary" >By: {author}</Typography>
-      {/* </div> */}
-      {/* {authorized &&
-        <CardActions>
-          <Button component={Link} to={`/form/${id}`}>Edit</Button>
-          <Button size="small" color="primary" onClick={() => removeReview(prodId, id)}>Delete</Button>
-        </CardActions>
-      } */}
+    // <div>Hello</div>
+    <div key={_id} className={classes.root}>
+      <Typography variant="body1" color="textSecondary" style={{ padding: 0, lineHeight: 1 }}>{author}</Typography>
+      <Rating value={rating} readOnly />
+      <Typography variant="body1" style={{ padding: 0, lineHeight: 1 }} >{content}</Typography>
     </div>
   )
 }

@@ -11,12 +11,11 @@ export default makeStyles((theme) => ({
   },
   menuButton: {
     display: 'none',
-    size: 'small',
     [theme.breakpoints.down('xs')]: {
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      alignItems: 'center'
+      width: '65%',
+      height: '65%',
+      display: 'block',
+      margin: 'auto'
     },
   },
   titleHeader: {
@@ -43,8 +42,6 @@ export default makeStyles((theme) => ({
     justifyContent: 'space-around',
     '& .MuiButtonBase-root': {
       textAlign: 'center',
-      // border: '1px solid white',
-      // borderRadius: '10px',
       color: 'white'
     },
     [theme.breakpoints.down('xs')]: {
@@ -61,16 +58,14 @@ export default makeStyles((theme) => ({
     height: '100%',
     width: '150px',
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
     [theme.breakpoints.down('xs')]: {
-      width: '120px',
+      width: '50px',
+      height: '50px',
+      margin: 'auto'
     },
     '& .MuiButtonBase-root': {
-      // marginLeft: thexme.spacing(1),
       [theme.breakpoints.down('xs')]: {
         display: 'none',
-        
       },
     },
     '& .accountIcon': {

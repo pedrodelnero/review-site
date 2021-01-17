@@ -31,7 +31,7 @@ export default makeStyles((theme) => ({
     justifyItems: 'center',
     // justifyItems: 'center',
     // margin: theme.spacing(1, 0),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       gridTemplateColumns: 'repeat(auto-fit, minmax(115px, 1fr))',
     },
     [theme.breakpoints.up('sm')]: {

@@ -3,9 +3,13 @@ import { useParams } from 'react-router-dom';
 import FileBase from 'react-file-base64';
 import { TextField, Button, Typography } from '@material-ui/core/';
 import { useDispatch, useSelector } from 'react-redux';
+import Cookies from 'universal-cookie'
 
 import useStyles from './styles.js';
 import { addProduct, updateProduct } from '../../actions/products';
+
+const cookies = new Cookies();
+const token = cookies.get("token");
 
 const ProductForm = () => {
   const classes = useStyles();
@@ -17,6 +21,8 @@ const ProductForm = () => {
   const [description, setDescription] = useState(product?.description || '');
   const [image, setImage] = useState(product?.image || []);
   const dispatch = useDispatch();
+
+  if (!token) window.location.href = '/sign-in'
   
   const handleSubmit = (e) => {
     (id) ? dispatch(updateProduct(id, { name, description, brand })) : dispatch(addProduct({ name, brand, model, description, image }))
@@ -24,10 +30,9 @@ const ProductForm = () => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h3" className="title" >{id ? "Edit product" : "Create product"}</Typography>
+      <Typography variant="h3" className="title" >{id ? "Edit product" : "Add product"}</Typography>
       <div className={classes.paper}>
         <form className={classes.container} >
-        {/* <form className={classes.container} onSubmit={handleSubmit}> */}
           <TextField
             label="Name"
             variant="outlined"
@@ -59,7 +64,7 @@ const ProductForm = () => {
             <FileBase type="file" multiple={false} onDone={({ base64 }) => setImage(base64)} />
           </div>
         </form>
-          <Button className={classes.button} onClick={handleSubmit} >{id ? "Edit product" : "Create product"}</Button>
+        <Button className={classes.button} onClick={handleSubmit} >{id ? "Edit product" : "Create product"}</Button>
       </div>
     </div>
   )

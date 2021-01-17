@@ -81,20 +81,6 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
       },
     },
-    // [theme.breakpoints.up('sm')]: {
-    //   justifyContent: 'center',
-    //   '& .prodTitle': {
-    //     fontSize: '1.5rem',
-    //   },
-    //   '& .prodAuthor': {
-    //     fontSize: '0.8rem',
-    //     color: 'grey',
-    //   },
-    //   '& .prodDescription': {
-    //     fontSize: '1rem'
-    //   },
-    // },
-  
   }
 }));
 

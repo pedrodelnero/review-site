@@ -36,7 +36,6 @@ const AppRouter = () => {
           <Header />
           { isSidebarOpen && <Sidebar  />}
           <div className={classes.body}>
-            {/* {(window.location.pathname === '/sign-in' || window.location.pathname === '/sign-up') ? null : <Header />} */}
             <Switch >
               <Route path="/product/:id?" component={ProductForm}/>
               <Route path="/:id?/details" component={ProductDetails}/>

@@ -17,6 +17,8 @@ export const createReview = async (req, res) =>{
   const { id } = req.params;
   const { name: author, _id } = req.user
 
+  // console.log(req.user)
+
   const review = await new Review({ content, rating, author, authorID: _id }).save();
 
   await Product.findByIdAndUpdate(id, { $push: { reviews: review._id }}, { new: true });

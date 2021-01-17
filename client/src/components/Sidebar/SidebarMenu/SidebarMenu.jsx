@@ -1,10 +1,8 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, IconButton, Typography } from '@material-ui/core/';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AddIcon from '@material-ui/icons/Add';
-
-// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HomeIcon from '@material-ui/icons/Home';
 
 import Mobile from '../../../context/Mobile'
@@ -14,17 +12,7 @@ const SidebarMenu = () => {
   const classes = useStyles();
   const { isSidebarOpen, setIsSidebarOpen } = useContext(Mobile); // authAPI
 
-
   const handleDrawerToggle = () => setIsSidebarOpen(!isSidebarOpen);
-
-
-  useEffect(() => {
-    setIsSidebarOpen(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setIsSidebarOpen]);
-
-  // const open = Boolean(anchorEl);
-  // const id = open ? 'simple-popover' : undefined;
 
   return (
       <div className={classes.root}>
@@ -34,7 +22,6 @@ const SidebarMenu = () => {
             </IconButton>
         </div>
       <div className={classes.list}>
-        {/* <Button component={Link} to="/" className={classes.listItem}> */}
         <Button component={Link} to="/" >
           <HomeIcon />
           <Typography variant='h5' >Home</Typography>
@@ -52,7 +39,6 @@ const SidebarMenu = () => {
           <Typography variant='h5' >Why</Typography>
         </Button>
         </div>
-      {/* <Divider /> */}
       </div>
   );
 };

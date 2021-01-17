@@ -5,7 +5,6 @@ import User from '../models/user.model.js';
 
 export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
-  console.log(name)
 
   try {
     let user = await User.findOne({ email })
@@ -26,6 +25,7 @@ export const createUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  console.log(email)
   
   try {
     const user = await User.findByCredentials(email, password);
@@ -33,6 +33,7 @@ export const loginUser = async (req, res) => {
     
     res.send({ user, token });
   } catch (error) {
+    console.log(error)
     res.status(500).send({message: error.message});
   }
 }

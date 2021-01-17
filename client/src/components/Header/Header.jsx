@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppBar, Button, Typography } from '@material-ui/core/';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-// import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import useStyles from './styles.js';
@@ -17,7 +16,6 @@ function useOutsideAlerter(ref) {
       /*** Alert if clicked on outside of element***/
       function handleClickOutside(event) {
           if (ref.current && !ref.current.contains(event.target)) {
-              // console.log("You clicked outside of me!");
               setIsAccMenuOpen(false)
           }
       }
@@ -39,25 +37,15 @@ const Header = () => {
   useOutsideAlerter(wrapperRef);
 
   const handleSibeBarToggle = () => setIsSidebarOpen(!isSidebarOpen);
-  
+
   const openAccMenu =(e) => setIsAccMenuOpen(e.currentTarget);
   // const closeAccMenu =(e) => {setIsAccMenuOpen(e.currentTarget);
   
-  const logOut = () => {
-    // SHOW ADRIAN HOW await IS USED HERE (window location after await done)
-    dispatch(signOut());
-  };
+  const logOut = () => dispatch(signOut());
 
   return (
     <AppBar position="relative" className={classes.root}>
-        {/* <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleSibeBarToggle}
-          className={classes.menuButton}
-        > */}
-          <MenuIcon onClick={handleSibeBarToggle}className={classes.menuButton} />
-        {/* </IconButton> */}
+        <MenuIcon onClick={handleSibeBarToggle} className={classes.menuButton} />
         <div className={classes.titleHeader}>
           <Link to="/">
             <img src={logo} alt="LOGO" className="logo" ></img>
@@ -69,7 +57,6 @@ const Header = () => {
           <Button  href="/">Products</Button>
           { isLoggedIn && <Button href="/product">Add Product</Button>}
         </div>
-        {/* <div ref={wrapperRef} className={classes.account}> */}
           {isLoggedIn ? (<div className={classes.account}>
             <div ref={wrapperRef} onClick={openAccMenu} className={classes.accountTitle}>
               <AccountCircleIcon style={{ fontSize: 40 }} className="accountIcon"/>
@@ -84,7 +71,6 @@ const Header = () => {
                   >
                     Account
                   </Typography>
-                  {/* <Button component={Link}  to="/user" onClick={() => console.log('press')}>Account</Button> */}
                   <Button className="logOutButton" component={Typography} onClick={logOut} size="large">Log out</Button>
                 </div>
               }
@@ -92,7 +78,6 @@ const Header = () => {
           </div>) : (
             <Button className={classes.button} component={Link} to="/sign-in" >Sign in</Button>
           )}
-        {/* </div> */}
     </AppBar>
   )
 }

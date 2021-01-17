@@ -11,17 +11,11 @@ export default makeStyles((theme) => ({
   content: {
     display: 'flex',
     alignItems: 'center',
-    // justifyContent: 'space-around',
     backgroundColor: theme.palette.background.paper,
     border: '1px solid white',
     borderRadius: '25px',
     margin: theme.spacing(1, 0),
     padding: theme.spacing(1),
-    [theme.breakpoints.up('sm')]: {
-      // display: 'flex',
-      // flexDirection: 'column',
-      // height: '300px',
-    }, 
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
     }, 
@@ -39,10 +33,13 @@ export default makeStyles((theme) => ({
   },
   details: {
     display: 'flex',
+    flex: 1,
     flexDirection: 'column',
     width: '100%',
+    height: '100%',
     [theme.breakpoints.up('sm')]: {
       alignItems: 'flex-end',
+      justifyContent: 'center',
       marginRight: theme.spacing(5),
       fontSize: '300%',
     }, 
@@ -64,17 +61,22 @@ export default makeStyles((theme) => ({
         textAlign: 'center',
         fontSize: '110%',
       }, 
+    },
+    '& .author': {
+      display: 'flex',
+      textAlign: 'end',
+      // color: 'red'
     }
   },
   detailButtons: {
-    marginTop: theme.spacing(5),
-    alignItems: 'center',
+    display: 'flex',
     [theme.breakpoints.up('sm')]: {
-      // alignItems: 'flex-end',
+      marginTop: 'auto',
     }, 
     [theme.breakpoints.down('xs')]: {
+      marginTop: theme.spacing(5),
       width: '100%',
-      // alignItems: 'center',
+      justifyContent: 'center',
     }, 
     '& .MuiButton-root': {
       borderRadius: '20px',
@@ -88,25 +90,46 @@ export default makeStyles((theme) => ({
       padding: theme.spacing(1, 3),
       color: 'white',
       fontWeight: 'bold',
-      // border: '1px solid #F69560',
       backgroundColor: '#F70913',
     },
   },
   formButton: {
-    '& .MuiButton-root': {
+    marginBottom: '15px',
+    '& .addReview': {
       border: '1px solid white',
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('xs')]: {
         height: '95px',
-          width: '95px',
-          borderRadius: '50%',
+        width: '95px',
+        borderRadius: '50%',
       },  
       '& MuiButton-label': {
         wordWrap: 'normal'
       }
     }
   },
-  reviews: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
+  reviewForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },  
+    [theme.breakpoints.up('sm')]: {
+      width: '500px',
+    },  
+    '& .MuiRating-root': {
+      marginBottom: '10px',
+    },
+    '& .MuiFormControl-root': {
+      backgroundColor: 'white',
+      border: '1px solid #C61362',
+      borderRadius: '8px',
+      marginBottom: '10px',   
+      '& .MuiInputBase-input': {
+        margin: '5px',
+      }
+    },
+    '& .MuiButton-root': {
+      width: '95px',
+    }
   },
 }));

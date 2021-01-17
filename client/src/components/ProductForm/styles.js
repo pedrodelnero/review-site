@@ -6,9 +6,9 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    width: '100%',
     '& .title': {
       color: '#203061',
-      // marginLeft: theme.spacing(2)
     },
   },
   paper: {
@@ -24,7 +24,6 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     color: 'black',
-    // width: '100%',
     padding: theme.spacing(1.5, 2),
     '& .MuiTextField-root': {
       width: '100%',
@@ -41,7 +40,6 @@ export default makeStyles((theme) => ({
     color: '#203061',
     marginTop: theme.spacing(2),
     '& .MuiTypography-root, input ': {
-      // color: 'black',
       margin: theme.spacing(1)
     },
     '& input ': {
