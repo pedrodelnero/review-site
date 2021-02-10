@@ -39,11 +39,6 @@ const Product = ({ product: { author, description, name, _id: id, image, reviews
           <Typography className="prodTitle" variant="body1" >{name}</Typography>
           <Typography className="prodAuthor" >Added by: {author}</Typography>
           <Typography className="prodDescription" >{description}</Typography>
-          {/* {reviews.map(({ _id, content }) => (
-            <Typography key={_id} variant="body2">
-              {content}
-            </Typography>
-          ))} */}
         </div>
       
       </Link>

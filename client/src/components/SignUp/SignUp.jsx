@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Button, CssBaseline, TextField, Link, Grid, Box, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Alert from '@material-ui/lab/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useStyles from './styles';
@@ -9,6 +10,7 @@ import { signUp } from "../../actions/user";
 const SignUp = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.user);
+  const errorMessage = useSelector((state) => state.error);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +20,7 @@ const SignUp = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    if(user.name) {
+    if (user.name) {
       window.location.href = '/';
     }
   }, [user]);
@@ -31,6 +33,7 @@ const SignUp = () => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      {!!errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />

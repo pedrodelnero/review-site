@@ -29,10 +29,6 @@ const UserPage = () => {
         // window.location.href = '/'
     };
 
-    // useEffect(() => {
-    //     dispatch(getUser());
-    // }, [dispatch])
-
     return (
         <div>
             <h1>Account Details</h1>

@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
-import { Avatar, Button, CssBaseline, TextField, Link, Box, Typography, Container } from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Paper,
+  Typography,
+  Container,
+} from "@material-ui/core";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Alert from "@material-ui/lab/Alert";
+import { useDispatch, useSelector } from "react-redux";
 
-import useStyles from './styles';
+import useStyles from "./styles";
 import { updateUserPassword } from "../../../actions/user";
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
+  const errorMessage = useSelector((state) => state.error);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -15,17 +25,19 @@ const ChangePassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    dispatch(updateUserPassword(currentPassword, newPassword, confirmNewPassword ));
-    window.location.href = '/user'
+
+    dispatch(
+      updateUserPassword(currentPassword, newPassword, confirmNewPassword)
+    );
   };
-  
+
   const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
+      {!!errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+      <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -42,10 +54,9 @@ const ChangePassword = () => {
             name="password"
             label={!isError ? "Current password" : "Incorrect password"}
             type="password"
-            id="password"
             autoComplete="current-password"
             value={currentPassword}
-            onChange={e => setCurrentPassword(e.target.value)}
+            onChange={(e) => setCurrentPassword(e.target.value)}
           />
           <TextField
             error={isError}
@@ -56,10 +67,9 @@ const ChangePassword = () => {
             name="password"
             label={!isError ? "New password" : "Incorrect password"}
             type="password"
-            id="password"
             autoComplete="current-password"
             value={newPassword}
-            onChange={e => setNewPassword(e.target.value)}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
           <TextField
             error={isError}
@@ -70,10 +80,9 @@ const ChangePassword = () => {
             name="password"
             label={!isError ? "Confirm new password" : "Incorrect password"}
             type="password"
-            id="password"
             autoComplete="current-password"
             value={confirmNewPassword}
-            onChange={e => setConfirmNewPassword(e.target.value)}
+            onChange={(e) => setConfirmNewPassword(e.target.value)}
           />
           <Button
             type="submit"
@@ -85,19 +94,9 @@ const ChangePassword = () => {
             Change password
           </Button>
         </form>
-      </div>
-      <Box mt={8}>
-      <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-      </Box>
+      </Paper>
     </Container>
   );
-}
+};
 
 export default ChangePassword;

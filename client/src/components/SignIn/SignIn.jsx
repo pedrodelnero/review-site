@@ -1,36 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container } from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { useDispatch, useSelector } from "react-redux";
 
-import useStyles from './styles';
+import useStyles from "./styles";
 import { signIn } from "../../actions/user";
 
 const SignIn = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.user);
+  const { user } = useSelector((state) => state.user);
+  const errorMessage = useSelector((state) => state.error);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError] = useState(false);
 
-
   useEffect(() => {
-    if(user.name) {
-      window.location.href = '/';
+    if (user.name) {
+      window.location.href = "/";
     }
   }, [user]);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    dispatch(signIn(email, password))
-  }
-  
+
+    dispatch(signIn(email, password));
+  };
+
   const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      {!!errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -45,12 +59,14 @@ const SignIn = () => {
             required
             fullWidth
             id="email"
-            label={!isError ? "Email Address" : "No account with this email address"}
+            label={
+              !isError ? "Email Address" : "No account with this email address"
+            }
             name="email"
             autoComplete="email"
             autoFocus
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             error={isError}
@@ -64,17 +80,13 @@ const SignIn = () => {
             id="password"
             autoComplete="current-password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-          <Button
-            type="submit"
-            fullWidth
-            className={classes.button}
-          >
+          <Button type="submit" fullWidth className={classes.button}>
             Sign In
           </Button>
           <Grid container>
@@ -92,17 +104,17 @@ const SignIn = () => {
         </form>
       </div>
       <Box mt={8}>
-      <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+        <Typography variant="body2" color="textSecondary" align="center">
+          {"Copyright © "}
+          <Link color="inherit" href="https://material-ui.com/">
+            Your Website
+          </Link>{" "}
+          {new Date().getFullYear()}
+          {"."}
+        </Typography>
       </Box>
     </Container>
   );
-}
+};
 
 export default SignIn;
