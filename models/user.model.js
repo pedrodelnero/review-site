@@ -1,30 +1,15 @@
-import mongoose from 'mongoose';
-import validator from 'validator';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import validate from 'mongoose-validator';
-
-var emailValidator = [
-    validate({
-      validator: 'isEmail',
-      message: 'Must be a valid email address',
-    }),
-];
-
-var passwordValidator = [
-    validate({
-      validator: 'isLength',
-      arguments: [6],
-      message: 'Password should be longer than {ARGS[0]} characters',
-    }),
-  ]
+import mongoose from "mongoose";
+import validator from "validator";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import validate from "mongoose-validator";
 
 const userSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
     trim: true,
-    minLength: 1
+    minLength: 1,
   },
   email: {
     type: String,
@@ -32,36 +17,43 @@ const userSchema = mongoose.Schema({
     required: true,
     trim: true,
     lowercase: true,
-    validate: emailValidator
+    validate: [validator.isEmail, "Enter a valid email address."],
   },
   password: {
     type: String,
-    validate: passwordValidator 
+    required: [true, "Enter a password."],
+    minlength: [6, "Password must be at least 6 characters long"],
   },
-  tokens: [{
-    token: {
+  tokens: [
+    {
+      token: {
         type: String,
-        required: true
-    }        
-  }],
+        required: true,
+      },
+    },
+  ],
   avatar: {
-    type: Buffer
+    type: Buffer,
   },
   createdAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
   },
-  products: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product'
-  }],
-  reviews: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Review',
-  }]
+  products: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
 });
 
-// Static - You can call created statics on the Model 
+// Static - You can call created statics on the Model
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
 
@@ -72,9 +64,9 @@ userSchema.statics.findByCredentials = async (email, password) => {
   if (!isMatch) throw new Error("Wrong password");
 
   return user;
-}
+};
 
-// Method - You can call created methods on instances of a schema 
+// Method - You can call created methods on instances of a schema
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
@@ -85,42 +77,47 @@ userSchema.methods.generateAuthToken = async function () {
   // we have connect the token to the user....
 
   return token;
-}
+};
 
-userSchema.methods.updatePassword = async function (currentPassword, newPassword, confirmNewPassword) {
+userSchema.methods.updatePassword = async function (
+  currentPassword,
+  newPassword,
+  confirmNewPassword
+) {
   const user = this;
 
   try {
     const hashedNewPassword = await bcrypt.hash(newPassword, 8);
-    
+
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) throw new Error("You entered the wrong password.");
-    
-    const isConfirmedSame = await bcrypt.compare(confirmNewPassword, hashedNewPassword);
+
+    const isConfirmedSame = await bcrypt.compare(
+      confirmNewPassword,
+      hashedNewPassword
+    );
     if (!isConfirmedSame) throw new Error("The passwords do not match.");
-    
-    const isOld = (await bcrypt.compare(newPassword, user.password));
+
+    const isOld = await bcrypt.compare(newPassword, user.password);
     if (isOld) throw new Error("Must be a new password.");
-  
+
     return hashedNewPassword;
-
   } catch (error) {
-    res.status(500).json({ error: error.message })
-  }  
-}
-
+    throw new Error(error.message);
+  }
+};
 
 // A middleware function that happens before 'save'
-userSchema.pre('save', async function (next) {
+userSchema.pre("save", async function (next) {
   const user = this;
 
-  if (user.isModified('password')) {
+  if (user.isModified("password")) {
     user.password = await bcrypt.hash(user.password, 8);
   }
 
   next();
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;
