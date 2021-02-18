@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 
 var corsOptions = {
-  origin: ["http://localhost:3000", "https://delnero-review-site.netlify.app/"],
+  origin: ["http://localhost:3000", "https://delnero-review-site.netlify.app"],
   credentials: true,
   methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
 };
