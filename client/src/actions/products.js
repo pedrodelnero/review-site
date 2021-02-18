@@ -12,8 +12,8 @@ const cookies = new Cookies();
 const token = cookies.get("token");
 
 const api = axios.create({
-  // baseURL: "https://delnero-review-app.herokuapp.com/products",
-  baseURL: "http://localhost:5000/products",
+  baseURL: "https://delnero-review-site.herokuapp.com/products",
+  // baseURL: "http://localhost:5000/products",
   headers: { Authorization: `Bearer ${token}` },
 });
 
