@@ -8,7 +8,7 @@
     "client": "npm start ---prefix client",
     "server": "env-cmd -f ./dev.env nodemon server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "npm run server"
+    "start": "node server.js"
   },
   "author": "PDN",
   "license": "MIT",
