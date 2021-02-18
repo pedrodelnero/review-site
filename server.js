@@ -6,7 +6,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8080;
 import "./db/mongoose.js";
 
 var corsOptions = {
@@ -21,4 +20,4 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", routes);
 
-app.listen(port, () => console.log(`Sever up on port ${port}`));
+app.listen(process.env.PORT || 8080, () => console.log(`Sever is connected`));
