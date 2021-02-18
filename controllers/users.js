@@ -25,7 +25,6 @@ export const createUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email);
 
   try {
     const user = await User.findByCredentials(email, password);
@@ -87,7 +86,7 @@ export const updateUser = async (req, res) => {
           message: "User successfully updated.",
         });
   } catch (error) {
-    console.log(error.message);
+    // console.log(error.message);
     res.status(500).json({ messages: error.message });
   }
 };
