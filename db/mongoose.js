@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
+const uri = `'mongodb+srv://pedrod:${process.env.MONGODB_PW}@productreview.iwb5l.gcp.mongodb.net/test?retryWrites=true&w=majority'`;
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect(uri, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
