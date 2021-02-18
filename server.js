@@ -2,9 +2,12 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import routes from "./routes/routers.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8080;
+import "./db/mongoose.js";
 
 var corsOptions = {
   origin: ["http://localhost:3000", "https://delnero-review-site.netlify.app/"],

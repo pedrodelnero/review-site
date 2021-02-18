@@ -1,15 +1,11 @@
-import mongoose from 'mongoose';
-
-const url = 'mongodb+srv://pedrod:product1@productreview.iwb5l.gcp.mongodb.net/test';
+import mongoose from "mongoose";
 
 mongoose
-  .connect(url, {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
-  .then(() => console.log('DB Connected'))
-  .catch(err => console.log(`Error: ${err}`))
-
-export default url;
+  .then(() => console.log("DB Connected"))
+  .catch((err) => console.log(`Error: ${err}`));

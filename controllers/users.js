@@ -1,7 +1,6 @@
 import Review from "../models/review.model.js";
 import Product from "../models/product.model.js";
 import User from "../models/user.model.js";
-// import bcrypt from 'bcryptjs';
 
 export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -50,21 +49,6 @@ export const logoutUser = async (req, res) => {
   }
 };
 
-// export const deleteUser1 = async (req, res) => {
-//     const { products, reviews, _id } = req.user;
-
-//     user.remove((err) => {
-//         if(!err) {
-//             Product.update({ _id: { $in: products }}, { $pull: { project: project._id }},
-//                              (err, numberAffected) => {
-//                              console.log(numberAffected);
-//                        }) else {
-//                          console.log(err);
-//                      }
-//                    });
-//              });
-//  }
-
 export const updateUser = async (req, res) => {
   const { user } = req;
   const { currentPassword, newPassword, confirmNewPassword } = req.body;
@@ -86,7 +70,6 @@ export const updateUser = async (req, res) => {
           message: "User successfully updated.",
         });
   } catch (error) {
-    // console.log(error.message);
     res.status(500).json({ messages: error.message });
   }
 };

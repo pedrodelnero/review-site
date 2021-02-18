@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "client": "npm start ---prefix client",
-    "server": "env-cmd -f ./config/dev.env nodemon server.js",
+    "server": "env-cmd -f ./dev.env nodemon server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "PDN",
@@ -17,6 +17,7 @@
     "body-parser": "^1.19.0",
     "concurrently": "^5.3.0",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.0",
