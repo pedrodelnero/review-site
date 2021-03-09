@@ -1,18 +1,18 @@
-import axios from "axios";
-import Cookies from "universal-cookie";
+import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 import {
   GET_REVIEWS,
   ADD_REVIEW,
   DELETE_REVIEW,
-} from "../constants/actionTypes";
+} from '../constants/actionTypes';
 
 const cookies = new Cookies();
-const token = cookies.get("token");
+const token = cookies.get('token');
 
 const api = axios.create({
-  baseURL: "https://delnero-review-site.herokuapp.com/products",
-  // baseURL: "http://localhost:5000/products",
+  // baseURL: 'https://delnero-review-site.herokuapp.com/products',
+  baseURL: 'http://localhost:5000/products',
   headers: { Authorization: `Bearer ${token}` },
 });
 
@@ -41,7 +41,6 @@ export const deleteReview = (pID, rID) => async (dispatch) => {
     await api.delete(`/${pID}/reviews/${rID}`);
 
     dispatch({ type: DELETE_REVIEW, payload: rID });
-    dispatch(getReviews());
   } catch (e) {
     console.log(e.message);
   }

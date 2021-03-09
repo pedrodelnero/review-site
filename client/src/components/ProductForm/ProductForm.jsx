@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import FileBase from "react-file-base64";
-import { TextField, Button, Typography } from "@material-ui/core/";
-import { useDispatch, useSelector } from "react-redux";
-import Cookies from "universal-cookie";
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import FileBase from 'react-file-base64';
+import { TextField, Button, Typography } from '@material-ui/core/';
+import { useDispatch, useSelector } from 'react-redux';
+import Cookies from 'universal-cookie';
 
-import useStyles from "./styles.js";
-import { addProduct, updateProduct } from "../../actions/products";
+import useStyles from './styles.js';
+import { addProduct, updateProduct } from '../../actions/product';
 
 const cookies = new Cookies();
-const token = cookies.get("token");
+const token = cookies.get('token');
 
 const ProductForm = () => {
   const classes = useStyles();
@@ -17,14 +17,14 @@ const ProductForm = () => {
   const product = useSelector((state) =>
     state.products.find((product) => product._id === id)
   );
-  const [name, setName] = useState(product?.name || "");
-  const [brand, setBrand] = useState(product?.brand || "");
-  const [model, setModel] = useState(product?.model || "");
-  const [description, setDescription] = useState(product?.description || "");
-  const [image, setImage] = useState(product?.image || "");
+  const [name, setName] = useState(product?.name || '');
+  const [brand, setBrand] = useState(product?.brand || '');
+  const [model, setModel] = useState(product?.model || '');
+  const [description, setDescription] = useState(product?.description || '');
+  const [image, setImage] = useState(product?.image || '');
   const dispatch = useDispatch();
 
-  if (!token) window.location.href = "/sign-in";
+  if (!token) window.location.href = '/sign-in';
 
   const handleSubmit = (e) => {
     id
@@ -35,7 +35,7 @@ const ProductForm = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h3" className="title">
-        {id ? "Edit product" : "Add product"}
+        {id ? 'Edit product' : 'Add product'}
       </Typography>
       <div className={classes.paper}>
         <form className={classes.container}>
@@ -75,7 +75,7 @@ const ProductForm = () => {
           </div>
         </form>
         <Button className={classes.button} onClick={handleSubmit}>
-          {id ? "Edit product" : "Create product"}
+          {id ? 'Edit product' : 'Create product'}
         </Button>
       </div>
     </div>

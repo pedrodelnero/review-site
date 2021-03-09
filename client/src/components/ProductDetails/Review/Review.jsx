@@ -1,34 +1,46 @@
-import React from "react";
-// import React, { useEffect } from 'react';
-import { Typography } from "@material-ui/core/";
-import Rating from "@material-ui/lab/Rating";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Cookies from 'universal-cookie';
+import { Button, Popover, Typography } from '@material-ui/core/';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Rating from '@material-ui/lab/Rating';
 
-import useStyles from "./styles.js";
-// import { deleteReview } from '../../../actions/reviews';
+import useStyles from './styles.js';
+import { deleteReview } from '../../../actions/reviews';
 
-const Review = ({ prodId, review: { _id, author, rating, content } }) => {
+const cookies = new Cookies();
+
+const Review = ({
+  prodId: pID,
+  review: { _id: rID, authorID, rating, content, author },
+  getReviews,
+}) => {
   const classes = useStyles();
-  // const { isLoggedIn } = useSelector(state => state).user;
-  // const [authorized, setAuthorized ] = useState(false);
-  // const cookies = new Cookies();
-  // const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector((state) => state.user);
+  const [authorized, setAuthorized] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  // if (isLoggedIn) {
-  //   (cookies.get('user').name === author) ? setAuthorized(true) : setAuthorized(false)
-  // } else {
-  //   setAuthorized(false)
-  // }
+  useEffect(() => {
+    if (isLoggedIn) {
+      cookies.get('user') === authorID
+        ? setAuthorized(true)
+        : setAuthorized(false);
+    } else {
+      setAuthorized(false);
+    }
+  }, [authorID, isLoggedIn]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  const handleDeleteReview = () => {
+    dispatch(deleteReview(pID, rID));
+    setAnchorEl(null);
+    dispatch(getReviews(pID));
+  };
 
-  // const removeReview = (pID, rID) => {
-  //   dispatch(deleteReview(pID, rID));
-  // }
+  const id = !!anchorEl ? 'simple-popover' : undefined;
 
   return (
-    <div key={_id} className={classes.root}>
+    <div key={rID} className={classes.root}>
       <Typography
         variant="body1"
         color="textSecondary"
@@ -40,6 +52,34 @@ const Review = ({ prodId, review: { _id, author, rating, content } }) => {
       <Typography variant="body1" style={{ padding: 0, lineHeight: 1 }}>
         {content}
       </Typography>
+      {authorized && (
+        <DeleteIcon
+          aria-describedby={id}
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+        />
+      )}
+      <Popover
+        id={id}
+        open={!!anchorEl}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleDeleteReview}
+        >
+          Delete Review
+        </Button>
+      </Popover>
     </div>
   );
 };

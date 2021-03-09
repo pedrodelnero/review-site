@@ -7,7 +7,7 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     width: '100%',
   },
-  
+
   content: {
     display: 'flex',
     alignItems: 'center',
@@ -18,18 +18,18 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(1),
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
-    }, 
+    },
   },
   image: {
     borderRadius: '30px',
     [theme.breakpoints.up('sm')]: {
       maxHeight: '300px',
       maxWidth: '300px',
-    }, 
+    },
     [theme.breakpoints.down('sm')]: {
       maxHeight: '200',
       maxWidth: '200px',
-    }, 
+    },
   },
   details: {
     display: 'flex',
@@ -42,12 +42,12 @@ export default makeStyles((theme) => ({
       justifyContent: 'center',
       marginRight: theme.spacing(5),
       fontSize: '300%',
-    }, 
+    },
     [theme.breakpoints.down('xs')]: {
       alignItems: 'center',
       marginTop: theme.spacing(3),
       fontSize: '150%',
-    }, 
+    },
     '& .prodName': {
       color: 'red',
       fontWeight: '600',
@@ -55,32 +55,32 @@ export default makeStyles((theme) => ({
         textAlign: 'end',
         justifyItem: 'flex-start',
         fontSize: '100%',
-      }, 
+      },
       [theme.breakpoints.down('xs')]: {
         padding: theme.spacing(0, 3),
         textAlign: 'center',
         fontSize: '110%',
-      }, 
+      },
     },
     '& .author': {
       display: 'flex',
       textAlign: 'end',
       // color: 'red'
-    }
+    },
   },
   detailButtons: {
     display: 'flex',
     [theme.breakpoints.up('sm')]: {
       marginTop: 'auto',
-    }, 
+    },
     [theme.breakpoints.down('xs')]: {
       marginTop: theme.spacing(5),
       width: '100%',
       justifyContent: 'center',
-    }, 
+    },
     '& .MuiButton-root': {
       borderRadius: '20px',
-      marginLeft: theme.spacing(1)
+      marginLeft: theme.spacing(1),
     },
     '& .editButton': {
       border: '1px solid #F69560',
@@ -101,21 +101,22 @@ export default makeStyles((theme) => ({
         height: '95px',
         width: '95px',
         borderRadius: '50%',
-      },  
+      },
       '& MuiButton-label': {
-        wordWrap: 'normal'
-      }
-    }
+        wordWrap: 'normal',
+      },
+    },
   },
   reviewForm: {
     display: 'flex',
     flexDirection: 'column',
+    marginBottom: theme.spacing(2),
     [theme.breakpoints.down('xs')]: {
       width: '100%',
-    },  
+    },
     [theme.breakpoints.up('sm')]: {
       width: '500px',
-    },  
+    },
     '& .MuiRating-root': {
       marginBottom: '10px',
     },
@@ -123,13 +124,13 @@ export default makeStyles((theme) => ({
       backgroundColor: 'white',
       border: '1px solid #C61362',
       borderRadius: '8px',
-      marginBottom: '10px',   
+      marginBottom: '10px',
       '& .MuiInputBase-input': {
         margin: '5px',
-      }
+      },
     },
     '& .MuiButton-root': {
       width: '95px',
-    }
+    },
   },
 }));

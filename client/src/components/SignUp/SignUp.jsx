@@ -1,34 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Button, CssBaseline, TextField, Link, Grid, Box, Typography, Container } from '@material-ui/core';
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Alert from '@material-ui/lab/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useStyles from './styles';
-import { signUp } from "../../actions/user";
+import { signUp } from '../../actions/user';
 
 const SignUp = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.user);
+  const { user } = useSelector((state) => state.user);
   const errorMessage = useSelector((state) => state.error);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  // const cookies = new Cookies();
-  
-  const [errorMessages] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessages] = useState('');
   const classes = useStyles();
 
   useEffect(() => {
-    if (user.name) {
-      window.location.href = '/';
-    }
+    if (user.name) window.location.href = '/';
   }, [user]);
- 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(signUp(name, email, password));
-  }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -38,7 +44,9 @@ const SignUp = () => {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">Sign up</Typography>
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -51,7 +59,7 @@ const SignUp = () => {
                 name="name"
                 autoComplete="name"
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -66,7 +74,7 @@ const SignUp = () => {
                 name="email"
                 autoComplete="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -82,7 +90,7 @@ const SignUp = () => {
                 id="password"
                 autoComplete="current-password"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
           </Grid>
@@ -116,6 +124,6 @@ const SignUp = () => {
       </Box>
     </Container>
   );
-}
+};
 
 export default SignUp;
