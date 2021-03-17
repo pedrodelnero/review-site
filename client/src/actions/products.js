@@ -17,7 +17,7 @@ export const getProducts = () => async (dispatch) => {
     const { data: products } = await api.get('/');
 
     dispatch({ type: GET_PRODUCTS, payload: products });
-  } catch (e) {
-    console.log(e.message);
+  } catch (err) {
+    console.log(err.message);
   }
 };

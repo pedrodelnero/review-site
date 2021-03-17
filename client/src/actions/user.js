@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Cookies from 'universal-cookie';
 
 import {
   GET_USER,
@@ -14,13 +13,10 @@ import {
   FAIL_UPDATE_PASSWORD,
 } from '../constants/actionTypes';
 
-const cookies = new Cookies();
-const token = cookies.get('token');
-
 const userAPI = axios.create({
   // baseURL: 'https://delnero-review-site.herokuapp.com/user',
   baseURL: 'http://localhost:5000/user',
-  headers: { Authorization: `Bearer ${token}` },
+  withCredentials: true,
 });
 
 export const getUser = () => async (dispatch) => {
@@ -28,21 +24,18 @@ export const getUser = () => async (dispatch) => {
     const { data: user } = await userAPI.get('/');
 
     dispatch({ type: GET_USER, payload: user });
-  } catch (e) {
-    console.log(e.message);
+  } catch (err) {
+    console.log('Act', err.response.data.message);
   }
 };
 
 export const signUp = (name, email, password) => async (dispatch) => {
   try {
     const {
-      data: { token, user },
+      data: { id },
     } = await userAPI.post('/', { name, email, password });
 
-    cookies.set('token', token, { path: '/' });
-    cookies.set('user', user, { path: '/' });
-
-    dispatch({ type: SIGN_UP, payload: user });
+    dispatch({ type: SIGN_UP, payload: id });
   } catch (err) {
     dispatch({
       type: FAIL_SIGN_UP,
@@ -53,14 +46,10 @@ export const signUp = (name, email, password) => async (dispatch) => {
 
 export const signIn = (email, password) => async (dispatch) => {
   try {
-    const {
-      data: { token, id },
-    } = await userAPI.post('/login', { email, password });
+    const { data } = await userAPI.post('/login', { email, password });
 
-    cookies.set('token', token, { path: '/' });
-    cookies.set('user', id, { path: '/' });
-
-    dispatch({ type: SIGN_IN, payload: id });
+    dispatch({ type: SIGN_IN, payload: data });
+    window.location.href = '/';
   } catch (err) {
     dispatch({
       type: FAIL_SIGN_IN,
@@ -72,9 +61,6 @@ export const signIn = (email, password) => async (dispatch) => {
 export const signOut = () => async (dispatch) => {
   try {
     const { data } = await userAPI.post('/logout');
-
-    cookies.remove('token', { path: '/' });
-    cookies.remove('user', { path: '/' });
 
     window.location.href = '/';
 
@@ -118,9 +104,6 @@ export const deleteUser = () => async (dispatch) => {
       data: { user },
     } = await userAPI.delete('/me');
     console.log(user);
-
-    cookies.remove('token', { path: '/' });
-    cookies.remove('user', { path: '/' });
 
     dispatch({ type: DELETE_USER, payload: user });
   } catch (e) {

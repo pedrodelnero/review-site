@@ -13,6 +13,7 @@ const token = cookies.get('token');
 const api = axios.create({
   // baseURL: 'https://delnero-review-site.herokuapp.com/products',
   baseURL: 'http://localhost:5000/products',
+  withCredentials: true,
   headers: { Authorization: `Bearer ${token}` },
 });
 
@@ -21,8 +22,8 @@ export const getReviews = (id) => async (dispatch) => {
     const { data } = await api.get(`/${id}/reviews`);
 
     dispatch({ type: GET_REVIEWS, payload: data });
-  } catch (e) {
-    console.log(e.message);
+  } catch (err) {
+    console.log(err.message);
   }
 };
 
@@ -31,8 +32,8 @@ export const addReview = (id, review) => async (dispatch) => {
     const { data } = await api.post(`/${id}/reviews`, review);
 
     dispatch({ type: ADD_REVIEW, payload: data });
-  } catch (e) {
-    console.log(e.message);
+  } catch (err) {
+    console.log(err.message);
   }
 };
 
@@ -41,8 +42,8 @@ export const deleteReview = (pID, rID) => async (dispatch) => {
     await api.delete(`/${pID}/reviews/${rID}`);
 
     dispatch({ type: DELETE_REVIEW, payload: rID });
-  } catch (e) {
-    console.log(e.message);
+  } catch (err) {
+    console.log(err.message);
   }
 };
 

@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 
 import {
   createProduct,
@@ -6,14 +6,15 @@ import {
   getProductById,
   updateProductById,
   deleteProductById,
-} from "../controllers/products.js";
+  getAvgStarReview,
+} from '../controllers/products.js';
 import {
   createReview,
   getReviews,
   getReviewById,
   updateReviewById,
   deleteReviewById,
-} from "../controllers/reviews.js";
+} from '../controllers/reviews.js';
 import {
   createUser,
   loginUser,
@@ -21,32 +22,38 @@ import {
   updateUser,
   deleteUser,
   getUser,
-} from "../controllers/users.js";
-import getProd from "../middleware/getProd.js";
-import auth from "../middleware/auth.js";
+} from '../controllers/users.js';
+import getProd from '../middleware/getProd.js';
+import { validateToken } from '../middleware/auth.js';
 
 const router = new express.Router();
 
 // Product
-router.get("/products", getProducts);
-router.post("/products", auth, createProduct);
-router.get("/products/:id", getProductById);
-router.patch("/products/:id", auth, updateProductById);
-router.delete("/products/:id", auth, deleteProductById);
+router.get('/products', getProducts);
+router.post('/products', validateToken, createProduct);
+router.get('/products/:id', getProductById);
+router.patch('/products/:id', validateToken, updateProductById);
+router.delete('/products/:id', validateToken, deleteProductById);
+router.get('/products/:id/avgStarReview', getAvgStarReview);
 
 // Reviews
-router.get("/products/:pID/reviews", getProd, getReviews);
-router.post("/products/:id/reviews", auth, createReview);
-router.get("/products/reviews/:rID", getReviewById);
-router.patch("/products/reviews/:rID", auth, updateReviewById);
-router.delete("/products/:pID/reviews/:rID", auth, getProd, deleteReviewById);
+router.get('/products/:pID/reviews', getProd, getReviews);
+router.post('/products/:id/reviews', validateToken, createReview);
+router.get('/products/reviews/:rID', getReviewById);
+router.patch('/products/reviews/:rID', validateToken, updateReviewById);
+router.delete(
+  '/products/:pID/reviews/:rID',
+  validateToken,
+  getProd,
+  deleteReviewById
+);
 
 // Users
-router.post("/user", createUser);
-router.post("/user/login", loginUser);
-router.post("/user/logout", auth, logoutUser);
-router.patch("/user/me", auth, updateUser);
-router.delete("/user/me", auth, deleteUser);
-router.get("/user", auth, getUser);
+router.post('/user', createUser);
+router.post('/user/login', loginUser);
+router.post('/user/logout', validateToken, logoutUser);
+router.patch('/user/me', validateToken, updateUser);
+router.delete('/user/me', validateToken, deleteUser);
+router.get('/user', validateToken, getUser);
 
 export default router;

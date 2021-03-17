@@ -1,26 +1,29 @@
-import jwt from "jsonwebtoken";
-import User from "../models/user.model.js";
+import jwt from 'jsonwebtoken';
+import User from '../models/user.model.js';
 
-const auth = async (req, res, next) => {
+export const validateToken = async (req, res, next) => {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
+    const token = req.cookies.token;
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (!token) throw new Error('Not authenticated');
+
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findOne({
-      _id: decoded._id,
-      "tokens.token": token,
+      _id: decodedToken._id,
     });
 
-    if (!user) throw new Error();
+    if (!user) throw new Error('No user found with this token');
 
     req.token = token;
     req.user = user;
-
     next();
   } catch (error) {
-    res.status(401).json({ error: "Please authenticate." });
+    res.status(500).json({ message: error.message });
   }
 };
 
-export default auth;
+export const createToken = (id) => {
+  const token = jwt.sign({ _id: id.toString() }, process.env.JWT_SECRET);
+  return token;
+};

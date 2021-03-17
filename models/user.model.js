@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
-import validator from "validator";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import validate from "mongoose-validator";
+import mongoose from 'mongoose';
+import validator from 'validator';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import validate from 'mongoose-validator';
 
 const userSchema = mongoose.Schema({
   name: {
@@ -17,21 +17,13 @@ const userSchema = mongoose.Schema({
     required: true,
     trim: true,
     lowercase: true,
-    validate: [validator.isEmail, "Enter a valid email address."],
+    validate: [validator.isEmail, 'Enter a valid email address.'],
   },
   password: {
     type: String,
-    required: [true, "Enter a password."],
-    minlength: [6, "Password must be at least 6 characters long"],
+    required: [true, 'Enter a password.'],
+    minlength: [6, 'Password must be at least 6 characters long'],
   },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
   avatar: {
     type: Buffer,
   },
@@ -42,13 +34,13 @@ const userSchema = mongoose.Schema({
   products: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
+      ref: 'Product',
     },
   ],
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Review",
+      ref: 'Review',
     },
   ],
 });
@@ -57,11 +49,11 @@ const userSchema = mongoose.Schema({
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
 
-  if (!user) throw new Error("No account found with this email");
+  if (!user) throw new Error('No account found with this email');
 
   const isMatch = await bcrypt.compare(password, user.password);
 
-  if (!isMatch) throw new Error("Wrong password");
+  if (!isMatch) throw new Error('Wrong password');
 
   return user;
 };
@@ -70,12 +62,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
-
-  user.tokens = user.tokens.concat({ token });
-  await user.save();
-
-  // we have connect the token to the user....
-
   return token;
 };
 
@@ -90,16 +76,16 @@ userSchema.methods.updatePassword = async function (
     const hashedNewPassword = await bcrypt.hash(newPassword, 8);
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
-    if (!isMatch) throw new Error("You entered the wrong password.");
+    if (!isMatch) throw new Error('You entered the wrong password.');
 
     const isConfirmedSame = await bcrypt.compare(
       confirmNewPassword,
       hashedNewPassword
     );
-    if (!isConfirmedSame) throw new Error("The passwords do not match.");
+    if (!isConfirmedSame) throw new Error('The passwords do not match.');
 
     const isOld = await bcrypt.compare(newPassword, user.password);
-    if (isOld) throw new Error("Must be a new password.");
+    if (isOld) throw new Error('Must be a new password.');
 
     return hashedNewPassword;
   } catch (error) {
@@ -108,16 +94,16 @@ userSchema.methods.updatePassword = async function (
 };
 
 // A middleware function that happens before 'save'
-userSchema.pre("save", async function (next) {
+userSchema.pre('save', async function (next) {
   const user = this;
 
-  if (user.isModified("password")) {
+  if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8);
   }
 
   next();
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 export default User;

@@ -1,29 +1,30 @@
 import axios from 'axios';
-import Cookies from 'universal-cookie';
 
 import {
   GET_PRODUCT,
   ADD_PRODUCT,
   DELETE_PRODUCT,
   UPDATE_PRODUCT,
+  GET_PRODUCT_AVR_RATING,
 } from '../constants/actionTypes';
-
-const cookies = new Cookies();
-const token = cookies.get('token');
 
 const api = axios.create({
   // baseURL: 'https://delnero-review-site.herokuapp.com/products',
   baseURL: 'http://localhost:5000/products',
-  headers: { Authorization: `Bearer ${token}` },
+  withCredentials: true,
 });
 
 export const getProduct = (id) => async (dispatch) => {
-  const { data: product } = await api.get(`/${id}`);
-  const { data: reviews } = await api.get(`/${product._id}/reviews`);
+  try {
+    const { data: product } = await api.get(`/${id}`);
+    const { data: reviews } = await api.get(`/${product._id}/reviews`);
 
-  product.reviews = reviews;
+    product.reviews = reviews;
 
-  dispatch({ type: GET_PRODUCT, payload: product });
+    dispatch({ type: GET_PRODUCT, payload: product });
+  } catch (err) {
+    console.log(err.response.data.message);
+  }
 };
 
 export const addProduct = (product) => async (dispatch) => {
@@ -33,8 +34,8 @@ export const addProduct = (product) => async (dispatch) => {
     window.location.href = '/';
 
     dispatch({ type: ADD_PRODUCT, payload: data });
-  } catch (e) {
-    console.log(e.message);
+  } catch (err) {
+    console.log(err.response.data.message);
   }
 };
 
@@ -56,5 +57,19 @@ export const updateProduct = (id, product) => async (dispatch) => {
     dispatch({ type: UPDATE_PRODUCT, payload: data });
   } catch (e) {
     console.log(e.message);
+  }
+};
+
+export const getAveStarReview = (pID) => async (dispatch) => {
+  try {
+    const {
+      data: { average },
+    } = await api.get(`/${pID}/avgStarReview/`);
+
+    console.log('review act', average);
+
+    dispatch({ type: GET_PRODUCT_AVR_RATING, payload: average });
+  } catch (err) {
+    console.log(err.message);
   }
 };

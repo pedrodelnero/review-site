@@ -1,6 +1,12 @@
-import Review from "../models/review.model.js";
-import Product from "../models/product.model.js";
-import User from "../models/user.model.js";
+import Review from '../models/review.model.js';
+import Product from '../models/product.model.js';
+import User from '../models/user.model.js';
+import { createToken } from '../middleware/auth.js';
+
+const optionCookie = {
+  maxAge: 60 * 60 * 30 * 1000,
+  httpOnly: true,
+};
 
 export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -8,15 +14,15 @@ export const createUser = async (req, res) => {
   try {
     let user = await User.findOne({ email });
 
-    if (user) return res.status(400).send({ message: "User Already Exists" });
+    if (user) return res.status(400).send({ message: 'User Already Exists' });
 
     user = new User({ name, email, password });
 
     await user.save();
 
-    const token = await user.generateAuthToken();
-    // sendWelcomeEmail(user.email, user.name);
-    res.status(201).send({ user, token });
+    const token = createToken(user._id);
+
+    res.cookie('token', token, optionCookie).send({ id: user._id });
   } catch (error) {
     res.status(500).send({ messages: error.message });
   }
@@ -27,30 +33,25 @@ export const loginUser = async (req, res) => {
 
   try {
     const user = await User.findByCredentials(email, password);
-    const token = await user.generateAuthToken();
+    const token = createToken(user._id);
 
-    res.send({ user, token });
+    res.cookie('token', token, optionCookie).send({ id: user._id });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ messages: error.message });
   }
 };
 
 export const logoutUser = async (req, res) => {
   try {
-    req.user.tokens = req.user.tokens.filter(
-      (token) => token.token !== req.token
-    );
-
-    await req.user.save();
-
-    res.json({ message: "Logged out" });
+    res.clearCookie('token').json({ message: 'Logged out' });
   } catch (error) {
     res.status(500).send({ messages: error.message });
   }
 };
 
 export const updateUser = async (req, res) => {
-  const { user } = req;
+  const user = req.user;
   const { currentPassword, newPassword, confirmNewPassword } = req.body;
 
   try {
@@ -64,10 +65,10 @@ export const updateUser = async (req, res) => {
     });
 
     !updatedUser
-      ? res.status(404).json({ error: "No user with ID provided" })
+      ? res.status(404).json({ error: 'No user with ID provided' })
       : res.status(200).json({
           user: updatedUser,
-          message: "User successfully updated.",
+          message: 'User successfully updated.',
         });
   } catch (error) {
     res.status(500).json({ messages: error.message });
@@ -107,7 +108,7 @@ export const deleteUser = async (req, res) => {
 
     await User.findByIdAndRemove(_id);
     // sendCancellationEmail(req.user.email, req.user.name)
-    res.send({ message: "user deleted" });
+    res.send({ message: 'user deleted' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -116,11 +117,13 @@ export const deleteUser = async (req, res) => {
 export const getUser = async (req, res) => {
   const user = req.user;
 
-  await user.populate("products").populate("reviews").execPopulate();
+  await user.populate('products').populate('reviews').execPopulate();
+
+  const { _id, name, email, products, reviews } = user;
 
   try {
-    res.send(user);
+    res.send({ _id, name, email, products, reviews });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
