@@ -3,13 +3,9 @@ import { useParams } from 'react-router-dom';
 import FileBase from 'react-file-base64';
 import { TextField, Button, Typography } from '@material-ui/core/';
 import { useDispatch, useSelector } from 'react-redux';
-import Cookies from 'universal-cookie';
 
 import useStyles from './styles.js';
 import { addProduct, updateProduct } from '../../actions/product';
-
-const cookies = new Cookies();
-const token = cookies.get('token');
 
 const ProductForm = () => {
   const classes = useStyles();
@@ -17,6 +13,7 @@ const ProductForm = () => {
   const product = useSelector((state) =>
     state.products.find((product) => product._id === id)
   );
+  const { isLoggedIn } = useSelector((state) => state.user);
   const [name, setName] = useState(product?.name || '');
   const [brand, setBrand] = useState(product?.brand || '');
   const [model, setModel] = useState(product?.model || '');
@@ -24,7 +21,7 @@ const ProductForm = () => {
   const [image, setImage] = useState(product?.image || '');
   const dispatch = useDispatch();
 
-  if (!token) window.location.href = '/sign-in';
+  if (!isLoggedIn) window.location.href = '/sign-in';
 
   const handleSubmit = (e) => {
     id

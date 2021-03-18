@@ -59,12 +59,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
 };
 
 // Method - You can call created methods on instances of a schema
-userSchema.methods.generateAuthToken = async function () {
-  const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
-  return token;
-};
-
 userSchema.methods.updatePassword = async function (
   currentPassword,
   newPassword,

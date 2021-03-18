@@ -1,6 +1,6 @@
-import Product from "../models/product.model.js";
-import Review from "../models/review.model.js";
-import User from "../models/user.model.js";
+import Product from '../models/product.model.js';
+import Review from '../models/review.model.js';
+import User from '../models/user.model.js';
 
 export const getProducts = async (req, res) => {
   try {
@@ -45,7 +45,7 @@ export const getProductById = async (req, res) => {
     const product = await Product.findById(id);
 
     !product
-      ? res.status(404).json({ error: "No product with ID provided" })
+      ? res.status(404).json({ error: 'No product with ID provided' })
       : res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -62,39 +62,27 @@ export const updateProductById = async (req, res) => {
     });
 
     !updatedProduct
-      ? res.status(404).json({ error: "No product with ID provided" })
+      ? res.status(404).json({ error: 'No product with ID provided' })
       : res.status(200).json({
           product: updatedProduct,
-          message: "Product successfully updated.",
+          message: 'Product successfully updated.',
         });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-const deleteProduct = async (req, res) => {
-  Product.findById(req.params.id, (err, product) => {
-    product.remove((err) => {
-      if (!err) Review.findByIdAndDelete({ $in: product.reviews });
-    });
-  });
-};
-
 export const deleteProductById = async (req, res) => {
   const { id } = req.params;
   const { products } = req.user;
-
-  // const product = await Product.findById(id);
-  // await Review.deleteMany({ _id: { $in: product.reviews }});
-  // await product.remove();
 
   try {
     const product = await Product.findById(id);
 
     if (!product) {
-      res.status(404).json({ error: "No product with ID provided" });
+      res.status(404).json({ error: 'No product with ID provided' });
     } else if (products.indexOf(id) === -1) {
-      res.status(404).json({ error: "Not authorized for this action" });
+      res.status(404).json({ error: 'Not authorized for this action' });
     } else {
       for (let i = 0; i < product.reviews.length; i++) {
         const review = await Review.findById(product.reviews[i]);
@@ -110,7 +98,7 @@ export const deleteProductById = async (req, res) => {
 
       await Product.findByIdAndRemove(id);
 
-      res.status(200).json({ message: "Product successfully deleted." });
+      res.status(200).json({ message: 'Product successfully deleted.' });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -6,7 +6,6 @@ import {
   getProductById,
   updateProductById,
   deleteProductById,
-  getAvgStarReview,
 } from '../controllers/products.js';
 import {
   createReview,
@@ -34,7 +33,6 @@ router.post('/products', validateToken, createProduct);
 router.get('/products/:id', getProductById);
 router.patch('/products/:id', validateToken, updateProductById);
 router.delete('/products/:id', validateToken, deleteProductById);
-router.get('/products/:id/avgStarReview', getAvgStarReview);
 
 // Reviews
 router.get('/products/:pID/reviews', getProd, getReviews);

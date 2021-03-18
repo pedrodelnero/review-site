@@ -46,7 +46,7 @@ test('mocking axios POST request to add 1 review', async () => {
 
   await store.dispatch(addReview(1, mockAddReview));
   expect(store.getActions()).toEqual(expectedActions);
-  expect(mockAxios.get).toHaveBeenCalledTimes(1);
+  expect(mockAxios.post).toHaveBeenCalledTimes(1);
 });
 
 test('mocking axios DELETE request to delete 1 review', async () => {
@@ -69,5 +69,5 @@ test('mocking axios DELETE request to delete 1 review', async () => {
     )
   );
   expect(store.getActions()).toEqual(expectedActions);
-  expect(mockAxios.get).toHaveBeenCalledTimes(1);
+  expect(mockAxios.delete).toHaveBeenCalledTimes(1);
 });

@@ -1,25 +1,28 @@
-import express from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
-import routes from "./routes/routers.js";
-import "./db/mongoose.js";
-import dotenv from "dotenv";
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import routes from './routes/routers.js';
+import './db/mongoose.js';
+import dotenv from 'dotenv';
 dotenv.config();
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-var corsOptions = {
-  origin: ["http://localhost:3000", "https://delnero-review-site.netlify.app"],
+const corsOptions = {
+  origin: ['http://localhost:3000', 'https://delnero-review-site.netlify.app'],
   credentials: true,
-  methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
 };
 
 app.use(cors(corsOptions));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/", routes);
+app.use('/', routes);
 
-app.listen(PORT, () => console.log(`Sever is connected`));
+app.listen(PORT, () => console.log(`Sever is connected in ${PORT}`));

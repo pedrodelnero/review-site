@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Grid, Button, Popover, Typography } from '@material-ui/core';
+import { Button, Popover, Typography } from '@material-ui/core';
 
 import { Product, Review } from '../../components';
 import { deleteUser } from '../../actions/user';

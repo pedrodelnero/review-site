@@ -8,14 +8,11 @@ import {
   CircularProgress,
 } from '@material-ui/core/';
 import Rating from '@material-ui/lab/Rating';
-import Cookies from 'universal-cookie';
 
 import useStyles from './styles.js';
 import Review from './Review/Review';
 import { getProduct, deleteProduct } from '../../actions/product';
 import { addReview, getReviews } from '../../actions/reviews';
-
-const cookies = new Cookies();
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -24,9 +21,19 @@ const ProductDetails = () => {
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState('');
   const { product, reviews } = useSelector((state) => state);
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { isLoggedIn, user } = useSelector((state) => state.user);
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      user._id === product.authorID
+        ? setAuthorized(true)
+        : setAuthorized(false);
+    } else {
+      setAuthorized(false);
+    }
+  }, [isLoggedIn, product.authorID, user._id]);
 
   useEffect(() => {
     dispatch(getProduct(id));
@@ -34,16 +41,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     dispatch(getReviews(id));
-  }, [id, dispatch]);
-  useEffect(() => {
-    if (isLoggedIn) {
-      cookies.get('user') === product.authorID
-        ? setAuthorized(true)
-        : setAuthorized(false);
-    } else {
-      setAuthorized(false);
-    }
-  }, [isLoggedIn, product.authorID]);
+  }, [dispatch, id]);
 
   const removeProduct = () => dispatch(deleteProduct(id));
 
@@ -96,6 +94,12 @@ const ProductDetails = () => {
               Added by: {product.author}
             </Typography>
           )}
+          <Rating
+            name="simple-controlled"
+            value={product.averageRating}
+            precision={0.5}
+            readOnly
+          />
         </div>
       </div>
       <div className={classes.formButton}>

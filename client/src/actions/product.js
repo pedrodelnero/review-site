@@ -5,7 +5,6 @@ import {
   ADD_PRODUCT,
   DELETE_PRODUCT,
   UPDATE_PRODUCT,
-  GET_PRODUCT_AVR_RATING,
 } from '../constants/actionTypes';
 
 const api = axios.create({
@@ -57,19 +56,5 @@ export const updateProduct = (id, product) => async (dispatch) => {
     dispatch({ type: UPDATE_PRODUCT, payload: data });
   } catch (e) {
     console.log(e.message);
-  }
-};
-
-export const getAveStarReview = (pID) => async (dispatch) => {
-  try {
-    const {
-      data: { average },
-    } = await api.get(`/${pID}/avgStarReview/`);
-
-    console.log('review act', average);
-
-    dispatch({ type: GET_PRODUCT_AVR_RATING, payload: average });
-  } catch (err) {
-    console.log(err.message);
   }
 };

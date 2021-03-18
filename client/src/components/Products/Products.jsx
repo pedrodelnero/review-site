@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@material-ui/core";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-import Product from "./Product/Product";
-import useStyles from "./styles.js";
-import { getProducts } from "../../actions/products";
+import Product from './Product/Product';
+import useStyles from './styles.js';
+import { getProducts } from '../../actions/products';
 
 const Products = () => {
   const products = useSelector((state) => state.products);
@@ -19,10 +19,17 @@ const Products = () => {
 
   return (
     <div className={classes.root}>
-      <Button component={Link} to="/product" startIcon={<AddIcon />} className={classes.button} >Add Product</Button>
+      <Button
+        component={Link}
+        to="/product"
+        startIcon={<AddIcon />}
+        className={classes.button}
+      >
+        Add Product
+      </Button>
       <div className={classes.grid}>
-        {products.map((product, index) => (
-            <Product product={product} key={product._id} /> 
+        {products.map((product) => (
+          <Product product={product} key={product._id} />
         ))}
       </div>
     </div>

@@ -3,7 +3,6 @@ import {
   ADD_PRODUCT,
   DELETE_PRODUCT,
   UPDATE_PRODUCT,
-  GET_PRODUCT_AVR_RATING,
 } from '../constants/actionTypes';
 
 export default (product = {}, action) => {
@@ -13,8 +12,6 @@ export default (product = {}, action) => {
     case DELETE_PRODUCT:
     case UPDATE_PRODUCT:
       return action.payload;
-    case GET_PRODUCT_AVR_RATING:
-      return { ...product, avgRating: action.payload };
     default:
       return product;
   }

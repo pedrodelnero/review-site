@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-
 const productSchema = mongoose.Schema({
   name: {
     type: String,
@@ -28,15 +27,17 @@ const productSchema = mongoose.Schema({
   },
   authorID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
-  rating: {
+  averageRating: {
     type: Number,
   },
-  reviews: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Review',
-  }]
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Review',
+    },
+  ],
 });
 
 const Product = mongoose.model('Product', productSchema);
