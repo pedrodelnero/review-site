@@ -19,7 +19,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useStyles from './styles';
-import { signIn } from '../../actions/user';
+import { signIn, signInAsTrial } from '../../actions/user';
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -40,10 +40,14 @@ const SignIn = () => {
     dispatch(signIn(email, password));
   };
 
+  const doTrial = async (e) => {
+    dispatch(signInAsTrial());
+  };
+
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container maxWidth="xs">
       <CssBaseline />
       {!!errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       <div className={classes.paper}>
@@ -81,10 +85,6 @@ const SignIn = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button type="submit" fullWidth className={classes.button}>
             Sign In
           </Button>
@@ -101,15 +101,26 @@ const SignIn = () => {
             </Grid>
           </Grid>
         </form>
+        <div>
+          <hr height="4px" backgroundColor="Black" margin="10px" />
+        </div>
+        <div>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => doTrial()}
+          >
+            Use trial account
+          </Button>
+        </div>
       </div>
       <Box mt={8}>
         <Typography variant="body2" color="textSecondary" align="center">
           {'Copyright © '}
           <Link color="inherit" href="https://material-ui.com/">
             Your Website
-          </Link>{' '}
+          </Link>
           {new Date().getFullYear()}
-          {'.'}
         </Typography>
       </Box>
     </Container>

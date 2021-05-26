@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Avatar,
   Button,
@@ -7,20 +7,20 @@ import {
   Paper,
   Typography,
   Container,
-} from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Alert from "@material-ui/lab/Alert";
-import { useDispatch, useSelector } from "react-redux";
+} from '@material-ui/core';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Alert from '@material-ui/lab/Alert';
+import { useDispatch, useSelector } from 'react-redux';
 
-import useStyles from "./styles";
-import { updateUserPassword } from "../../../actions/user";
+import useStyles from './styles';
+import { updateUserPassword } from '../../../actions/user';
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
   const errorMessage = useSelector((state) => state.error);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [isError] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -52,7 +52,7 @@ const ChangePassword = () => {
             required
             fullWidth
             name="password"
-            label={!isError ? "Current password" : "Incorrect password"}
+            label={!isError ? 'Current password' : 'Incorrect password'}
             type="password"
             autoComplete="current-password"
             value={currentPassword}
@@ -65,7 +65,7 @@ const ChangePassword = () => {
             required
             fullWidth
             name="password"
-            label={!isError ? "New password" : "Incorrect password"}
+            label={!isError ? 'New password' : 'Incorrect password'}
             type="password"
             autoComplete="current-password"
             value={newPassword}
@@ -78,7 +78,7 @@ const ChangePassword = () => {
             required
             fullWidth
             name="password"
-            label={!isError ? "Confirm new password" : "Incorrect password"}
+            label={!isError ? 'Confirm new password' : 'Incorrect password'}
             type="password"
             autoComplete="current-password"
             value={confirmNewPassword}

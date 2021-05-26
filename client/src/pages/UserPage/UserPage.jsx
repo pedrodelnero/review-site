@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Popover, Typography } from '@material-ui/core';
 
-import { Product, Review } from '../../components';
+// import { Product, Review } from '../../components';
 import { deleteUser } from '../../actions/user';
 import useStyles from './styles.js';
 
@@ -67,7 +67,7 @@ const UserPage = () => {
         </Button>
       </Popover>
       <Typography variant="h5">Products you've added:</Typography>
-      {user.products &&
+      {/* {user.products &&
         (user.products.length > 0 ? (
           user.products.map((product) => (
             <Product product={product} key={product._id} />
@@ -83,7 +83,7 @@ const UserPage = () => {
           ))
         ) : (
           <Typography>none</Typography>
-        ))}
+        ))} */}
     </div>
   );
 };
