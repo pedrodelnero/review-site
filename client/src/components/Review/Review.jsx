@@ -6,7 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Rating from '@material-ui/lab/Rating';
 
 import useStyles from './styles.js';
-import { deleteReview } from '../../../actions/reviews';
+import { deleteReview } from '../../actions/reviews';
 
 const cookies = new Cookies();
 

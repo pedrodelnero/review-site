@@ -5,28 +5,27 @@ import {
   Box,
   Button,
   Container,
+  Modal,
   Paper,
-  TextField,
   Typography,
   CircularProgress,
 } from '@material-ui/core/';
 import Rating from '@material-ui/lab/Rating';
 
 import useStyles from './styles.js';
-import Review from './Review/Review';
+import { Review, ReviewModal } from '../../components';
 import { getProduct, deleteProduct } from '../../actions/product';
 import { addReview, getReviews } from '../../actions/reviews';
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const [isReviewBoxOpen, setIsReviewBoxOpen] = useState(false);
-  const [authorized, setAuthorized] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [content, setContent] = useState('');
-  const { product, reviews } = useSelector((state) => state);
-  const { isLoggedIn, user } = useSelector((state) => state.user);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { product, reviews } = useSelector((state) => state);
+  const { isLoggedIn, user } = useSelector((state) => state.user);
+  const [authorized, setAuthorized] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [starRating, setStarRating] = useState(0);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -48,12 +47,19 @@ const ProductDetails = () => {
 
   const removeProduct = () => dispatch(deleteProduct(id));
 
-  const submitReview = () => {
-    dispatch(addReview(id, { rating, content }));
-    setRating(0);
-    setContent('');
-    setIsReviewBoxOpen(false);
+  const handleOpen = () => {
+    setOpen(true);
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const createReview = (e, newValue) => {
+    setStarRating(newValue);
+    handleOpen();
+  };
+
   if (!product.name) return <CircularProgress />;
 
   return (
@@ -102,15 +108,21 @@ const ProductDetails = () => {
                 size="large"
                 variant="contained"
                 color="secondary"
+                onClick={handleOpen}
                 style={{
                   textTransform: 'none',
                 }}
               >
-                Review this product
+                Review
               </Button>
             </Box>
             <Box>
-              <Rating name="simple-controlled" precision={0.5} size="large" />
+              <Rating
+                name="simple-controlled"
+                precision={0.5}
+                size="large"
+                onChange={createReview}
+              />
             </Box>
           </Box>
         </Paper>
@@ -124,6 +136,9 @@ const ProductDetails = () => {
             />
           ))}
       </Box>
+      <Modal open={open} onClose={handleClose}>
+        <ReviewModal rating={starRating} closeModal={handleClose} />
+      </Modal>
     </Container>
   );
 };

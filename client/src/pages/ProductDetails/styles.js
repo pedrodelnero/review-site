@@ -9,6 +9,8 @@ export default makeStyles((theme) => ({
 
   product: {
     display: 'flex',
+    position: 'sticky',
+    top: 0,
     height: '200px',
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
@@ -47,6 +49,9 @@ export default makeStyles((theme) => ({
   },
   writeReview: {
     width: '500px',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
   },
   writeReviewCont: {
     // border: '1px solid red',
