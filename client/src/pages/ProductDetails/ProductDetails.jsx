@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  Box,
   Button,
+  Container,
+  Paper,
   TextField,
   Typography,
   CircularProgress,
@@ -54,108 +57,74 @@ const ProductDetails = () => {
   if (!product.name) return <CircularProgress />;
 
   return (
-    <div className={classes.root}>
-      <div className={classes.content}>
-        <div>
-          <img
-            alt=""
-            src={product.image || 'https://via.placeholder.com/150'}
-            title="Photo"
-            className={classes.image}
-          />
-        </div>
-        <div className={classes.details}>
-          <Typography className="prodName" variant="body1">
-            {product.name}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            Description
-          </Typography>
-          <Typography variant="body1">{product.description}</Typography>
-          {authorized ? (
-            <div className={classes.detailButtons}>
+    <Container className={classes.root}>
+      <Paper>
+        <Box
+          className={classes.product}
+          padding={(3, 3, 5, 3)}
+          margin={(0, 'auto')}
+        >
+          <Box>
+            <img
+              alt=""
+              src={product.image || 'https://via.placeholder.com/150'}
+              title="Photo"
+              className={classes.image}
+            />
+          </Box>
+          <Box className={classes.details}>
+            <Box component="section" className={classes.text}>
+              <Typography className="prodName" variant="h3">
+                {product.name}
+              </Typography>
+              <Typography className="numOfRev" variant="h6">
+                Reviews 23
+              </Typography>
+            </Box>
+            <Box className={classes.starReview}>
+              <Rating
+                name="simple-controlled"
+                value={product.averageRating}
+                precision={0.5}
+                readOnly
+                size="large"
+              />
+              <Typography>4.6</Typography>
+            </Box>
+          </Box>
+        </Box>
+      </Paper>
+      <Box className={classes.body}>
+        <Paper className={classes.writeReview} elevation={3}>
+          <Box className={classes.writeReviewCont}>
+            <Box>
               <Button
-                className="editButton"
-                component={Link}
-                to={`/product/${id}`}
+                size="large"
+                variant="contained"
+                color="secondary"
+                style={{
+                  textTransform: 'none',
+                }}
               >
-                Edit
+                Review this product
               </Button>
-              <Button className="deleteButton" onClick={removeProduct}>
-                Delete
-              </Button>
-            </div>
-          ) : (
-            <Typography
-              variant="body1"
-              color="textSecondary"
-              className="author"
-            >
-              Added by: {product.author}
-            </Typography>
-          )}
-          <Rating
-            name="simple-controlled"
-            value={product.averageRating}
-            precision={0.5}
-            readOnly
-          />
-        </div>
-      </div>
-      <div className={classes.formButton}>
-        {isLoggedIn ? (
-          <Button
-            size="large"
-            color="secondary"
-            variant="contained"
-            className="addReview"
-            onClick={() => setIsReviewBoxOpen(!isReviewBoxOpen)}
-          >
-            Write Review
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            className="signIn"
-            component={Link}
-            to="/sign-in"
-          >
-            Sign in to write review
-          </Button>
-        )}
-      </div>
-      {isReviewBoxOpen && (
-        <div className={classes.reviewForm}>
-          <Typography variant="h5">Rating</Typography>
-          <Rating
-            value={rating}
-            name="unique-rating"
-            onChange={(e, newValue) => setRating(newValue)}
-          />
-          <TextField
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            multiline
-            rows={4}
-            placeholder="Write your review..."
-            InputProps={{ disableUnderline: true }}
-          />
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => submitReview()}
-          >
-            Submit
-          </Button>
-        </div>
-      )}
-      {reviews.length > 0 &&
-        reviews.map((review) => (
-          <div className={classes.reviews} key={review._id}>
-            <Review review={review} prodId={id} getReviews={getReviews} />
-          </div>
-        ))}
-    </div>
+            </Box>
+            <Box>
+              <Rating name="simple-controlled" precision={0.5} size="large" />
+            </Box>
+          </Box>
+        </Paper>
+        {reviews.length > 0 &&
+          reviews.map((review) => (
+            <Review
+              review={review}
+              prodId={id}
+              key={review._id}
+              getReviews={getReviews}
+            />
+          ))}
+      </Box>
+    </Container>
   );
 };
 

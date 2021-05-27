@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Cookies from 'universal-cookie';
-import { Button, Popover, Typography } from '@material-ui/core/';
+import { Box, Button, Paper, Popover, Typography } from '@material-ui/core/';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Rating from '@material-ui/lab/Rating';
 
@@ -40,19 +40,19 @@ const Review = ({
   const id = !!anchorEl ? 'simple-popover' : undefined;
 
   return (
-    <div key={rID} className={classes.root}>
-      <Typography
-        variant="body1"
-        color="textSecondary"
-        style={{ padding: 0, lineHeight: 1 }}
-      >
-        {author}
-      </Typography>
-      <Rating value={rating} readOnly />
-      <Typography variant="body1" style={{ padding: 0, lineHeight: 1 }}>
-        {content}
-      </Typography>
-      {authorized && (
+    <Paper elevation={1} className={classes.root}>
+      <Box>
+        <Box className={classes.author}>
+          <Typography variant="h6" color="textSecondary">
+            {author}
+          </Typography>
+        </Box>
+        <Box className={classes.authorReview}>
+          <Rating value={rating} readOnly size="large" />
+          <Typography variant="body1">{content}</Typography>
+        </Box>
+      </Box>
+      {/* {authorized && (
         <DeleteIcon
           aria-describedby={id}
           onClick={(e) => setAnchorEl(e.currentTarget)}
@@ -79,8 +79,8 @@ const Review = ({
         >
           Delete Review
         </Button>
-      </Popover>
-    </div>
+      </Popover> */}
+    </Paper>
   );
 };
 
