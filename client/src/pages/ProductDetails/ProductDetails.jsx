@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+// import React, { useState, useEffect, createRef } from 'react';
+import React, { createRef, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
@@ -15,45 +16,40 @@ import Rating from '@material-ui/lab/Rating';
 import useStyles from './styles.js';
 import { Review, ReviewModal } from '../../components';
 import { getProduct, deleteProduct } from '../../actions/product';
-import { addReview, getReviews } from '../../actions/reviews';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { product, reviews } = useSelector((state) => state);
-  const { isLoggedIn, user } = useSelector((state) => state.user);
-  const [authorized, setAuthorized] = useState(false);
-  const [open, setOpen] = useState(false);
+  const revModalRef = createRef();
+  const { product } = useSelector((state) => state);
+  // const { isLoggedIn, user } = useSelector((state) => state.user);
+  // const [authorized, setAuthorized] = useState(false);
+  const [openReviewModal, setOpenReviewModal] = useState(false);
   const [starRating, setStarRating] = useState(0);
+  const [toRefresh, setToRefresh] = useState(false);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      user._id === product.authorID
-        ? setAuthorized(true)
-        : setAuthorized(false);
-    } else {
-      setAuthorized(false);
-    }
-  }, [isLoggedIn, product.authorID, user._id]);
+  console.log('prod details', toRefresh, product);
+
+  // useEffect(() => {
+  // if (isLoggedIn) {
+  //   user._id === product.authorID
+  //     ? setAuthorized(true)
+  //     : setAuthorized(false);
+  // } else {
+  //   setAuthorized(false);
+  // }
+  // }, []);
 
   useEffect(() => {
     dispatch(getProduct(id));
-  }, [id, dispatch]);
-
-  useEffect(() => {
-    dispatch(getReviews(id));
-  }, [dispatch, id]);
+  }, [id, dispatch, toRefresh]);
 
   const removeProduct = () => dispatch(deleteProduct(id));
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  const handleOpen = () => setOpenReviewModal(true);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpenReviewModal(false);
 
   const createReview = (e, newValue) => {
     setStarRating(newValue);
@@ -84,7 +80,7 @@ const ProductDetails = () => {
                 {product.name}
               </Typography>
               <Typography className="numOfRev" variant="h6">
-                Reviews 23
+                Reviews {product.reviews.length}
               </Typography>
             </Box>
             <Box className={classes.starReview}>
@@ -95,7 +91,7 @@ const ProductDetails = () => {
                 readOnly
                 size="large"
               />
-              <Typography>4.6</Typography>
+              <Typography>{product.averageRating}</Typography>
             </Box>
           </Box>
         </Box>
@@ -126,18 +122,26 @@ const ProductDetails = () => {
             </Box>
           </Box>
         </Paper>
-        {reviews.length > 0 &&
-          reviews.map((review) => (
+        {product.reviews.length > 0 &&
+          product.reviews.map((review) => (
             <Review
               review={review}
               prodId={id}
               key={review._id}
-              getReviews={getReviews}
+              refresh={() => setToRefresh(!toRefresh)}
             />
           ))}
       </Box>
-      <Modal open={open} onClose={handleClose}>
-        <ReviewModal rating={starRating} closeModal={handleClose} />
+      <Modal open={openReviewModal} onClose={handleClose}>
+        <>
+          <ReviewModal
+            ref={revModalRef}
+            rating={starRating}
+            closeModal={handleClose}
+            refreshVal={toRefresh}
+            refresh={() => setToRefresh(!toRefresh)}
+          />
+        </>
       </Modal>
     </Container>
   );

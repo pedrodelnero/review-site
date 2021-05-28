@@ -4,11 +4,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '150px',
     padding: theme.spacing(3, 5),
+    marginBottom: theme.spacing(1),
   },
-  author: {
+  revHeader: {
     borderBottom: '1px solid grey',
-    padding: theme.spacing(2, 3),
+    padding: theme.spacing(2, 1, 2, 3),
     marginBottom: theme.spacing(2),
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   authorReview: {
     '& .MuiRating-root': {

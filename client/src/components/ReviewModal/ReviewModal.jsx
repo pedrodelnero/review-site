@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Box, Button, Paper, TextField, Typography } from '@material-ui/core/';
 import Rating from '@material-ui/lab/Rating';
 import RateReviewIcon from '@material-ui/icons/RateReview';
@@ -8,26 +8,26 @@ import RateReviewIcon from '@material-ui/icons/RateReview';
 import useStyles from './styles.js';
 import { addReview } from '../../actions/reviews';
 
-const ReviewModal = ({ rating, closeModal }) => {
-  console.log(rating);
+const ReviewModal = React.forwardRef((props, ref) => {
+  console.log('review modal');
+  const { rating, closeModal, refresh } = props;
   const { id } = useParams();
   const classes = useStyles();
   const [starRating, setStarRating] = useState(rating || 0);
   const [textReview, setTextReview] = useState('');
   const dispatch = useDispatch();
 
-  console.log(starRating, textReview);
-
-  const submitReview = () => {
-    console.log(starRating, textReview);
-    // dispatch(addReview(id, { starRating, textReview }));
+  const submitReview = async () => {
+    // console.log(starRating, textReview);
     setStarRating(0);
     setTextReview('');
+    await dispatch(addReview(id, { starRating, textReview }));
+    refresh();
     closeModal();
   };
 
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} ref={ref}>
       <Box className={classes.header}>
         <RateReviewIcon fontSize="large" />
         <Typography variant="h3">Write a review</Typography>
@@ -36,6 +36,7 @@ const ReviewModal = ({ rating, closeModal }) => {
         <Box>
           <Typography variant="h5">What do you think?</Typography>
           <Rating
+            name="rating"
             precision={0.5}
             size="large"
             value={starRating}
@@ -63,6 +64,6 @@ const ReviewModal = ({ rating, closeModal }) => {
       </Box>
     </Paper>
   );
-};
+});
 
-export default ReviewModal;
+export default memo(ReviewModal);
