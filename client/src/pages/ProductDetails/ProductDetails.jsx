@@ -1,4 +1,3 @@
-// import React, { useState, useEffect, createRef } from 'react';
 import React, { createRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -28,8 +27,6 @@ const ProductDetails = () => {
   const [openReviewModal, setOpenReviewModal] = useState(false);
   const [starRating, setStarRating] = useState(0);
   const [toRefresh, setToRefresh] = useState(false);
-
-  console.log('prod details', toRefresh, product);
 
   // useEffect(() => {
   // if (isLoggedIn) {

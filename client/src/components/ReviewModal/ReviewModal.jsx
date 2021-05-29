@@ -9,7 +9,6 @@ import useStyles from './styles.js';
 import { addReview } from '../../actions/reviews';
 
 const ReviewModal = React.forwardRef((props, ref) => {
-  console.log('review modal');
   const { rating, closeModal, refresh } = props;
   const { id } = useParams();
   const classes = useStyles();
@@ -18,7 +17,6 @@ const ReviewModal = React.forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const submitReview = async () => {
-    // console.log(starRating, textReview);
     setStarRating(0);
     setTextReview('');
     await dispatch(addReview(id, { starRating, textReview }));

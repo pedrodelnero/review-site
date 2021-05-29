@@ -9,9 +9,8 @@ import useStyles from './styles.js';
 import { deleteReview } from '../../actions/reviews';
 import { getProduct } from '../../actions/product';
 
-// const cookies = new Cookies();
+const memId = localStorage.getItem('id');
 
-// const Review = React.forwardRef((props, ref) => {
 const Review = (props) => {
   const {
     prodId: pID,
@@ -20,17 +19,13 @@ const Review = (props) => {
   } = props;
   const classes = useStyles();
   const { isLoggedIn } = useSelector((state) => state.user);
-  console.log('rev', isLoggedIn);
   const [authorized, setAuthorized] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (isLoggedIn) {
-      // cookies.get('user') === authorID
-      // ? setAuthorized(true)
-      // : setAuthorized(false);
-      setAuthorized(true);
+      authorID === memId ? setAuthorized(true) : setAuthorized(false);
     } else {
       setAuthorized(false);
     }
@@ -66,7 +61,7 @@ const Review = (props) => {
         </Box>
 
         <Box className={classes.authorReview}>
-          <Rating value={rating} readOnly size="large" />
+          <Rating value={rating} readOnly size="large" precision={0.5} />
           <Typography variant="body1">{content}</Typography>
         </Box>
       </Box>
