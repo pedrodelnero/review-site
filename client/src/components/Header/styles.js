@@ -1,100 +1,68 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { fade, makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
-  root: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    // flexDirection: 'row',
-    backgroundColor: "#F79460",
-    padding: theme.spacing(1, 0),
-    // justifyContent: 'center'
+  grow: {
+    flexGrow: 1,
   },
   menuButton: {
-    display: "none",
-    [theme.breakpoints.down("xs")]: {
-      width: "65%",
-      height: "65%",
-      display: "block",
-      margin: "auto",
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
     },
   },
-  titleHeader: {
-    display: "flex",
-    alignItems: "center",
-    margin: theme.spacing(0, 1),
-    "& .MuiTypography-root": {
-      padding: theme.spacing(0, 1),
-      [theme.breakpoints.down("xs")]: {
-        display: "none",
-      },
-    },
-    "& .logo": {
-      height: "70px",
-      width: "70px",
-      borderRadius: "25px",
-      [theme.breakpoints.down("xs")]: {
-        alignItems: "center",
-      },
+  title: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
     },
   },
-  container: {
-    display: "flex",
-    justifyContent: "space-around",
-    "& .MuiButtonBase-root": {
-      textAlign: "center",
-      color: "white",
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    [theme.breakpoints.down("xs")]: {
-      display: "none",
-    },
-  },
-  account: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    color: "white",
-  },
-  accountTitle: {
-    height: "100%",
-    width: "150px",
-    display: "flex",
-    [theme.breakpoints.down("xs")]: {
-      width: "50px",
-      height: "50px",
-      margin: "auto",
-    },
-    "& .MuiButtonBase-root": {
-      [theme.breakpoints.down("xs")]: {
-        display: "none",
-      },
-    },
-    "& .accountIcon": {
-      marginLeft: theme.spacing(1),
-      [theme.breakpoints.up("sm")]: {
-        display: "none",
-      },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
     },
   },
-  accountMenu: {
-    position: "absolute",
-    right: "1%",
-    top: "75%",
-    width: "120px",
-    border: "1px solid black",
-    backgroundColor: "#4A4953",
-    borderRadius: "15px",
-    color: "white",
-    // padding: theme.spacing(1),
-    // display: 'inline-block',
-    // backgroundColor: 'yellow
-    "& .MuiTypography-root": {
-      display: "flex",
-      justifyContent: "center",
-      padding: theme.spacing(1),
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
     },
-    "& .logOutButton": {
-      fontSize: "18px",
-      color: "white",
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
+  },
+  sectionMobile: {
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
     },
   },
 }));

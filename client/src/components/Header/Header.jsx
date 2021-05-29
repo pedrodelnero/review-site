@@ -1,97 +1,197 @@
-import React, { useContext, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppBar, Button, Typography } from '@material-ui/core/';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import {
+  AppBar,
+  Drawer,
+  IconButton,
+  InputBase,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from '@material-ui/core/';
 import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import AppsIcon from '@material-ui/icons/Apps';
+import HomeIcon from '@material-ui/icons/Home';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import useStyles from './styles.js';
 import { signOut } from '../../actions/user';
-import Mobile from '../../context/Mobile';
-import logo from '../../images/logo.png';
-import useOutsideAlerter from '../../utils/outsideAlerter';
+import MobileLeftMenu from './MobileLeftMenu/MobileLeftMenu';
+import DesktopSubMenu from './DesktopMenu/DesktopSubMenu';
 
-const Header = () => {
+export default function Header() {
   const classes = useStyles();
   const { isLoggedIn } = useSelector((state) => state.user);
-  const {
-    isSidebarOpen,
-    setIsSidebarOpen,
-    isAccMenuOpen,
-    setIsAccMenuOpen,
-  } = useContext(Mobile);
   const dispatch = useDispatch();
-  const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef);
 
-  const handleSibeBarToggle = () => setIsSidebarOpen(!isSidebarOpen);
+  const logOut = () => {
+    handleMenuClose();
+    dispatch(signOut());
+  };
 
-  const openAccMenu = (e) => setIsAccMenuOpen(e.currentTarget);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isLeftOpen, setIsLeftOpen] = useState(false);
+  const [rightMobileMoreAnchorEl, setRightMobileMoreAnchorEl] = useState(null);
 
-  const logOut = () => dispatch(signOut());
+  const isMenuOpen = Boolean(anchorEl);
+  const isRightMobileMenuOpen = Boolean(rightMobileMoreAnchorEl);
 
-  return (
-    <AppBar position="relative" className={classes.root}>
-      <MenuIcon onClick={handleSibeBarToggle} className={classes.menuButton} />
-      <div className={classes.titleHeader}>
-        <Link to="/">
-          <img src={logo} alt="LOGO" className="logo"></img>
-        </Link>
-        <Typography variant="h4" align="center">
-          Did we hear?
-        </Typography>
-      </div>
-      <div className={classes.container}>
-        <Button href="/">Products</Button>
-        {isLoggedIn && <Button href="/product">Add Product</Button>}
-      </div>
+  const handleProfileMenuOpen = (event) => setAnchorEl(event.currentTarget);
+
+  const handleRightMobileMenuClose = () => setRightMobileMoreAnchorEl(null);
+  const handleRightMobileMenuOpen = (event) =>
+    setRightMobileMoreAnchorEl(event.currentTarget);
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleRightMobileMenuClose();
+  };
+
+  const toggleDrawer = (event) => {
+    if (
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
+    ) {
+      return;
+    }
+
+    setIsLeftOpen(!isLeftOpen);
+  };
+
+  const mobileMenuId = 'primary-search-account-menu-mobile';
+
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={rightMobileMoreAnchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isRightMobileMenuOpen}
+      onClose={handleRightMobileMenuClose}
+    >
       {isLoggedIn ? (
-        <div className={classes.account}>
-          <div
-            ref={wrapperRef}
-            onClick={openAccMenu}
-            className={classes.accountTitle}
-          >
-            <AccountCircleIcon
-              style={{ fontSize: 40 }}
-              className="accountIcon"
-            />
-            <Button startIcon={<AccountCircleIcon />} size="large">
-              Account
-            </Button>
-            {!!isAccMenuOpen && (
-              <div className={classes.accountMenu}>
-                <Typography
-                  variant="h5"
-                  component={Link}
-                  to="/user"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    borderBottom: '1px solid black',
-                  }}
-                >
-                  Account
-                </Typography>
-                <Button
-                  className="logOutButton"
-                  component={Typography}
-                  onClick={logOut}
-                  size="large"
-                >
-                  Log out
-                </Button>
-              </div>
-            )}
-          </div>
+        <div>
+          <MenuItem component={Link} to="/account">
+            <IconButton
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            Account
+          </MenuItem>
+          <MenuItem onClick={logOut}>
+            <IconButton color="inherit">
+              <ExitToAppIcon />
+            </IconButton>
+            Log out
+          </MenuItem>
         </div>
       ) : (
-        <Button className={classes.button} component={Link} to="/sign-in">
-          Sign in
-        </Button>
+        <MenuItem component={Link} to="/sign-in">
+          <IconButton color="inherit">
+            <ExitToAppIcon />
+          </IconButton>
+          Sign/Log in
+        </MenuItem>
       )}
-    </AppBar>
+    </Menu>
   );
-};
 
-export default Header;
+  return (
+    <div className={classes.grow}>
+      <AppBar position="static" style={{ backgroundColor: 'black' }}>
+        <Toolbar>
+          <IconButton
+            className={classes.menuButton}
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            aria-haspopup="true"
+            aria-controls={mobileMenuId}
+            onClick={toggleDrawer}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography className={classes.title} variant="h6" noWrap>
+            Review Thee
+          </Typography>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <IconButton color="inherit" component={Link} to="/">
+              <HomeIcon />
+            </IconButton>
+            <IconButton color="inherit" component={Link} to="/categories">
+              <AppsIcon />
+            </IconButton>
+            {isLoggedIn ? (
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            ) : (
+              <IconButton
+                edge="end"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                color="inherit"
+                component={Link}
+                to="/sign-in"
+              >
+                <ExitToAppIcon />
+              </IconButton>
+            )}
+          </div>
+          <div className={classes.sectionMobile}>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleRightMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </div>
+        </Toolbar>
+      </AppBar>
+      {renderMobileMenu}
+      <Drawer anchor="left" open={isLeftOpen} onClose={toggleDrawer}>
+        <MobileLeftMenu anchorEl={anchorEl} toggleDrawer={toggleDrawer} />
+      </Drawer>
+      <DesktopSubMenu
+        anchorEl={anchorEl}
+        menuId={mobileMenuId}
+        isMenuOpen={isMenuOpen}
+        handleMenuClose={handleMenuClose}
+        logOut={logOut}
+      />
+    </div>
+  );
+}
