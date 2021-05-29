@@ -6,6 +6,7 @@ import {
   DELETE_USER,
   SIGN_UP,
   SIGN_IN,
+  SIGN_IN_AS_TRIAL,
   SIGN_OUT,
   FAIL_SIGN_UP,
   FAIL_SIGN_IN,
@@ -48,6 +49,27 @@ export const signIn = (email, password) => async (dispatch) => {
   try {
     const { data } = await userAPI.post('/login', { email, password });
 
+    localStorage.setItem('id', data.id);
+
+    dispatch({ type: SIGN_IN_AS_TRIAL, payload: data });
+    // window.location.href = '/';
+  } catch (err) {
+    dispatch({
+      type: FAIL_SIGN_IN,
+      payload: err.response.data.messages,
+    });
+  }
+};
+
+export const signInAsTrial = () => async (dispatch) => {
+  try {
+    // EDIT HOW TO LOG IN
+    const { data } = await userAPI.post('/login', {
+      email: 'dani@email.com',
+      password: 'word1234',
+    });
+
+    localStorage.setItem('id', data.id);
     dispatch({ type: SIGN_IN, payload: data });
     window.location.href = '/';
   } catch (err) {
@@ -73,30 +95,27 @@ export const signOut = () => async (dispatch) => {
   }
 };
 
-export const updateUserPassword = (
-  currentPassword,
-  newPassword,
-  confirmNewPassword
-) => async (dispatch) => {
-  try {
-    const {
-      data: { user },
-    } = await userAPI.patch('/me', {
-      currentPassword,
-      newPassword,
-      confirmNewPassword,
-    });
+export const updateUserPassword =
+  (currentPassword, newPassword, confirmNewPassword) => async (dispatch) => {
+    try {
+      const {
+        data: { user },
+      } = await userAPI.patch('/me', {
+        currentPassword,
+        newPassword,
+        confirmNewPassword,
+      });
 
-    window.location.href = '/user';
+      window.location.href = '/user';
 
-    dispatch({ type: UPDATE_USER, payload: user });
-  } catch (err) {
-    dispatch({
-      type: FAIL_UPDATE_PASSWORD,
-      payload: err.response.data.messages,
-    });
-  }
-};
+      dispatch({ type: UPDATE_USER, payload: user });
+    } catch (err) {
+      dispatch({
+        type: FAIL_UPDATE_PASSWORD,
+        payload: err.response.data.messages,
+      });
+    }
+  };
 
 export const deleteUser = () => async (dispatch) => {
   try {

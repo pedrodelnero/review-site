@@ -102,7 +102,7 @@ const SignIn = () => {
           </Grid>
         </form>
         <div>
-          <hr height="4px" backgroundColor="Black" margin="10px" />
+          <hr height="4px" margin="10px" />
         </div>
         <div>
           <Button

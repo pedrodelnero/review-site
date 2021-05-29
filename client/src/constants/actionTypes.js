@@ -15,6 +15,7 @@ export const UPDATE_USER = 'UPDATE_USER';
 export const DELETE_USER = 'DELETE_USER';
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_IN = 'SIGN_IN';
+export const SIGN_IN_AS_TRIAL = 'SIGN_IN_AS_TRIAL';
 export const SIGN_OUT = 'SIGN_OUT';
 
 export const FAIL_SIGN_IN = 'FAIL_SIGN_IN';
