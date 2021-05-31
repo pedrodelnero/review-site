@@ -1,4 +1,4 @@
-import React, { createRef, useState, useEffect } from 'react';
+import React, { createRef, useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -15,6 +15,7 @@ import Rating from '@material-ui/lab/Rating';
 import useStyles from './styles.js';
 import { Review, ReviewModal } from '../../components';
 import { getProduct, deleteProduct } from '../../actions/product';
+import UserContext from '../../context/user';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -22,21 +23,23 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
   const revModalRef = createRef();
   const { product } = useSelector((state) => state);
-  // const { isLoggedIn, user } = useSelector((state) => state.user);
-  // const [authorized, setAuthorized] = useState(false);
+  const [authorized, setAuthorized] = useState(false);
   const [openReviewModal, setOpenReviewModal] = useState(false);
   const [starRating, setStarRating] = useState(0);
   const [toRefresh, setToRefresh] = useState(false);
+  const {
+    user: { user, isLoggedIn },
+  } = useContext(UserContext);
 
-  // useEffect(() => {
-  // if (isLoggedIn) {
-  //   user._id === product.authorID
-  //     ? setAuthorized(true)
-  //     : setAuthorized(false);
-  // } else {
-  //   setAuthorized(false);
-  // }
-  // }, []);
+  useEffect(() => {
+    if (isLoggedIn) {
+      user?._id === product.author?._id
+        ? setAuthorized(true)
+        : setAuthorized(false);
+    } else {
+      setAuthorized(false);
+    }
+  }, [isLoggedIn, product, user]);
 
   useEffect(() => {
     dispatch(getProduct(id));
@@ -79,6 +82,9 @@ const ProductDetails = () => {
               <Typography className="numOfRev" variant="h6">
                 Reviews {product.reviews.length}
               </Typography>
+              <Typography className="numOfRev" variant="body1">
+                Posted by {product.author.name}
+              </Typography>
             </Box>
             <Box className={classes.starReview}>
               <Rating
@@ -91,6 +97,17 @@ const ProductDetails = () => {
               <Typography>{product.averageRating}</Typography>
             </Box>
           </Box>
+          {authorized && (
+            <Box className={classes.deleteProd}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={removeProduct}
+              >
+                Delete
+              </Button>
+            </Box>
+          )}
         </Box>
       </Paper>
       <Box className={classes.body}>
@@ -123,8 +140,7 @@ const ProductDetails = () => {
           product.reviews.map((review) => (
             <Review
               review={review}
-              prodId={id}
-              key={review._id}
+              key={review?._id}
               refresh={() => setToRefresh(!toRefresh)}
             />
           ))}

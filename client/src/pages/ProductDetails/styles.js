@@ -43,6 +43,11 @@ export default makeStyles((theme) => ({
       marginRight: theme.spacing(1.5),
     },
   },
+  deleteProd: {
+    marginLeft: 'auto',
+    display: 'flex',
+    flexDirection: 'column-reverse',
+  },
   body: {
     marginTop: theme.spacing(1),
     padding: theme.spacing(0, 3),

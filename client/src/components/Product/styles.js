@@ -22,19 +22,21 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'row',
       height: '180px',
       width: '400px',
-      justifyContent: 'space-around',
+      // justifyContent: 'space-around',
     },
   },
   header: {
+    border: '1px dashed blue',
     display: 'flex',
-    width: '100%',
+    // width: '100%',
     minHeight: '125px',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     // backgroundColor: 'black'
     [theme.breakpoints.down('xs')]: {
       alignItems: 'flex-end',
     },
     [theme.breakpoints.up('sm')]: {
+      width: '',
       alignItems: 'center',
     },
   },
@@ -54,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    width: '100%',
+    // width: '100%',
     justifyContent: 'center',
     [theme.breakpoints.down('xs')]: {
       alignItems: 'center',
@@ -65,7 +67,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'none',
       },
       '& .MuiRating-root': {
-        border: '1px dashed orange',
         size: 'small',
         // width: '80%',
       },

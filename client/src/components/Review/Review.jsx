@@ -13,8 +13,7 @@ const memId = localStorage.getItem('id');
 
 const Review = (props) => {
   const {
-    prodId: pID,
-    review: { _id: rID, authorID, rating, content, author },
+    review: { _id: rID, rating, content, author, product },
     refresh,
   } = props;
   const classes = useStyles();
@@ -25,15 +24,15 @@ const Review = (props) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      authorID === memId ? setAuthorized(true) : setAuthorized(false);
+      author._id === memId ? setAuthorized(true) : setAuthorized(false);
     } else {
       setAuthorized(false);
     }
-  }, [authorID, isLoggedIn]);
+  }, [author, isLoggedIn]);
 
   const handleDeleteReview = () => {
-    dispatch(deleteReview(pID, rID));
-    dispatch(getProduct(pID));
+    dispatch(deleteReview(product._id, rID));
+    dispatch(getProduct(product._id));
     refresh();
     setAnchorEl(null);
   };
@@ -46,7 +45,7 @@ const Review = (props) => {
         <Box className={classes.revHeader}>
           <Box>
             <Typography variant="h6" color="textSecondary">
-              {author}
+              {author.name}
             </Typography>
           </Box>
           {authorized && (

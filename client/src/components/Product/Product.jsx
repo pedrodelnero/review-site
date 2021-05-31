@@ -19,7 +19,7 @@ const Product = ({
     >
       <Box className={classes.header}>
         <img
-          alt="image"
+          alt="alt text"
           src={image || 'https://via.placeholder.com/150'}
           title="Photo"
           className={classes.image}
@@ -29,7 +29,7 @@ const Product = ({
         <Typography className="prodTitle" variant="body1">
           {name}
         </Typography>
-        <Typography className="prodAuthor">Added by: {author}</Typography>
+        <Typography className="prodAuthor">Added by: {author.name}</Typography>
         <Typography className="prodDescription">{description}</Typography>
         <Rating
           name="simple-controlled"
