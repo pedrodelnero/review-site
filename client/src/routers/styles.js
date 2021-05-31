@@ -5,9 +5,9 @@ export default makeStyles((theme) => ({
     backgroundImage: 'linear-gradient(180deg, #96deda, #50c9c3)',
   },
   body: {
-    display: 'flex',
-    minHeight: '100vh',
-    marginTop: theme.spacing(2),
+    // display: 'flex',
+    width: '100%',
+    minHeight: '300vh',
     marginBottom: theme.spacing(10),
   },
 }));

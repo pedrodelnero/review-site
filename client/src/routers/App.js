@@ -1,47 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { Header, Footer } from '../components';
 import {
-  Header,
-  Footer,
-  Products,
-  ProductForm,
+  ChangePassword,
   ProductDetails,
+  ProductForm,
+  Products,
   SignUp,
   SignIn,
   UserPage,
-  ChangePassword,
-  Sidebar,
-} from '../components';
+} from '../pages';
 import { getUser } from '../actions/user';
-import Mobile from '../context/Mobile';
+import UserContext from '../context/user';
 import useStyles from './styles.js';
 
 const AppRouter = () => {
   const classes = useStyles();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  // Below is done for useContext; needed for Header component to work => function to click outside of account menu to close it.
-  const [isAccMenuOpen, setIsAccMenuOpen] = useState(false);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getUser());
   }, [dispatch]);
 
   return (
-    <Mobile.Provider
-      value={{
-        isSidebarOpen,
-        setIsSidebarOpen,
-        isAccMenuOpen,
-        setIsAccMenuOpen,
-      }}
-    >
+    <UserContext.Provider value={{ user }}>
       <div className={classes.app}>
         <Router>
           <Header />
-          {isSidebarOpen && <Sidebar />}
           <div className={classes.body}>
             <Switch>
               <Route path="/product/:id?" component={ProductForm} />
@@ -56,7 +44,7 @@ const AppRouter = () => {
           <Footer className={classes.footer} />
         </Router>
       </div>
-    </Mobile.Provider>
+    </UserContext.Provider>
   );
 };
 
