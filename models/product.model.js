@@ -22,10 +22,6 @@ const productSchema = mongoose.Schema({
     type: String,
   },
   author: {
-    type: String,
-    required: true,
-  },
-  authorID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },

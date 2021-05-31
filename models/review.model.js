@@ -4,23 +4,23 @@ const reviewSchema = mongoose.Schema({
   content: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   rating: {
     type: Number,
   },
   author: {
-    type: String,
-    required: true,
-  },
-  authorID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+  },
+  product: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
   },
   createdAt: {
     type: Date,
-    default: Date.now()
-  }
+    default: Date.now(),
+  },
 });
 
 const Review = mongoose.model('Review', reviewSchema);

@@ -6,6 +6,10 @@ export const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
 
+    for (let product of products) {
+      await product.populate('author').execPopulate();
+    }
+
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -13,7 +17,7 @@ export const getProducts = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
-  const { name, brand, model, description, image } = req.body;
+  const { name, brand, model, description, base64str } = req.body;
   const { name: author, _id: id } = req.user;
 
   try {
@@ -22,7 +26,7 @@ export const createProduct = async (req, res) => {
       brand,
       model,
       description,
-      image,
+      image: base64str,
       author,
       authorID: id,
     }).save();
@@ -43,6 +47,21 @@ export const getProductById = async (req, res) => {
   const { id } = req.params;
   try {
     const product = await Product.findById(id);
+    await product.populate('reviews').execPopulate();
+    await product.populate('author').execPopulate();
+
+    for (let review of product.reviews) {
+      await review.populate('author').execPopulate();
+    }
+
+    let avgRating = 0;
+    product.reviews.forEach((review) => {
+      avgRating += review.rating;
+    });
+
+    avgRating /= product.reviews.length;
+
+    product.averageRating = Math.round(avgRating * 10) / 10;
 
     !product
       ? res.status(404).json({ error: 'No product with ID provided' })

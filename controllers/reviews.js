@@ -3,17 +3,25 @@ import Product from '../models/product.model.js';
 import User from '../models/user.model.js';
 
 export const getReviews = async (req, res) => {
+  console.log('rev start');
   try {
-    await req.product.populate('reviews').execPopulate();
+    const reviews = await Review.find();
 
-    res.status(201).send(req.product.reviews);
+    for (let review of reviews) {
+      await review.populate('author').execPopulate();
+      await review.populate('product').execPopulate();
+    }
+    // console.log(reviews);
+
+    res.status(201).send(reviews);
   } catch (error) {
+    console.log('reviews err', error);
     res.status(500).json({ error: error.message });
   }
 };
 
 export const createReview = async (req, res) => {
-  const { content, rating } = req.body;
+  const { textReview: content, starRating: rating } = req.body;
   const { id } = req.params;
   const { name: author, _id } = req.user;
 
@@ -40,19 +48,20 @@ export const createReview = async (req, res) => {
   res.status(201).json(review);
 };
 
-export const getReviewById = async (req, res) => {
-  const { rID } = req.params;
+// export const getReviewById = async (req, res) => {
+//   const { rID } = req.params;
+//   console.log('get rev by id start');
 
-  try {
-    const review = await Review.findById(rID);
+//   try {
+//     const review = await Review.findById(rID);
 
-    !review
-      ? res.status(404).json({ error: 'No review with ID provided' })
-      : res.status(200).json(review);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+//     !review
+//       ? res.status(404).json({ error: 'No review with ID provided' })
+//       : res.status(200).json(review);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 export const updateReviewById = async (req, res) => {
   const { rID } = req.params;
