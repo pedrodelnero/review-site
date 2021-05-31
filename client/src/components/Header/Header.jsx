@@ -6,8 +6,6 @@ import {
   Drawer,
   IconButton,
   InputBase,
-  Menu,
-  MenuItem,
   Toolbar,
   Typography,
 } from '@material-ui/core/';
@@ -21,35 +19,37 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import useStyles from './styles.js';
 import { signOut } from '../../actions/user';
-import MobileLeftMenu from './MobileLeftMenu/MobileLeftMenu';
+import { MobileLeftMenu, MobileRightMenu } from './Mobile';
 import DesktopSubMenu from './DesktopMenu/DesktopSubMenu';
 
 export default function Header() {
   const classes = useStyles();
-  const { isLoggedIn } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector((state) => state.user);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isLeftOpen, setIsLeftOpen] = useState(false);
+  const [isRightOpen, setIsRightOpen] = useState(false);
+  const [isDesktopOpen, setIsDesktopOpen] = useState(false);
 
   const logOut = () => {
     handleMenuClose();
     dispatch(signOut());
   };
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [isLeftOpen, setIsLeftOpen] = useState(false);
-  const [rightMobileMoreAnchorEl, setRightMobileMoreAnchorEl] = useState(null);
+  const handleRightMobileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+    setIsRightOpen(true);
+  };
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isRightMobileMenuOpen = Boolean(rightMobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => setAnchorEl(event.currentTarget);
-
-  const handleRightMobileMenuClose = () => setRightMobileMoreAnchorEl(null);
-  const handleRightMobileMenuOpen = (event) =>
-    setRightMobileMoreAnchorEl(event.currentTarget);
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+    setIsDesktopOpen(true);
+  };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleRightMobileMenuClose();
+    setIsDesktopOpen(false);
+    setIsRightOpen(false);
   };
 
   const toggleDrawer = (event) => {
@@ -64,46 +64,6 @@ export default function Header() {
   };
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
-
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={rightMobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isRightMobileMenuOpen}
-      onClose={handleRightMobileMenuClose}
-    >
-      {isLoggedIn ? (
-        <div>
-          <MenuItem component={Link} to="/account">
-            <IconButton
-              aria-controls="primary-search-account-menu"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            Account
-          </MenuItem>
-          <MenuItem onClick={logOut}>
-            <IconButton color="inherit">
-              <ExitToAppIcon />
-            </IconButton>
-            Log out
-          </MenuItem>
-        </div>
-      ) : (
-        <MenuItem component={Link} to="/sign-in">
-          <IconButton color="inherit">
-            <ExitToAppIcon />
-          </IconButton>
-          Sign/Log in
-        </MenuItem>
-      )}
-    </Menu>
-  );
 
   return (
     <div className={classes.grow}>
@@ -170,6 +130,7 @@ export default function Header() {
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
+              edge="end"
               aria-label="show more"
               aria-controls={mobileMenuId}
               aria-haspopup="true"
@@ -181,15 +142,20 @@ export default function Header() {
           </div>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
+      <MobileRightMenu
+        anchorEl={anchorEl}
+        handleMenuClose={handleMenuClose}
+        isLoggedIn={isLoggedIn}
+        isOpen={isRightOpen}
+        logOut={logOut}
+      />
       <Drawer anchor="left" open={isLeftOpen} onClose={toggleDrawer}>
         <MobileLeftMenu anchorEl={anchorEl} toggleDrawer={toggleDrawer} />
       </Drawer>
       <DesktopSubMenu
         anchorEl={anchorEl}
-        menuId={mobileMenuId}
-        isMenuOpen={isMenuOpen}
         handleMenuClose={handleMenuClose}
+        isOpen={isDesktopOpen}
         logOut={logOut}
       />
     </div>

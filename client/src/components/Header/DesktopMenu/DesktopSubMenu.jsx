@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+// import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -8,15 +8,14 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const DesktopSubMenu = (props) => {
-  const { anchorEl, menuId, isMenuOpen, handleMenuClose, logOut } = props;
+  const { anchorEl, isOpen, handleMenuClose, logOut } = props;
   return (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
+      open={isOpen}
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
