@@ -94,31 +94,38 @@ export const updateProductById = async (req, res) => {
 export const deleteProductById = async (req, res) => {
   const { id } = req.params;
   const { products } = req.user;
+  // console.log('del cont', products);
 
   try {
     const product = await Product.findById(id);
 
+    console.log('del cont 1', product);
+
     if (!product) {
       res.status(404).json({ error: 'No product with ID provided' });
-    } else if (products.indexOf(id) === -1) {
+    } else if (req.user.products.indexOf(id) === -1) {
       res.status(404).json({ error: 'Not authorized for this action' });
-    } else {
+    } else if (product.reviews.length > 0) {
+      console.log('del cont 2');
       for (let i = 0; i < product.reviews.length; i++) {
         const review = await Review.findById(product.reviews[i]);
-        const user = await User.findOne({ email: review.authorEmail });
+        await review.populate('author').execPopulate();
+        const user = await User.findOne({ _id: review.author._id });
         user.reviews.splice(user.reviews.indexOf(product.reviews[i]), 1);
+        console.log('del cont 2.5', user);
         await user.save();
         await Review.findByIdAndRemove(product.reviews[i]);
       }
-
-      products.splice(products.indexOf(id), 1);
-
-      await req.user.save();
-
-      await Product.findByIdAndRemove(id);
-
-      res.status(200).json({ message: 'Product successfully deleted.' });
     }
+    req.user.products.splice(products.indexOf(id), 1);
+
+    console.log('del cont 3', req.user);
+    await req.user.save();
+
+    console.log('del cont 4', req.user);
+    await Product.findByIdAndRemove(id);
+
+    res.status(200).json({ message: 'Product successfully deleted.' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

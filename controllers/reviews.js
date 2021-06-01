@@ -3,7 +3,6 @@ import Product from '../models/product.model.js';
 import User from '../models/user.model.js';
 
 export const getReviews = async (req, res) => {
-  console.log('rev start');
   try {
     const reviews = await Review.find();
 
@@ -11,11 +10,9 @@ export const getReviews = async (req, res) => {
       await review.populate('author').execPopulate();
       await review.populate('product').execPopulate();
     }
-    // console.log(reviews);
 
     res.status(201).send(reviews);
   } catch (error) {
-    console.log('reviews err', error);
     res.status(500).json({ error: error.message });
   }
 };
