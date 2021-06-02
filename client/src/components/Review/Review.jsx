@@ -1,13 +1,11 @@
 import React, { useEffect, useState, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import Cookies from 'universal-cookie';
 import { Box, Button, Paper, Popover, Typography } from '@material-ui/core/';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Rating from '@material-ui/lab/Rating';
 
-import useStyles from './styles.js';
 import { deleteReview } from '../../actions/reviews';
-import { getProduct } from '../../actions/product';
+import useStyles from './styles.js';
 
 const memId = localStorage.getItem('id');
 
@@ -21,6 +19,7 @@ const Review = (props) => {
   const [authorized, setAuthorized] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
+  console.log(product);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -30,9 +29,9 @@ const Review = (props) => {
     }
   }, [author, isLoggedIn]);
 
-  const handleDeleteReview = () => {
-    dispatch(deleteReview(product._id, rID));
-    dispatch(getProduct(product._id));
+  const handleDeleteReview = async (e) => {
+    e.preventDefault();
+    await dispatch(deleteReview(product, rID));
     refresh();
     setAnchorEl(null);
   };

@@ -22,7 +22,7 @@ const ProductDetails = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const revModalRef = createRef();
-  const { product } = useSelector((state) => state);
+  const product = useSelector((state) => state.product);
   const [authorized, setAuthorized] = useState(false);
   const [openReviewModal, setOpenReviewModal] = useState(false);
   const [starRating, setStarRating] = useState(0);
@@ -30,6 +30,8 @@ const ProductDetails = () => {
   const {
     user: { user, isLoggedIn },
   } = useContext(UserContext);
+
+  console.log(product);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -88,7 +90,7 @@ const ProductDetails = () => {
             </Box>
             <Box className={classes.starReview}>
               <Rating
-                name="simple-controlled"
+                name="simple"
                 value={product.averageRating}
                 precision={0.5}
                 readOnly

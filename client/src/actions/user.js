@@ -24,6 +24,8 @@ export const getUser = () => async (dispatch) => {
   try {
     const { data: user } = await userAPI.get('/');
 
+    console.log(user);
+
     dispatch({ type: GET_USER, payload: user });
   } catch (err) {
     console.log('Act', err.response.data.message);
@@ -83,6 +85,7 @@ export const signInAsTrial = () => async (dispatch) => {
 export const signOut = () => async (dispatch) => {
   try {
     const { data } = await userAPI.post('/logout');
+    localStorage.removeItem('id');
 
     window.location.href = '/';
 

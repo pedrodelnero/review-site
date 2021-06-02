@@ -16,9 +16,8 @@ const api = axios.create({
 export const getProduct = (id) => async (dispatch) => {
   try {
     const { data: product } = await api.get(`/${id}`);
-    const { data: reviews } = await api.get(`/${product._id}/reviews`);
 
-    product.reviews = reviews;
+    console.log(product);
 
     dispatch({ type: GET_PRODUCT, payload: product });
   } catch (err) {

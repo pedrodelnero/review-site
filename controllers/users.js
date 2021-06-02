@@ -37,7 +37,7 @@ export const loginUser = async (req, res) => {
 
     res.cookie('token', token, optionCookie).send({ id: user._id });
   } catch (error) {
-    console.log(error);
+    console.log('user', error);
     res.status(500).send({ messages: error.message });
   }
 };

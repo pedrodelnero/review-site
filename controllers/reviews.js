@@ -20,13 +20,13 @@ export const getReviews = async (req, res) => {
 export const createReview = async (req, res) => {
   const { textReview: content, starRating: rating } = req.body;
   const { id } = req.params;
-  const { name: author, _id } = req.user;
+  const { _id } = req.user;
 
   const review = await new Review({
     content,
     rating,
-    author,
-    authorID: _id,
+    author: _id,
+    product: id,
   }).save();
 
   await User.findByIdAndUpdate(
@@ -91,6 +91,9 @@ export const deleteReviewById = async (req, res) => {
       req.product.reviews.splice(req.product.reviews.indexOf(rID), 1);
       req.user.reviews.splice(req.user.reviews.indexOf(rID), 1);
 
+      await updateAvgStarReview(req.product._id);
+      console.log(req.product);
+
       await req.product.save();
       await req.user.save();
 
@@ -119,6 +122,7 @@ const updateAvgStarReview = async (id) => {
       product.save();
     } else {
       product.averageRating = 0;
+      product.save();
     }
     return;
   } catch (error) {
