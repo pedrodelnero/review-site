@@ -19,14 +19,14 @@ export const getReviews = async (req, res) => {
 
 export const createReview = async (req, res) => {
   const { textReview: content, starRating: rating } = req.body;
-  const { id } = req.params;
+  const { pID } = req.params;
   const { _id } = req.user;
 
   const review = await new Review({
     content,
     rating,
     author: _id,
-    product: id,
+    product: pID,
   }).save();
 
   await User.findByIdAndUpdate(
@@ -36,11 +36,11 @@ export const createReview = async (req, res) => {
   );
 
   await Product.findByIdAndUpdate(
-    id,
+    pID,
     { $push: { reviews: review._id } },
     { new: true }
   );
-  await updateAvgStarReview(id);
+  await updateAvgStarReview(pID);
 
   res.status(201).json(review);
 };
@@ -80,22 +80,25 @@ export const updateReviewById = async (req, res) => {
 };
 
 export const deleteReviewById = async (req, res) => {
-  const { rID } = req.params;
+  const { pID, rID } = req.params;
+  const { _id } = req.user;
+
+  console.log('del rev', pID, rID, _id);
 
   try {
-    const deletedReview = await Review.findById(rID);
+    const reviewToDelete = await Review.findById(rID);
+    const product = await Product.findById(pID);
+    const user = await User.findById(_id);
 
-    if (!deletedReview) {
+    if (!reviewToDelete) {
       res.status(404).json({ error: 'No review with ID provided' });
     } else {
-      req.product.reviews.splice(req.product.reviews.indexOf(rID), 1);
-      req.user.reviews.splice(req.user.reviews.indexOf(rID), 1);
+      product.reviews.splice(reviewToDelete, 1);
+      user.reviews.splice(reviewToDelete, 1);
 
-      await updateAvgStarReview(req.product._id);
-      console.log(req.product);
-
-      await req.product.save();
-      await req.user.save();
+      await product.save();
+      await user.save();
+      await updateAvgStarReview(product._id);
 
       await Review.findByIdAndRemove(rID);
 
@@ -111,6 +114,7 @@ const updateAvgStarReview = async (id) => {
     const product = await Product.findById(id);
 
     if (product.reviews.length > 0) {
+      console.log('yes', product);
       let avgRating = 0;
       for (let review of product.reviews) {
         const { rating } = await Review.findById(review);
@@ -121,6 +125,7 @@ const updateAvgStarReview = async (id) => {
       product.averageRating = avgRating;
       product.save();
     } else {
+      console.log('no');
       product.averageRating = 0;
       product.save();
     }
