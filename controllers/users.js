@@ -34,8 +34,12 @@ export const loginUser = async (req, res) => {
   try {
     const user = await User.findByCredentials(email, password);
     const token = createToken(user._id);
+    const authToken = createToken(user._id);
 
-    res.cookie('token', token, optionCookie).send({ id: user._id });
+    res
+      .cookie('token', token, optionCookie)
+      .cookie('auth', authToken, { maxAge: 60 * 60 * 30 * 1000 })
+      .send({ id: user._id });
   } catch (error) {
     console.log('user', error);
     res.status(500).send({ messages: error.message });
@@ -44,7 +48,10 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   try {
-    res.clearCookie('token').json({ message: 'Logged out' });
+    res
+      .clearCookie('token')
+      .clearCookie('auth')
+      .json({ message: 'Logged out' });
   } catch (error) {
     res.status(500).send({ messages: error.message });
   }

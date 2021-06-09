@@ -4,7 +4,7 @@ import User from '../models/user.model.js';
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().sort({ createdAt: 'desc' });
 
     for (let product of products) {
       await product.populate('author').execPopulate();
@@ -20,6 +20,14 @@ export const createProduct = async (req, res) => {
   const { name, brand, model, description, result: image } = req.body;
   const { _id: authorId } = req.user;
 
+  // const currDate = new Date();
+  // const fmtData =
+  //   currDate.getUTCFullYear() +
+  //   '-' +
+  //   (currDate.getUTCMonth() + 1) +
+  //   '-' +
+  //   currDate.getUTCDate();
+
   try {
     const product = await new Product({
       name,
@@ -28,14 +36,14 @@ export const createProduct = async (req, res) => {
       description,
       image,
       author: authorId,
+      createdAt: new Date(),
+      // createdAt: fmtData,
     }).save();
-
     await User.findByIdAndUpdate(
       authorId,
       { $push: { products: product._id } },
       { new: true }
     );
-
     res.status(201).json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -45,7 +53,7 @@ export const createProduct = async (req, res) => {
 export const getProductById = async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await Product.findById(id);
+    const product = await Product.findById(id).sort();
     await product.populate('reviews').execPopulate();
     await product.populate('author').execPopulate();
 

@@ -28,6 +28,9 @@ const productSchema = mongoose.Schema({
   averageRating: {
     type: Number,
   },
+  createdAt: {
+    type: Date,
+  },
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,

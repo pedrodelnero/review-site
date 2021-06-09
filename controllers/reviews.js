@@ -83,8 +83,6 @@ export const deleteReviewById = async (req, res) => {
   const { pID, rID } = req.params;
   const { _id } = req.user;
 
-  console.log('del rev', pID, rID, _id);
-
   try {
     const reviewToDelete = await Review.findById(rID);
     const product = await Product.findById(pID);
@@ -109,12 +107,12 @@ export const deleteReviewById = async (req, res) => {
   }
 };
 
+// Updates Product rating when review is added/deleted
 const updateAvgStarReview = async (id) => {
   try {
     const product = await Product.findById(id);
 
     if (product.reviews.length > 0) {
-      console.log('yes', product);
       let avgRating = 0;
       for (let review of product.reviews) {
         const { rating } = await Review.findById(review);
@@ -125,7 +123,6 @@ const updateAvgStarReview = async (id) => {
       product.averageRating = avgRating;
       product.save();
     } else {
-      console.log('no');
       product.averageRating = 0;
       product.save();
     }
