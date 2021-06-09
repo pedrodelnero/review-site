@@ -1,44 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Paper, Typography } from '@material-ui/core/';
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography,
+} from '@material-ui/core/';
 import Rating from '@material-ui/lab/Rating';
 
 import useStyles from './styles.js';
 
-const Product = ({
-  product: { author, description, name, _id, image, averageRating },
-}) => {
+const Product = ({ product: { author, name, _id, image, averageRating } }) => {
   const classes = useStyles();
 
   return (
-    <Paper
-      component={Link}
-      to={`/${_id}/details`}
-      className={classes.root}
-      elevation={3}
-    >
-      <Box className={classes.header}>
-        <img
-          alt="alt text"
-          src={image || 'https://via.placeholder.com/150'}
-          title="Photo"
-          className={classes.image}
-        />
-      </Box>
-      <Box className={classes.content}>
-        <Typography className="prodTitle" variant="body1">
-          {name}
-        </Typography>
-        <Typography className="prodAuthor">Added by: {author.name}</Typography>
-        <Typography className="prodDescription">{description}</Typography>
-        <Rating
-          name="simple-controlled"
-          value={averageRating}
-          precision={0.5}
-          readOnly
-        />
-      </Box>
-    </Paper>
+    <Card className={classes.root}>
+      <CardActionArea component={Link} to={`/${_id}/details`}>
+        <CardMedia className={classes.media} image={image} title={name} />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {name}
+          </Typography>
+          <Rating readOnly value={averageRating} />
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Button
+          size="small"
+          variant="outlined"
+          color="primary"
+          component={Link}
+          to={`/${_id}/details`}
+        >
+          Go to
+        </Button>
+      </CardActions>
+    </Card>
   );
 };
 

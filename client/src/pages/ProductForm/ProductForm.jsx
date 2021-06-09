@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+// import FileBase64 from 'react-file-base64';
 import {
   Box,
+  Button,
   Container,
   FormControl,
   Paper,
   Tab,
   Tabs,
   TextField,
-  Button,
   Typography,
 } from '@material-ui/core/';
-import { useDispatch, useSelector } from 'react-redux';
 
 import useStyles from './styles.js';
 import { addProduct, updateProduct } from '../../actions/product';
 import { resizeImageFn } from '../../helper';
+import { TabPanel } from '../../components';
+import UserContext from '../../context/user';
 
 const ProductForm = () => {
   const classes = useStyles();
@@ -23,41 +26,17 @@ const ProductForm = () => {
   const product = useSelector((state) =>
     state.products.find((product) => product._id === id)
   );
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const {
+    user: { isLoggedIn },
+  } = useContext(UserContext);
+  // const { isLoggedIn } = useSelector((state) => state.user);
   const [name, setName] = useState(product?.name || '');
   const [brand, setBrand] = useState(product?.brand || '');
   const [model, setModel] = useState(product?.model || '');
   const [description, setDescription] = useState(product?.description || '');
   const [image, setImage] = useState(product?.image || null);
   const dispatch = useDispatch();
-  const [value, setValue] = React.useState(0);
-
-  function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              // justifyItems: 'space-between',
-            }}
-            p={3}
-          >
-            {children}
-          </Box>
-        )}
-      </div>
-    );
-  }
+  const [value, setValue] = useState(0);
 
   function a11yProps(index) {
     return {
@@ -66,17 +45,19 @@ const ProductForm = () => {
     };
   }
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const handleChange = (_, newValue) => setValue(newValue);
 
   if (!isLoggedIn) window.location.href = '/sign-in';
 
   const handleSubmit = async (e) => {
-    const base64str = await resizeImageFn(image);
+    let result = image;
+    if (image) {
+      result = await resizeImageFn(image);
+    }
+
     id
       ? dispatch(updateProduct(id, { name, description, brand }))
-      : dispatch(addProduct({ name, brand, model, description, base64str }));
+      : dispatch(addProduct({ name, brand, model, description, result }));
   };
 
   return (
@@ -131,6 +112,7 @@ const ProductForm = () => {
             </FormControl>
           </TabPanel>
           <TabPanel value={value} index={1}>
+            {/* <FileBase64 multiple={false} onDone={getImage} /> */}
             <FormControl>
               <input
                 type="file"
@@ -145,10 +127,11 @@ const ProductForm = () => {
       </Paper>
       <Box className={classes.buttonSection}>
         <Button
+          component={Link}
           variant="contained"
           color="secondary"
+          to="/"
           className={classes.button}
-          // onClick={handleSubmit}
         >
           Cancel
         </Button>

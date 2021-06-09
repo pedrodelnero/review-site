@@ -4,38 +4,31 @@ export default makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    // alignItems: 'center',
-    width: '100%'
+    margin: theme.spacing(2),
+    // width: '100%',
   },
-  button: {
-    backgroundColor: '#203061',
-    borderRadius: '25px',
-    color: 'white',
-    height: '50px',
-    width: '200px',
-    marginLeft: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    '& .MuiButton-label': {
-      // margin: theme.spacing(0, 1),
-      fontSize: '19px',
-      '& .MuiButton-startIcon': {
-        border: '1px solid white',
-        borderRadius: '30px'
-
-      }
-    }
+  addProdBox: {
+    marginLeft: theme.spacing(8),
+    width: '400px',
+    padding: theme.spacing(2, 3),
+    '& .MuiButtonBase-root': {
+      marginLeft: theme.spacing(2),
+    },
   },
-  grid: {
-    display: 'grid',
-    width: '100%',
-    justifyItems: 'center',
-    // justifyItems: 'center',
-    // margin: theme.spacing(1, 0),
-    [theme.breakpoints.down('xs')]: {
-      gridTemplateColumns: 'repeat(auto-fit, minmax(115px, 1fr))',
+  textfield: {
+    height: '100%',
+    padding: 0,
+    margin: 0,
+    backgroundColor: 'lightgrey',
+    '& :hover': {
+      backgroundColor: 'white',
     },
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-    },
-  }
+  },
+  row: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    padding: theme.spacing(0, 2),
+    marginBottom: theme.spacing(1),
+  },
 }));
