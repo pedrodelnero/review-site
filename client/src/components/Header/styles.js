@@ -3,11 +3,10 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 export default makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
-    width: '100%',
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('xs')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'none',
     },
   },

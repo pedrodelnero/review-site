@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -21,15 +21,25 @@ import useStyles from './styles.js';
 import { signOut } from '../../actions/user';
 import { MobileLeftMenu, MobileRightMenu } from './Mobile';
 import DesktopSubMenu from './DesktopMenu/DesktopSubMenu';
+import UserContext from '../../context/user';
 
 export default function Header() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { setSearchItems } = useContext(UserContext);
   const { isLoggedIn } = useSelector((state) => state.user);
+  const products = useSelector((state) => state.products);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isLeftOpen, setIsLeftOpen] = useState(false);
   const [isRightOpen, setIsRightOpen] = useState(false);
   const [isDesktopOpen, setIsDesktopOpen] = useState(false);
+
+  const handleSearchItems = (e) => {
+    const filteredProducts = products.filter((product) =>
+      product.name.includes(e.target.value)
+    );
+    setSearchItems(filteredProducts);
+  };
 
   const logOut = () => {
     handleMenuClose();
@@ -88,7 +98,8 @@ export default function Header() {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Search products…"
+              onChange={handleSearchItems}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
