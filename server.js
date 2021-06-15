@@ -3,13 +3,14 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import routes from './routes/routers.js';
-import './db/mongoose.js';
+import { connect } from './db/mongoose.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+connect();
 
 const corsOptions = {
   origin: ['http://localhost:3000', 'https://delnero-review-site.netlify.app'],
