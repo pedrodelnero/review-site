@@ -20,14 +20,6 @@ export const createProduct = async (req, res) => {
   const { name, brand, model, description, result: image } = req.body;
   const { _id: authorId } = req.user;
 
-  // const currDate = new Date();
-  // const fmtData =
-  //   currDate.getUTCFullYear() +
-  //   '-' +
-  //   (currDate.getUTCMonth() + 1) +
-  //   '-' +
-  //   currDate.getUTCDate();
-
   try {
     const product = await new Product({
       name,
@@ -37,7 +29,6 @@ export const createProduct = async (req, res) => {
       image,
       author: authorId,
       createdAt: new Date(),
-      // createdAt: fmtData,
     }).save();
     await User.findByIdAndUpdate(
       authorId,
@@ -101,21 +92,15 @@ export const updateProductById = async (req, res) => {
 export const deleteProductById = async (req, res) => {
   const { id } = req.params;
   const { products } = req.user;
-  // console.log('del cont', products);
 
   try {
     const product = await Product.findById(id);
 
-    console.log('del cont 1');
-
     if (!product) {
-      console.log('del cont first if');
-      res.status(404).json({ error: 'No product with ID provided' });
+      throw new Error('No product with ID provided');
     } else if (req.user.products.indexOf(id) === -1) {
-      console.log('del cont second if');
-      res.status(404).json({ error: 'Not authorized for this action' });
+      throw new Error('Not authorized for this action');
     } else if (product.reviews.length > 0) {
-      console.log('del cont third if');
       for (let i = 0; i < product.reviews.length; i++) {
         const review = await Review.findById(product.reviews[i]);
         await review.populate('author').execPopulate();
@@ -127,14 +112,11 @@ export const deleteProductById = async (req, res) => {
     }
     req.user.products.splice(products.indexOf(id), 1);
 
-    console.log('del cont 2');
     await req.user.save();
 
-    console.log('del cont 3');
     await Product.findByIdAndRemove(id);
 
-    res.status(200).json({ message: 'Product successfully deleted.' });
-    console.log('del cont 4');
+    res.status(201).json({ message: 'Product successfully deleted.' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -12,9 +12,10 @@ export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
+    if (!name || !email || !password) throw new Error('Missing input value.');
     let user = await User.findOne({ email });
 
-    if (user) return res.status(400).send({ message: 'User Already Exists' });
+    if (user) throw new Error('User Already Exists');
 
     user = new User({ name, email, password });
 
@@ -24,6 +25,7 @@ export const createUser = async (req, res) => {
 
     res.cookie('token', token, optionCookie).send({ id: user._id });
   } catch (error) {
+    // console.log('create err', error);
     res.status(500).send({ messages: error.message });
   }
 };
@@ -32,6 +34,7 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    if (!email || !password) throw new Error('Missing input value.');
     const user = await User.findByCredentials(email, password);
     const token = createToken(user._id);
     const authToken = createToken(user._id);
@@ -41,7 +44,6 @@ export const loginUser = async (req, res) => {
       .cookie('auth', authToken, { maxAge: 60 * 60 * 30 * 1000 })
       .send({ id: user._id });
   } catch (error) {
-    console.log('user', error);
     res.status(500).send({ messages: error.message });
   }
 };
