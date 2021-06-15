@@ -3,8 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 export default makeStyles((theme) => ({
   root: {
     width: '100%',
-    padding: 0,
-    margin: 0,
   },
 
   product: {
@@ -12,6 +10,8 @@ export default makeStyles((theme) => ({
     position: 'sticky',
     top: 0,
     height: '200px',
+    padding: theme.spacing(3, 3, 5, 3),
+    margin: '0, auto',
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
       alignItems: 'center',

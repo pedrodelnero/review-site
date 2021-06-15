@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Box, Button, Paper, TextField, Typography } from '@material-ui/core/';
@@ -7,6 +7,7 @@ import RateReviewIcon from '@material-ui/icons/RateReview';
 
 import useStyles from './styles.js';
 import { addReview } from '../../actions/reviews';
+import UserContext from '../../context/user';
 
 const ReviewModal = React.forwardRef((props, ref) => {
   const { rating, closeModal, refresh } = props;
@@ -14,14 +15,21 @@ const ReviewModal = React.forwardRef((props, ref) => {
   const classes = useStyles();
   const [starRating, setStarRating] = useState(rating || 0);
   const [textReview, setTextReview] = useState('');
+  const {
+    user: { isLoggedIn },
+  } = useContext(UserContext);
   const dispatch = useDispatch();
 
   const submitReview = async () => {
-    setStarRating(0);
-    setTextReview('');
-    await dispatch(addReview(id, { starRating, textReview }));
-    refresh();
-    closeModal();
+    if (isLoggedIn) {
+      setStarRating(0);
+      setTextReview('');
+      await dispatch(addReview(id, { starRating, textReview }));
+      refresh();
+      closeModal();
+    } else {
+      window.location.href = '/sign-in';
+    }
   };
 
   return (

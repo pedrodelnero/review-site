@@ -2,9 +2,7 @@ import React, { createRef, useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Box,
   Button,
-  Container,
   Modal,
   Paper,
   Typography,
@@ -31,8 +29,6 @@ const ProductDetails = () => {
     user: { user, isLoggedIn },
   } = useContext(UserContext);
 
-  console.log(product);
-
   useEffect(() => {
     if (isLoggedIn) {
       user?._id === product.author?._id
@@ -53,7 +49,7 @@ const ProductDetails = () => {
 
   const handleClose = () => setOpenReviewModal(false);
 
-  const createReview = (e, newValue) => {
+  const createReview = (_, newValue) => {
     setStarRating(newValue);
     handleOpen();
   };
@@ -61,23 +57,19 @@ const ProductDetails = () => {
   if (!product.name) return <CircularProgress />;
 
   return (
-    <Container className={classes.root}>
+    <div className={classes.root}>
       <Paper>
-        <Box
-          className={classes.product}
-          padding={(3, 3, 5, 3)}
-          margin={(0, 'auto')}
-        >
-          <Box>
+        <div className={classes.product}>
+          <div>
             <img
               alt=""
               src={product.image || 'https://via.placeholder.com/150'}
               title="Photo"
               className={classes.image}
             />
-          </Box>
-          <Box className={classes.details}>
-            <Box component="section" className={classes.text}>
+          </div>
+          <div className={classes.details}>
+            <div component="section" className={classes.text}>
               <Typography className="prodName" variant="h3">
                 {product.name}
               </Typography>
@@ -87,8 +79,8 @@ const ProductDetails = () => {
               <Typography className="numOfRev" variant="body1">
                 Posted by {product.author.name}
               </Typography>
-            </Box>
-            <Box className={classes.starReview}>
+            </div>
+            <div className={classes.starReview}>
               <Rating
                 name="simple"
                 value={product.averageRating}
@@ -97,10 +89,10 @@ const ProductDetails = () => {
                 size="large"
               />
               <Typography>{product.averageRating}</Typography>
-            </Box>
-          </Box>
+            </div>
+          </div>
           {authorized && (
-            <Box className={classes.deleteProd}>
+            <div className={classes.deleteProd}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -108,14 +100,14 @@ const ProductDetails = () => {
               >
                 Delete
               </Button>
-            </Box>
+            </div>
           )}
-        </Box>
+        </div>
       </Paper>
-      <Box className={classes.body}>
+      <div className={classes.body}>
         <Paper className={classes.writeReview} elevation={3}>
-          <Box className={classes.writeReviewCont}>
-            <Box>
+          <div className={classes.writeReviewCont}>
+            <div>
               <Button
                 size="large"
                 variant="contained"
@@ -127,16 +119,16 @@ const ProductDetails = () => {
               >
                 Review
               </Button>
-            </Box>
-            <Box>
+            </div>
+            <div>
               <Rating
                 name="simple-controlled"
                 precision={0.5}
                 size="large"
                 onChange={createReview}
               />
-            </Box>
-          </Box>
+            </div>
+          </div>
         </Paper>
         {product.reviews.length > 0 &&
           product.reviews.map((review) => (
@@ -146,7 +138,7 @@ const ProductDetails = () => {
               refresh={() => setToRefresh(!toRefresh)}
             />
           ))}
-      </Box>
+      </div>
       <Modal open={openReviewModal} onClose={handleClose}>
         <>
           <ReviewModal
@@ -158,7 +150,7 @@ const ProductDetails = () => {
           />
         </>
       </Modal>
-    </Container>
+    </div>
   );
 };
 

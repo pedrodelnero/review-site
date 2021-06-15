@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-// import FileBase64 from 'react-file-base64';
 import {
   Box,
   Button,
@@ -29,7 +28,6 @@ const ProductForm = () => {
   const {
     user: { isLoggedIn },
   } = useContext(UserContext);
-  // const { isLoggedIn } = useSelector((state) => state.user);
   const [name, setName] = useState(product?.name || '');
   const [brand, setBrand] = useState(product?.brand || '');
   const [model, setModel] = useState(product?.model || '');
@@ -112,7 +110,6 @@ const ProductForm = () => {
             </FormControl>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {/* <FileBase64 multiple={false} onDone={getImage} /> */}
             <FormControl>
               <input
                 type="file"
@@ -128,7 +125,7 @@ const ProductForm = () => {
       <Box className={classes.buttonSection}>
         <Button
           component={Link}
-          variant="contained"
+          variant="outlined"
           color="secondary"
           to="/"
           className={classes.button}

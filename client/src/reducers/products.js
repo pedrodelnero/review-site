@@ -8,7 +8,6 @@ import {
 export default (products = [], action) => {
   switch (action.type) {
     case GET_PRODUCTS:
-      console.log(action.payload);
       return action.payload;
     // case ADD_PRODUCT:
     //   return [action.payload, ...products];

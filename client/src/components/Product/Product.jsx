@@ -19,7 +19,11 @@ const Product = ({ product: { author, name, _id, image, averageRating } }) => {
   return (
     <Card className={classes.root}>
       <CardActionArea component={Link} to={`/${_id}/details`}>
-        <CardMedia className={classes.media} image={image} title={name} />
+        <CardMedia
+          className={classes.media}
+          image={image || 'https://via.placeholder.com/150'}
+          title={name}
+        />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {name}

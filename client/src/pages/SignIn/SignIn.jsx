@@ -14,7 +14,6 @@ import {
   Typography,
   Container,
 } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -27,12 +26,20 @@ const SignIn = () => {
   const errorMessage = useSelector((state) => state.error);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isError] = useState(false);
+  const [isError, setIsError] = useState({ email: false, password: false });
   const history = useHistory();
 
   useEffect(() => {
     if (isLoggedIn) history.push('/');
   }, [isLoggedIn, history]);
+
+  useEffect(() => {
+    if (errorMessage && errorMessage.includes('email')) {
+      setIsError({ ...isError, email: true });
+    } else if (errorMessage && errorMessage.includes('password')) {
+      setIsError({ ...isError, password: true });
+    }
+  }, [errorMessage, isError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,16 +47,13 @@ const SignIn = () => {
     dispatch(signIn(email, password));
   };
 
-  const doTrial = async (e) => {
-    dispatch(signInAsTrial());
-  };
+  const doTrial = () => dispatch(signInAsTrial());
 
   const classes = useStyles();
 
   return (
     <Container maxWidth="xs">
       <CssBaseline />
-      {!!errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -57,13 +61,16 @@ const SignIn = () => {
         <Typography variant="h5">Sign in</Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <TextField
+            error={isError.email}
             variant="outlined"
             margin="normal"
             required
             fullWidth
             id="email"
             label={
-              !isError ? 'Email Address' : 'No account with this email address'
+              !isError.email
+                ? 'Email Address'
+                : 'No account with this email address'
             }
             name="email"
             autoComplete="email"
@@ -72,13 +79,13 @@ const SignIn = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
-            error={isError}
+            error={isError.password}
             variant="outlined"
             margin="normal"
             required
             fullWidth
             name="password"
-            label={!isError ? 'Password' : 'Incorrect password'}
+            label={!isError.password ? 'Password' : 'Incorrect password'}
             type="password"
             id="password"
             autoComplete="current-password"
@@ -89,11 +96,6 @@ const SignIn = () => {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
               <Link href="/sign-up" variant="body2">
                 {"Don't have an account? Sign Up"}
@@ -118,9 +120,9 @@ const SignIn = () => {
         <Typography variant="body2" color="textSecondary" align="center">
           {'Copyright © '}
           <Link color="inherit" href="https://material-ui.com/">
-            Your Website
+            Review Thee
           </Link>
-          {new Date().getFullYear()}
+          {' ' + new Date().getFullYear()}
         </Typography>
       </Box>
     </Container>

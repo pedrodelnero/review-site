@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import Cookies from 'universal-cookie';
 
 import { Header, Footer } from '../components';
 import {
   ChangePassword,
+  Home,
   ProductDetails,
   ProductForm,
-  Products,
   SignUp,
   SignIn,
   UserPage,
@@ -16,17 +17,23 @@ import { getUser } from '../actions/user';
 import UserContext from '../context/user';
 import useStyles from './styles.js';
 
+const cookies = new Cookies();
+const auth = cookies.get('auth');
+
 const AppRouter = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const [searchItems, setSearchItems] = useState([]);
 
   useEffect(() => {
-    dispatch(getUser());
+    if (auth) {
+      dispatch(getUser());
+    }
   }, [dispatch]);
 
   return (
-    <UserContext.Provider value={{ user }}>
+    <UserContext.Provider value={{ user, searchItems, setSearchItems }}>
       <div className={classes.app}>
         <Router>
           <Header />
@@ -36,9 +43,10 @@ const AppRouter = () => {
               <Route path="/:id?/details" component={ProductDetails} />
               <Route path="/sign-up" component={SignUp} />
               <Route path="/sign-in" component={SignIn} />
-              <Route path="/user" component={UserPage} />
+              <Route path="/profile" component={UserPage} />
               <Route path="/password" component={ChangePassword} />
-              <Route exact path="/" component={Products} />
+              <Route exact path="/" component={Home} />
+              <Route path="*" component={Home} />
             </Switch>
           </div>
           <Footer className={classes.footer} />

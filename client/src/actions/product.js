@@ -8,16 +8,14 @@ import {
 } from '../constants/actionTypes';
 
 const api = axios.create({
-  // baseURL: 'https://delnero-review-site.herokuapp.com/products',
-  baseURL: 'http://localhost:5000/products',
+  baseURL: 'https://delnero-review-site.herokuapp.com/products',
+  // baseURL: 'http://localhost:5000/products',
   withCredentials: true,
 });
 
 export const getProduct = (id) => async (dispatch) => {
   try {
     const { data: product } = await api.get(`/${id}`);
-
-    console.log(product);
 
     dispatch({ type: GET_PRODUCT, payload: product });
   } catch (err) {

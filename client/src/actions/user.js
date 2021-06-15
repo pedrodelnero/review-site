@@ -15,16 +15,14 @@ import {
 } from '../constants/actionTypes';
 
 const userAPI = axios.create({
-  // baseURL: 'https://delnero-review-site.herokuapp.com/user',
-  baseURL: 'http://localhost:5000/user',
+  baseURL: 'https://delnero-review-site.herokuapp.com/user',
+  // baseURL: 'http://localhost:5000/user',
   withCredentials: true,
 });
 
 export const getUser = () => async (dispatch) => {
   try {
     const { data: user } = await userAPI.get('/');
-
-    console.log(user);
 
     dispatch({ type: GET_USER, payload: user });
   } catch (err) {
@@ -51,10 +49,8 @@ export const signIn = (email, password) => async (dispatch) => {
   try {
     const { data } = await userAPI.post('/login', { email, password });
 
-    localStorage.setItem('id', data.id);
-
-    dispatch({ type: SIGN_IN_AS_TRIAL, payload: data });
-    // window.location.href = '/';
+    dispatch({ type: SIGN_IN, payload: data });
+    window.location.href = '/';
   } catch (err) {
     dispatch({
       type: FAIL_SIGN_IN,
@@ -71,8 +67,7 @@ export const signInAsTrial = () => async (dispatch) => {
       password: 'word1234',
     });
 
-    localStorage.setItem('id', data.id);
-    dispatch({ type: SIGN_IN, payload: data });
+    dispatch({ type: SIGN_IN_AS_TRIAL, payload: data });
     window.location.href = '/';
   } catch (err) {
     dispatch({
@@ -109,7 +104,7 @@ export const updateUserPassword =
         confirmNewPassword,
       });
 
-      window.location.href = '/user';
+      window.location.href = '/profile';
 
       dispatch({ type: UPDATE_USER, payload: user });
     } catch (err) {

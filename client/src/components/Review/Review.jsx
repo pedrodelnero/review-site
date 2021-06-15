@@ -19,7 +19,6 @@ const Review = (props) => {
   const [authorized, setAuthorized] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
-  console.log(product);
 
   useEffect(() => {
     if (isLoggedIn) {

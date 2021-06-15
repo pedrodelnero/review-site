@@ -35,10 +35,14 @@ export default function Header() {
   const [isDesktopOpen, setIsDesktopOpen] = useState(false);
 
   const handleSearchItems = (e) => {
-    const filteredProducts = products.filter((product) =>
-      product.name.includes(e.target.value)
-    );
-    setSearchItems(filteredProducts);
+    if (e.target.value.length > 0) {
+      const filteredProducts = products.filter((product) =>
+        product.name.includes(e.target.value)
+      );
+      setSearchItems(filteredProducts);
+    } else {
+      setSearchItems([]);
+    }
   };
 
   const logOut = () => {
