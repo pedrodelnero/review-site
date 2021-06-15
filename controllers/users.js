@@ -33,7 +33,7 @@ export const createUser = async (req, res) => {
         secure: true,
         sameSite: 'none',
       })
-      .send({ id: user._id });
+      .send({ token });
   } catch (error) {
     // console.log('create err', error);
     res.status(500).send({ messages: error.message });
@@ -56,7 +56,7 @@ export const loginUser = async (req, res) => {
         secure: true,
         sameSite: 'none',
       })
-      .send({ id: user._id });
+      .send({ token });
   } catch (error) {
     res.status(500).send({ messages: error.message });
   }
