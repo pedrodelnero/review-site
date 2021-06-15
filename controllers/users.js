@@ -6,6 +6,8 @@ import { createToken } from '../middleware/auth.js';
 const optionCookie = {
   maxAge: 60 * 60 * 30 * 1000,
   httpOnly: true,
+  secure: true,
+  sameSite: 'none',
 };
 
 export const createUser = async (req, res) => {
@@ -22,8 +24,16 @@ export const createUser = async (req, res) => {
     await user.save();
 
     const token = createToken(user._id);
+    const authToken = createToken(user._id);
 
-    res.cookie('token', token, optionCookie).send({ id: user._id });
+    res
+      .cookie('token', token, optionCookie)
+      .cookie('auth', authToken, {
+        maxAge: 60 * 60 * 30 * 1000,
+        secure: true,
+        sameSite: 'none',
+      })
+      .send({ id: user._id });
   } catch (error) {
     // console.log('create err', error);
     res.status(500).send({ messages: error.message });
@@ -41,7 +51,11 @@ export const loginUser = async (req, res) => {
 
     res
       .cookie('token', token, optionCookie)
-      .cookie('auth', authToken, { maxAge: 60 * 60 * 30 * 1000 })
+      .cookie('auth', authToken, {
+        maxAge: 60 * 60 * 30 * 1000,
+        secure: true,
+        sameSite: 'none',
+      })
       .send({ id: user._id });
   } catch (error) {
     res.status(500).send({ messages: error.message });
