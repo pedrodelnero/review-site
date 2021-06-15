@@ -124,7 +124,6 @@ describe('Products', () => {
       const result = await request(app)
         .get('/user')
         .set('Cookie', `token=${token1}`);
-      //   console.log('MMMMMMMMMMMMM', result.body);
       expect(result.statusCode).to.equal(200);
       expect(result.body.products)
         .to.be.an('array')

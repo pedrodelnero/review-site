@@ -10,7 +10,6 @@ import {
 import {
   createReview,
   getReviews,
-  getReviewById,
   updateReviewById,
   deleteReviewById,
 } from '../controllers/reviews.js';
@@ -22,7 +21,6 @@ import {
   deleteUser,
   getUser,
 } from '../controllers/users.js';
-import getProd from '../middleware/getProd.js';
 import { validateToken } from '../middleware/auth.js';
 
 const router = new express.Router();
@@ -35,16 +33,12 @@ router.patch('/products/:id', validateToken, updateProductById);
 router.delete('/products/:id', validateToken, deleteProductById);
 
 // Reviews
-router.get('/products/:pID/reviews', getProd, getReviews);
-router.post('/products/:id/reviews', validateToken, createReview);
-router.get('/products/reviews/:rID', getReviewById);
-router.patch('/products/reviews/:rID', validateToken, updateReviewById);
-router.delete(
-  '/products/:pID/reviews/:rID',
-  validateToken,
-  getProd,
-  deleteReviewById
-);
+// router.get('/products/:pID/reviews', getProd, getReviews);
+router.get('/reviews', getReviews);
+router.post('/product/:pID/reviews', validateToken, createReview);
+// router.get('/product/reviews/:rID', getReviewById);
+router.patch('/product/reviews/:rID', validateToken, updateReviewById);
+router.delete('/product/:pID/reviews/:rID', validateToken, deleteReviewById);
 
 // Users
 router.post('/user', createUser);
