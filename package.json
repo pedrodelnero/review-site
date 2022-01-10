@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "client": "npm start ---prefix client",
-    "server": "env-cmd -f ./dev.env nodemon server.js",
+    "server": "env-cmd -f ./dev.env nodemon -L ./server.js",
+    "server1": "nodemon -L ./src/server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "start": "node server.js",
     "test": "env-cmd -f ./test.env mocha './test'  --recursive"
