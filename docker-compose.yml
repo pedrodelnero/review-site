@@ -26,10 +26,10 @@ services:
     volumes:
       - ./:/app/
     environment:
-      - DB_PW=4MkgPZUCUpoUHYkt
+      - DB_PW=
       - DB_NAME=Review
-      - DB_USER=pedrod
-      - JWT_SECRET='secrets'
+      - DB_USER=
+      - JWT_SECRET=
     
   # volumes:
   #   db-data:
